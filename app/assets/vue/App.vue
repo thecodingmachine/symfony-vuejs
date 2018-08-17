@@ -13,9 +13,6 @@
                     <router-link class="nav-item" tag="li" to="/posts" active-class="active">
                         <a class="nav-link">Posts</a>
                     </router-link>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/api/security/logout">Logout</a>
-                    </li>
                 </ul>
             </div>
         </nav>
