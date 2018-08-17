@@ -59,11 +59,11 @@
 
                 this.$store.dispatch('security/login', payload)
                     .then(() => {
-                       if (typeof redirect !== 'undefined') {
+                        if (typeof redirect !== 'undefined') {
                            this.$router.push({path: redirect});
-                       } else {
+                        } else {
                            this.$router.push({path: '/home'});
-                       }
+                        }
                     });
             },
         },

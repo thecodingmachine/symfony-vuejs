@@ -10,7 +10,4 @@ export default {
             }
         );
     },
-    isAuthenticated () {
-        return axios.get('/api/security/is-authenticated');
-    },
 }

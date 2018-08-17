@@ -13,6 +13,9 @@
                     <router-link class="nav-item" tag="li" to="/posts" active-class="active">
                         <a class="nav-link">Posts</a>
                     </router-link>
+                    <li class="nav-item" v-if="isAuthenticated">
+                        <a class="nav-link" href="/api/security/logout">Logout</a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -27,6 +30,12 @@
 
     export default {
         name: 'app',
+        beforeMount () {
+            let vueRouting = this.$parent.$el.attributes['data-vue-routing'].value,
+                queryParameters = JSON.parse(this.$parent.$el.attributes['data-query-parameters'].value);
+
+            router.push({path: vueRouting, query: queryParameters});
+        },
         created () {
             axios.interceptors.response.use(undefined, (err) => {
                 return new Promise(() => {
@@ -37,11 +46,10 @@
                 });
             });
         },
-        beforeMount () {
-            let vueRouting = this.$parent.$el.attributes['data-vue-routing'].value,
-                queryParameters = JSON.parse(this.$parent.$el.attributes['data-query-parameters'].value);
-
-            router.push({path: vueRouting, query: queryParameters});
+        computed: {
+            isAuthenticated () {
+                return this.$store.getters['security/isAuthenticated']
+            },
         },
     }
 </script>

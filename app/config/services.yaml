@@ -34,3 +34,6 @@ services:
         class: App\Security\HashPasswordListener
         tags:
         - { name: doctrine.event_subscriber }
+
+    app.logout.handler:
+        class: App\Security\LogoutHandler

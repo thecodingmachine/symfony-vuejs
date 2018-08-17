@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use FOS\RestBundle\Controller\Annotations as Rest;
 
 final class ApiSecurityController extends Controller
 {
@@ -15,7 +15,12 @@ final class ApiSecurityController extends Controller
      */
     public function loginAction(): JsonResponse
     {
-        return new JsonResponse('authenticated!');
+        $securityCookie = new Cookie('authenticated', true, \time() + \intval(\ini_get('session.gc_maxlifetime')), '/', null, false, false);
+
+        $response = new JsonResponse('authenticated!');
+        $response->headers->setCookie($securityCookie);
+
+        return $response;
     }
 
     /**
@@ -25,14 +30,5 @@ final class ApiSecurityController extends Controller
     public function logoutAction()
     {
         throw new \Exception('This should not be reached!');
-    }
-
-    /**
-     * @Rest\Get("/api/security/is-authenticated", name="isAuthenticated")
-     * @return JsonResponse
-     */
-    public function isAuthenticatedAction(): JsonResponse
-    {
-        return $this->isGranted('IS_AUTHENTICATED_FULLY') ? new JsonResponse('authenticated!') : new JsonResponse('not authenticated!', 401);
     }
 }

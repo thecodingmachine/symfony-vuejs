@@ -5,6 +5,7 @@ export default {
     state: {
         isLoading: false,
         error: null,
+        isAuthenticated: false,
     },
     getters: {
         isLoading (state) {
@@ -16,19 +17,26 @@ export default {
         error (state) {
             return state.error;
         },
+        isAuthenticated (state) {
+            state.isAuthenticated = document.cookie.indexOf('authenticated') !== -1;
+            return state.isAuthenticated;
+        },
     },
     mutations: {
         ['AUTHENTICATING'](state) {
             state.isLoading = true;
             state.error = null;
+            state.isAuthenticated = false;
         },
         ['AUTHENTICATING_SUCCESS'](state) {
             state.isLoading = false;
             state.error = null;
+            state.isAuthenticated = true;
         },
         ['AUTHENTICATING_ERROR'](state, error) {
             state.isLoading = false;
             state.error = error;
+            state.isAuthenticated = false;
         },
     },
     actions: {
@@ -37,9 +45,6 @@ export default {
             return SecurityAPI.login(payload.login, payload.password)
                 .then(() => commit('AUTHENTICATING_SUCCESS'))
                 .catch(err => commit('AUTHENTICATING_ERROR', err));
-        },
-        isAuthenticated () {
-            return SecurityAPI.isAuthenticated();
         },
     },
 }
