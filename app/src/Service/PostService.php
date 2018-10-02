@@ -34,7 +34,7 @@ final class PostService
     }
 
     /**
-     * @return Post[]
+     * @return object[]
      */
     public function getAll(): array
     {

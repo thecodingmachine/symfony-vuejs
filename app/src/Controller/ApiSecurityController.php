@@ -15,7 +15,15 @@ final class ApiSecurityController extends Controller
      */
     public function loginAction(): JsonResponse
     {
-        $securityCookie = new Cookie('authenticated', true, \time() + \intval(\ini_get('session.gc_maxlifetime')), '/', null, false, false);
+        $securityCookie = new Cookie(
+            'authenticated',
+            '1',
+            \time() + \intval(\ini_get('session.gc_maxlifetime')),
+            '/',
+            null,
+            false,
+            false
+        );
 
         $response = new JsonResponse('authenticated!');
         $response->headers->setCookie($securityCookie);
@@ -25,10 +33,11 @@ final class ApiSecurityController extends Controller
 
     /**
      * @Route("/api/security/logout", name="logout")
-     * @throws \Exception
+     * @return void
+     * @throws \RuntimeException
      */
-    public function logoutAction()
+    public function logoutAction(): void
     {
-        throw new \Exception('This should not be reached!');
+        throw new \RuntimeException('This should not be reached!');
     }
 }

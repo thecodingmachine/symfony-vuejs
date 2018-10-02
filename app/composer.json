@@ -27,7 +27,8 @@
         "symfony/validator": "^4.1",
         "symfony/web-link": "^4.1",
         "symfony/webpack-encore-pack": "^1.0",
-        "symfony/yaml": "^4.1"
+        "symfony/yaml": "^4.1",
+        "thecodingmachine/safe": "^0.1.5"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",
@@ -36,7 +37,11 @@
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "^1.0",
-        "symfony/web-server-bundle": "^4.1"
+        "symfony/web-server-bundle": "^4.1",
+        "phpstan/phpstan": "^0.10",
+        "squizlabs/php_codesniffer": "^3.1",
+        "thecodingmachine/phpstan-safe-rule": "^0.1.0",
+        "thecodingmachine/phpstan-strict-rules": "^0.10"
     },
     "config": {
         "preferred-install": {
@@ -61,6 +66,9 @@
         "symfony/polyfill-php56": "*"
     },
     "scripts": {
+        "phpstan": "phpstan analyse src/ -c phpstan.neon --level=7 --no-progress -vvv --memory-limit=1024M",
+        "cscheck": "phpcs --ignore=src/Migrations/**",
+        "csfix": "phpcbf --ignore=src/Migrations/**",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"

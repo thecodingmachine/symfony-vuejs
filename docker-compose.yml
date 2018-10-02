@@ -19,6 +19,10 @@ services:
     environment:
       APACHE_DOCUMENT_ROOT: public/
       PHP_EXTENSION_XDEBUG: 1
+      PHP_MEMORY_LIMIT: 1G
+      APP_ENV: dev
+      APP_SECRET: 8d2a5c935d8ef1c0e2b751147382bc75
+      DATABASE_URL: mysql://foo:bar@mysql:3306/foo
     volumes:
       - ./app:/var/www/html:rw
 

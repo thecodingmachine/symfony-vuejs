@@ -1,4 +1,7 @@
 {
+    "composer/xdebug-handler": {
+        "version": "1.3.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -89,6 +92,9 @@
     "egulias/email-validator": {
         "version": "2.1.4"
     },
+    "facebook/webdriver": {
+        "version": "1.6.0"
+    },
     "fig/link-util": {
         "version": "1.0.0"
     },
@@ -104,11 +110,35 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "jean85/pretty-package-versions": {
+        "version": "1.2"
+    },
     "monolog/monolog": {
         "version": "1.23.0"
     },
     "nesbot/carbon": {
         "version": "1.33.0"
+    },
+    "nette/bootstrap": {
+        "version": "v2.4.6"
+    },
+    "nette/di": {
+        "version": "v2.4.14"
+    },
+    "nette/finder": {
+        "version": "v2.4.2"
+    },
+    "nette/neon": {
+        "version": "v2.4.3"
+    },
+    "nette/php-generator": {
+        "version": "v3.0.5"
+    },
+    "nette/robot-loader": {
+        "version": "v3.1.0"
+    },
+    "nette/utils": {
+        "version": "v2.5.3"
     },
     "nikic/php-parser": {
         "version": "v4.0.3"
@@ -124,6 +154,12 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
+    },
+    "phpstan/phpdoc-parser": {
+        "version": "0.3"
+    },
+    "phpstan/phpstan": {
+        "version": "0.10.3"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -147,6 +183,15 @@
             "branch": "master",
             "version": "5.2",
             "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
+        }
+    },
+    "squizlabs/php_codesniffer": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "0dc9cceda799fd3a08b96987e176a261028a3709"
         }
     },
     "swiftmailer/swiftmailer": {
@@ -286,6 +331,9 @@
     },
     "symfony/orm-pack": {
         "version": "v1.0.5"
+    },
+    "symfony/panther": {
+        "version": "v0.2.0"
     },
     "symfony/phpunit-bridge": {
         "version": "4.1",
@@ -430,6 +478,15 @@
     },
     "symfony/yaml": {
         "version": "v4.1.3"
+    },
+    "thecodingmachine/phpstan-safe-rule": {
+        "version": "v0.1.0"
+    },
+    "thecodingmachine/phpstan-strict-rules": {
+        "version": "v0.10.3"
+    },
+    "thecodingmachine/safe": {
+        "version": "v0.1.5"
     },
     "twig/twig": {
         "version": "v2.5.0"
