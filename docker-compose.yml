@@ -11,7 +11,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   app:
-    image: thecodingmachine/php:7.2-v1-apache-node10
+    image: thecodingmachine/php:7.2-v2-apache-node10
     labels:
       - traefik.enable=true
       - traefik.backend=app

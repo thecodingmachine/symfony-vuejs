@@ -26,21 +26,24 @@
 
 <script>
     import axios from 'axios';
-    import router from './router';
 
     export default {
         name: 'app',
-        beforeMount () {
-            let vueRouting = this.$parent.$el.attributes['data-vue-routing'].value,
-                queryParameters = JSON.parse(this.$parent.$el.attributes['data-query-parameters'].value);
-
-            router.push({path: vueRouting, query: queryParameters});
-        },
         created () {
+            let isAuthenticated = JSON.parse(this.$parent.$el.attributes['data-is-authenticated'].value),
+                roles = JSON.parse(this.$parent.$el.attributes['data-roles'].value);
+
+            let payload = { isAuthenticated: isAuthenticated, roles: roles };
+            this.$store.dispatch('security/onRefresh', payload);
+
             axios.interceptors.response.use(undefined, (err) => {
                 return new Promise(() => {
                     if (err.response.status === 403) {
                         this.$router.push({path: '/login'})
+                    } else if (err.response.status === 500) {
+                        document.open();
+                        document.write(err.response.data);
+                        document.close();
                     }
                     throw err;
                 });

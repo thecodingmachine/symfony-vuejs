@@ -23,7 +23,7 @@ final class PostService
      * @param string $message
      * @return Post
      */
-    public function create(string $message): Post
+    public function createPost(string $message): Post
     {
         $postEntity = new Post();
         $postEntity->setMessage($message);

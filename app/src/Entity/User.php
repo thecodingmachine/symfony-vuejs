@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="user")
  * @ORM\HasLifecycleCallbacks
  */
-final class User implements UserInterface
+class User implements UserInterface
 {
     /**
      * @var int

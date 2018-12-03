@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="post")
  * @ORM\HasLifecycleCallbacks
  */
-final class Post
+class Post
 {
     /**
      * @var int

@@ -2,28 +2,27 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Safe\Exceptions\JsonException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use function Safe\json_encode;
 
-final class IndexController extends Controller
+final class IndexController extends AbstractController
 {
     /**
-     * @Route("/{vueRouting}", requirements={"vueRouting"="^(?!api|_(profiler|wdt)).+"}, name="index")
-     * @param Request $request
-     * @param null|string $vueRouting
+     * @Route("/{vueRouting}", requirements={"vueRouting"="^(?!api|_(profiler|wdt)).*"}, name="index")
      * @return Response
      * @throws JsonException
      */
-    public function indexAction(Request $request, ?string $vueRouting = null): Response
+    public function indexAction(): Response
     {
-        $queryParameters = $request->query->all();
+        /** @var User $user */
+        $user = $this->getUser();
         return $this->render('base.html.twig', [
-            'vueRouting' => \is_null($vueRouting) ? '/' : '/' . $vueRouting,
-            'queryParameters' => json_encode($queryParameters),
+            'isAuthenticated' => json_encode(!\is_null($user)),
+            'roles' => json_encode(!\is_null($user) ? $user->getRoles() : []),
         ]);
     }
 }

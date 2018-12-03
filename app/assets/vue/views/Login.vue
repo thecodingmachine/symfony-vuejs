@@ -25,21 +25,35 @@
         </div>
 
         <div v-else-if="hasError" class="row col">
-            <div class="alert alert-danger" role="alert">
-                {{ error }}
-            </div>
+            <error-message :error="error"></error-message>
         </div>
     </div>
 </template>
 
 <script>
+    import ErrorMessage from '../components/ErrorMessage';
+
     export default {
         name: 'login',
+        components: {
+            ErrorMessage,
+        },
         data () {
             return {
                 login: '',
                 password: '',
             };
+        },
+        created () {
+            let redirect = this.$route.query.redirect;
+
+            if (this.$store.getters['security/isAuthenticated']) {
+                if (typeof redirect !== 'undefined') {
+                    this.$router.push({path: redirect});
+                } else {
+                    this.$router.push({path: '/home'});
+                }
+            }
         },
         computed: {
             isLoading () {
@@ -60,9 +74,9 @@
                 this.$store.dispatch('security/login', payload)
                     .then(() => {
                         if (typeof redirect !== 'undefined') {
-                           this.$router.push({path: redirect});
+                            this.$router.push({path: redirect});
                         } else {
-                           this.$router.push({path: '/home'});
+                            this.$router.push({path: '/home'});
                         }
                     });
             },

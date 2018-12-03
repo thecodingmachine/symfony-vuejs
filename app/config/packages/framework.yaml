@@ -9,7 +9,8 @@ framework:
     session:
         handler_id: session.handler.native_file
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
-        gc_maxlifetime: 300
+        cookie_secure: auto
+        cookie_samesite: lax
 
     #esi: true
     #fragments: true
@@ -17,16 +18,16 @@ framework:
         log: true
 
     cache:
-    # Put the unique name of your app here: the prefix seed
-    # is used to compute stable namespaces for cache keys.
-    #prefix_seed: your_vendor_name/app_name
+        # Put the unique name of your app here: the prefix seed
+        # is used to compute stable namespaces for cache keys.
+        #prefix_seed: your_vendor_name/app_name
 
-    # The app cache caches to the filesystem by default.
-    # Other options include:
+        # The app cache caches to the filesystem by default.
+        # Other options include:
 
-    # Redis
-    #app: cache.adapter.redis
-    #default_redis_provider: redis://localhost
+        # Redis
+        #app: cache.adapter.redis
+        #default_redis_provider: redis://localhost
 
-    # APCu (not recommended with heavy random-write workloads as memory fragmentation can cause perf issues)
-    #app: cache.adapter.apcu
+        # APCu (not recommended with heavy random-write workloads as memory fragmentation can cause perf issues)
+        #app: cache.adapter.apcu

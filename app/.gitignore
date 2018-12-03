@@ -1,6 +1,7 @@
 
 ###> symfony/framework-bundle ###
-/.env
+/.env.local
+/.env.*.local
 /public/bundles/
 /var/
 /vendor/
@@ -15,14 +16,14 @@
 /.web-server-pid
 ###< symfony/web-server-bundle ###
 
-###> symfony/webpack-encore-pack ###
-/node_modules/
-/public/build/
-npm-debug.log
-yarn-error.log
-###< symfony/webpack-encore-pack ###
-
 ###> squizlabs/php_codesniffer ###
 /.phpcs-cache
 /phpcs.xml
 ###< squizlabs/php_codesniffer ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###

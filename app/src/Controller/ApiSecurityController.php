@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Cookie;
+use App\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class ApiSecurityController extends Controller
+final class ApiSecurityController extends AbstractController
 {
     /**
      * @Route("/api/security/login", name="login")
@@ -15,19 +15,9 @@ final class ApiSecurityController extends Controller
      */
     public function loginAction(): JsonResponse
     {
-        $securityCookie = new Cookie(
-            'authenticated',
-            '1',
-            \time() + \intval(\ini_get('session.gc_maxlifetime')),
-            '/',
-            null,
-            false,
-            false
-        );
-
-        $response = new JsonResponse('authenticated!');
-        $response->headers->setCookie($securityCookie);
-
+        /** @var User $user */
+        $user = $this->getUser();
+        $response = new JsonResponse($user->getRoles());
         return $response;
     }
 
