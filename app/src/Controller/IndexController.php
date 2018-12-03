@@ -21,8 +21,8 @@ final class IndexController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         return $this->render('base.html.twig', [
-            'isAuthenticated' => json_encode(!\is_null($user)),
-            'roles' => json_encode(!\is_null($user) ? $user->getRoles() : []),
+            'isAuthenticated' => json_encode(!empty($user)),
+            'roles' => json_encode(!empty($user) ? $user->getRoles() : []),
         ]);
     }
 }
