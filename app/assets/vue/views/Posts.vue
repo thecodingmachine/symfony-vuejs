@@ -22,9 +22,7 @@
         </div>
 
         <div v-else-if="hasError" class="row col">
-            <div class="alert alert-danger" role="alert">
-                <error-message :error="error"></error-message>
-            </div>
+            <error-message :error="error"></error-message>
         </div>
 
         <div v-else-if="!hasPosts" class="row col">
