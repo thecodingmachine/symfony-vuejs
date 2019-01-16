@@ -67,18 +67,21 @@
             },
         },
         methods: {
-            performLogin () {
-                let payload = { login: this.$data.login, password: this.$data.password },
+            performLogin() {
+                let payload = {login: this.$data.login, password: this.$data.password},
                     redirect = this.$route.query.redirect;
-
                 this.$store.dispatch('security/login', payload)
                     .then(() => {
-                        if (typeof redirect !== 'undefined') {
-                            this.$router.push({path: redirect});
-                        } else {
-                            this.$router.push({path: '/home'});
+                        if (!this.$store.getters['security/hasError']) {
+                            if (typeof redirect !== 'undefined') {
+                                this.$router.push({path: redirect});
+                            } else {
+                                this.$router.push({path: '/home'});
+                            }
                         }
-                    });
+                    }).catch(() => {
+                    console.log("error");
+                });
             },
         },
     }
