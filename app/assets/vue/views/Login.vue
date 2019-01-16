@@ -79,9 +79,7 @@
                                 this.$router.push({path: '/home'});
                             }
                         }
-                    }).catch(() => {
-                    console.log("error");
-                });
+                    });
             },
         },
     }
