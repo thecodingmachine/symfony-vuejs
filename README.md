@@ -4,29 +4,25 @@ Source code of the tutorial [thecodingmachine.io/building-a-single-page-applicat
 
 If you want to try out the project just follow these steps.
 
-### Start containers / project
-`docker-compose up`
+```bash
+$ docker-compose up -d
+$ docker-compose exec app bash # executing bash inside app service
+$ composer install
+$ yarn install
+$ yarn dev
+$ php bin/console doctrine:migration:migrate
+$ php bin/console doctrine:fixtures:load
+```
 
-### Enter in your app container
-`docker-compose exec app /bin/bash`
+On MacOS, also update your `/etc/hosts` file with:
 
-### Install vendor
-`composer install`
+```
+127.0.0.1   app.localhost
+127.0.0.1   phpmyadmin.app.localhost
+```
 
-### Install node modules
-`npm install`
+You may now go to [http://app.localhost/](http://app.localhost/) and
+login using the following credentials:
 
-### Generate manifest
-`yarn dev`
-
-### Generate database
-`php bin/console doctrine:migration:migrate`
-
-### Load fixtures
-`php bin/console doctrine:fixtures:load`
-
-### Access
-App: app.localhost (login: foo / pass: bar)
-
-phpMyAdmin: phpadmin.app.localhost
-
+Login: `foo`
+Password: `bar`

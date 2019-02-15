@@ -67,9 +67,10 @@
             },
         },
         methods: {
-            performLogin() {
+            performLogin () {
                 let payload = {login: this.$data.login, password: this.$data.password},
                     redirect = this.$route.query.redirect;
+
                 this.$store.dispatch('security/login', payload)
                     .then(() => {
                         if (!this.$store.getters['security/hasError']) {
