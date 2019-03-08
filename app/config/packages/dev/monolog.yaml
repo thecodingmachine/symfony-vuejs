@@ -2,7 +2,9 @@ monolog:
     handlers:
         main:
             type: stream
-            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            # Output logs to Docker stderr by default
+            path: "php://stderr"
+            #path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
             channels: ["!event"]
         # uncomment to get logging in your browser
