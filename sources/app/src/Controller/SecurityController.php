@@ -8,10 +8,14 @@ use App\Entity\User;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * @Route("/api")
+ */
 final class SecurityController extends AbstractController
 {
     /** @var SerializerInterface */
@@ -23,7 +27,7 @@ final class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/api/security/login", name="login")
+     * @Route("/security/login", name="login")
      */
     public function loginAction(): JsonResponse
     {
@@ -33,13 +37,13 @@ final class SecurityController extends AbstractController
         $userClone->setPassword('');
         $data = $this->serializer->serialize($userClone, JsonEncoder::FORMAT);
 
-        return new JsonResponse($data, 200, [], true);
+        return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 
     /**
      * @throws RuntimeException
      *
-     * @Route("/api/security/logout", name="logout")
+     * @Route("/security/logout", name="logout")
      */
     public function logoutAction(): void
     {

@@ -40,6 +40,7 @@
         "squizlabs/php_codesniffer": "^3.4",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
+        "symfony/phpunit-bridge": "^4.3",
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "*",
         "symfony/web-server-bundle": "4.3.*",
@@ -73,7 +74,7 @@
     "scripts": {
         "csfix": "phpcbf --ignore=src/Migrations/**,src/Kernel.php",
         "cscheck": "phpcs --ignore=src/Migrations/**,src/Kernel.php",
-        "phpstan": "phpstan analyse src/ tests/ -c phpstan.neon --level=7 --no-progress -vvv --memory-limit=1024M",
+        "phpstan": "phpstan analyse src/ -c phpstan.neon --level=7 --no-progress -vvv --memory-limit=1024M",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"

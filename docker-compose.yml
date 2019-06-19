@@ -38,6 +38,16 @@ services:
       - mysql_data:/var/lib/mysql
       - ./services/mysql/utf8mb4.cnf:/etc/mysql/conf.d/utf8mb4.cnf:ro
 
+  mysql_tests:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "admin"
+      MYSQL_DATABASE: "tests"
+      MYSQL_USER: "foo"
+      MYSQL_PASSWORD: "bar"
+    volumes:
+      - ./services/mysql/utf8mb4.cnf:/etc/mysql/conf.d/utf8mb4.cnf:ro
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:4.7
     labels:

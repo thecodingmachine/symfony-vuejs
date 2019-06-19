@@ -99,7 +99,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("post/posts");
+    this.$store.dispatch("post/findAll");
   },
   methods: {
     async createPost() {

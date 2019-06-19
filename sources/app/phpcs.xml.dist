@@ -10,7 +10,7 @@
 
     <!-- Directories to be checked -->
     <file>src</file>
-    <!-- <file>tests</file> -->
+    <file>tests</file>
 
     <exclude-pattern>tests/dependencies/*</exclude-pattern>
 

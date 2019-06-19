@@ -74,10 +74,10 @@ export default {
         return null;
       }
     },
-    async posts({ commit }) {
+    async findAll({ commit }) {
       commit(FETCHING_POSTS);
       try {
-        let response = await PostAPI.posts();
+        let response = await PostAPI.findAll();
         commit(FETCHING_POSTS_SUCCESS, response.data);
         return response.data;
       } catch (error) {
