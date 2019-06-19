@@ -12,5 +12,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:vue/recommended"
-  ]
+  ],
+  "rules": {
+      "indent": ["error", 2]
+  }
 }

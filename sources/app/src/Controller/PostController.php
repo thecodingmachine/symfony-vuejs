@@ -7,11 +7,16 @@ namespace App\Controller;
 use App\Entity\Post;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * @IsGranted("IS_AUTHENTICATED_FULLY")
+ */
 final class PostController extends AbstractController
 {
     /** @var EntityManagerInterface */
@@ -28,6 +33,7 @@ final class PostController extends AbstractController
 
     /**
      * @Rest\Post("/api/post/create", name="createPost")
+     * @IsGranted("ROLE_FOO")
      */
     public function createAction(Request $request): JsonResponse
     {
@@ -36,7 +42,7 @@ final class PostController extends AbstractController
         $post->setMessage($message);
         $this->em->persist($post);
         $this->em->flush();
-        $data = $this->serializer->serialize($post, 'json');
+        $data = $this->serializer->serialize($post, JsonEncoder::FORMAT);
 
         return new JsonResponse($data, 200, [], true);
     }
@@ -47,7 +53,7 @@ final class PostController extends AbstractController
     public function postsAction(): JsonResponse
     {
         $posts = $this->em->getRepository(Post::class)->findBy([], ['id' => 'DESC']);
-        $data = $this->serializer->serialize($posts, 'json');
+        $data = $this->serializer->serialize($posts, JsonEncoder::FORMAT);
 
         return new JsonResponse($data, 200, [], true);
     }

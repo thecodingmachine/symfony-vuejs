@@ -18,7 +18,8 @@
         "dev-server": "encore dev-server",
         "dev": "encore dev",
         "watch": "encore dev --watch",
-        "build": "encore production --progress"
+        "build": "encore production --progress",
+        "csfix": "eslint assets/vue --ext .js,.vue, --fix"
     },
     "dependencies": {
         "axios": "^0.19.0",

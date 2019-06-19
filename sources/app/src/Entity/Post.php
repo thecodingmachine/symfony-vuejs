@@ -12,7 +12,7 @@ use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="post")
+ * @ORM\Table(name="posts")
  * @ORM\HasLifecycleCallbacks
  */
 class Post

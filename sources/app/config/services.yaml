@@ -26,3 +26,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    app.security.hash.password.listener:
+        class: App\Security\HashPasswordListener
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+        arguments:
+            - !service { class: PDO, factory: 'database_connection:getWrappedConnection' }
+            # If you get transaction issues (e.g. after login) uncomment the line below
+            - { lock_mode: 1 }

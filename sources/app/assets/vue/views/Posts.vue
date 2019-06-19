@@ -4,7 +4,10 @@
       <h1>Posts</h1>
     </div>
 
-    <div class="row col">
+    <div
+      v-if="canCreatePost"
+      class="row col"
+    >
       <form>
         <div class="form-row">
           <div class="col-8">
@@ -39,12 +42,7 @@
       v-else-if="hasError"
       class="row col"
     >
-      <div
-        class="alert alert-danger"
-        role="alert"
-      >
-        {{ error }}
-      </div>
+      <error-message :error="error" />
     </div>
 
     <div
@@ -67,11 +65,13 @@
 
 <script>
 import Post from "../components/Post";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default {
   name: "Posts",
   components: {
-    Post
+    Post,
+    ErrorMessage
   },
   data() {
     return {
@@ -93,6 +93,9 @@ export default {
     },
     posts() {
       return this.$store.getters["post/posts"];
+    },
+    canCreatePost() {
+      return this.$store.getters["security/hasRole"]("ROLE_FOO");
     }
   },
   created() {
@@ -100,8 +103,10 @@ export default {
   },
   methods: {
     async createPost() {
-      await this.$store.dispatch("post/create", this.$data.message);
-      this.$data.message = "";
+      const result = await this.$store.dispatch("post/create", this.$data.message);
+      if (result !== null) {
+        this.$data.message = "";
+      }
     }
   }
 };
