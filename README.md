@@ -5,6 +5,7 @@ Source code of the tutorial [thecodingmachine.io/building-a-single-page-applicat
 If you want to try out the project just follow these steps.
 
 ```bash
+$ cp .env.template .env
 $ docker-compose up -d
 $ docker-compose exec app bash # executing bash inside app service
 $ composer install
