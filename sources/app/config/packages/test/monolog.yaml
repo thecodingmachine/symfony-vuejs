@@ -1,0 +1,9 @@
+monolog:
+    handlers:
+        main:
+            type: stream
+            # Output logs to Docker stderr by default.
+            path: "php://stderr"
+            #path: "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+            channels: ["!event"]

@@ -11,30 +11,41 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   app:
-    image: thecodingmachine/php:7.2-v2-apache-node10
+    image: thecodingmachine/php:7.3-v2-apache-node10
     labels:
       - traefik.enable=true
       - traefik.backend=app
       - traefik.frontend.rule=Host:app.localhost
     environment:
-      APACHE_DOCUMENT_ROOT: public/
-      PHP_EXTENSION_XDEBUG: 1
-      PHP_MEMORY_LIMIT: 1G
-      APP_ENV: dev
-      APP_SECRET: 8d2a5c935d8ef1c0e2b751147382bc75
-      DATABASE_URL: mysql://foo:bar@mysql:3306/foo
+      APACHE_DOCUMENT_ROOT: "public/"
+      PHP_EXTENSION_XDEBUG: "1"
+      PHP_INI_MEMORY_LIMIT: "1G"
+      # Symfony
+      APP_ENV: "dev"
+      APP_SECRET: "8d2a5c935d8ef1c0e2b751147382bc75"
+      DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql:3306/$MYSQL_DATABASE"
     volumes:
-      - ./app:/var/www/html:rw
+      - ./sources/app:/var/www/html:rw
 
   mysql:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_DATABASE: foo
-      MYSQL_USER: foo
-      MYSQL_PASSWORD: bar
+      MYSQL_ROOT_PASSWORD: "$MYSQL_ROOT_PASSWORD"
+      MYSQL_DATABASE: "$MYSQL_DATABASE"
+      MYSQL_USER: "$MYSQL_USER"
+      MYSQL_PASSWORD: "$MYSQL_PASSWORD"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./services/mysql/utf8mb4.cnf:/etc/mysql/conf.d/utf8mb4.cnf:ro
+
+  mysql_tests:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "admin"
+      MYSQL_DATABASE: "tests"
+      MYSQL_USER: "foo"
+      MYSQL_PASSWORD: "bar"
+    volumes:
       - ./services/mysql/utf8mb4.cnf:/etc/mysql/conf.d/utf8mb4.cnf:ro
 
   phpmyadmin:
@@ -42,11 +53,11 @@ services:
     labels:
       - traefik.enable=true
       - traefik.backend=phpmyadmin
-      - traefik.frontend.rule=Host:phpadmin.app.localhost
+      - traefik.frontend.rule=Host:phpmyadmin.app.localhost
     environment:
-      PMA_HOST: mysql
-      PMA_USER: foo
-      PMA_PASSWORD: bar
+      PMA_HOST: "mysql"
+      PMA_USER: "$MYSQL_USER"
+      PMA_PASSWORD: "$MYSQL_PASSWORD"
 
 volumes:
 

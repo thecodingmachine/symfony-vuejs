@@ -2,9 +2,10 @@ Source code of the tutorial [thecodingmachine.io/building-a-single-page-applicat
 
 # Quick start
 
-If you want to try out the project just follow these steps.
+If you want to try out the project just follow those steps:
 
 ```bash
+$ cp .env.template .env
 $ docker-compose up -d
 $ docker-compose exec app bash # executing bash inside app service
 $ composer install
