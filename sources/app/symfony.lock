@@ -117,9 +117,6 @@
     "egulias/email-validator": {
         "version": "2.1.8"
     },
-    "facebook/webdriver": {
-        "version": "1.7.1"
-    },
     "fig/link-util": {
         "version": "1.0.0"
     },
@@ -286,9 +283,6 @@
             "config/bootstrap.php"
         ]
     },
-    "symfony/contracts": {
-        "version": "v1.1.0"
-    },
     "symfony/css-selector": {
         "version": "v4.3.1"
     },
@@ -423,9 +417,6 @@
     },
     "symfony/orm-pack": {
         "version": "v1.0.6"
-    },
-    "symfony/panther": {
-        "version": "v0.4.1"
     },
     "symfony/phpunit-bridge": {
         "version": "4.3",
