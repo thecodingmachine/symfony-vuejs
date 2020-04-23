@@ -6,7 +6,7 @@
 
 > Replace this title and the following description with your project name and description.
 
-A sample of a working application using Vue.js, Symfony 5 and GraphQL.
+A example of a web application built with Vue.js, Symfony 5 and GraphQL.
 
 ## Setup
 
