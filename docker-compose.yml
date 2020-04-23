@@ -1,34 +1,54 @@
-version: '3.7'
+version: '3'
 
 services:
 
   traefik:
-    image: traefik:1.7
-    command: --docker --docker.exposedbydefault=false
+    image: traefik:2.1
+    command:
+      - --providers.docker
+      - --providers.docker.exposedByDefault=false
     ports:
       - "80:80"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  app:
-    image: thecodingmachine/php:7.3-v2-apache-node10
+  webapp:
+    image: thecodingmachine/nodejs:12-apache
     labels:
       - traefik.enable=true
-      - traefik.backend=app
-      - traefik.frontend.rule=Host:app.localhost
+      - traefik.http.routers.webapp_router.rule=Host(`$DOMAIN`)
     environment:
+      # Docker image
+      APACHE_DOCUMENT_ROOT: "dist/"
+      # STARTUP_COMMAND_1: "npm install"
+      # Vue.js
+      VUE_APP_GRAPHQL_HTTP: "http://$API_SUBDOMAIN.$DOMAIN/graphql"
+    volumes:
+      - ./src/webapp:/var/www/html:rw
+
+  api:
+    image: thecodingmachine/php:7.4-v3-apache
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.api_router.rule=Host(`$API_SUBDOMAIN.$DOMAIN`)
+    environment:
+      # Docker image
       APACHE_DOCUMENT_ROOT: "public/"
       PHP_EXTENSION_XDEBUG: "1"
       PHP_INI_MEMORY_LIMIT: "1G"
+      #STARTUP_COMMAND_1: "composer install"
       # Symfony
       APP_ENV: "dev"
-      APP_SECRET: "8d2a5c935d8ef1c0e2b751147382bc75"
-      DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql:3306/$MYSQL_DATABASE"
+      APP_SECRET: "$APP_SECRET"
+      # Database
+      DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql:3306/$MYSQL_DATABASE?server_version=8.0"
+      TESTS_DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql_tests:3306/$MYSQL_DATABASE?server_version=8.0"
     volumes:
-      - ./sources/app:/var/www/html:rw
+      - ./src/api:/var/www/html:rw
 
   mysql:
-    image: mysql:5.7
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: "$MYSQL_ROOT_PASSWORD"
       MYSQL_DATABASE: "$MYSQL_DATABASE"
@@ -36,28 +56,35 @@ services:
       MYSQL_PASSWORD: "$MYSQL_PASSWORD"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./services/mysql/utf8mb4.cnf:/etc/mysql/conf.d/utf8mb4.cnf:ro
 
   mysql_tests:
-    image: mysql:5.7
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_ROOT_PASSWORD: "admin"
-      MYSQL_DATABASE: "tests"
-      MYSQL_USER: "foo"
-      MYSQL_PASSWORD: "bar"
-    volumes:
-      - ./services/mysql/utf8mb4.cnf:/etc/mysql/conf.d/utf8mb4.cnf:ro
+      MYSQL_ROOT_PASSWORD: "$MYSQL_ROOT_PASSWORD"
+      MYSQL_DATABASE: "$MYSQL_DATABASE"
+      MYSQL_USER: "$MYSQL_USER"
+      MYSQL_PASSWORD: "$MYSQL_PASSWORD"
+    tmpfs:
+      - /var/lib/mysql
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:4.7
+    image: phpmyadmin/phpmyadmin:5.0
     labels:
       - traefik.enable=true
-      - traefik.backend=phpmyadmin
-      - traefik.frontend.rule=Host:phpmyadmin.app.localhost
+      - traefik.http.routers.phpmyadmin_router.rule=Host(`phpmyadmin.$DOMAIN`)
     environment:
-      PMA_HOST: "mysql"
+      PMA_HOSTS: "mysql, mysql_tests"
       PMA_USER: "$MYSQL_USER"
       PMA_PASSWORD: "$MYSQL_PASSWORD"
+
+  mailcatcher:
+    image: schickling/mailcatcher:latest
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mailcatcher_router.rule=Host(`mailcatcher.$DOMAIN`)
+      - traefik.http.routers.mailcatcher_router.service=mailcatcher_service
+      - traefik.http.services.mailcatcher_service.loadbalancer.server.port=1080
 
 volumes:
 
