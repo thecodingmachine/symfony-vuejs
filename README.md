@@ -74,8 +74,9 @@ Good? You may now start all the Docker containers with the following commands:
 make up
 ```
 
-It may take some time as each containers will also install dependencies (PHP, JavaScript etc.),
-compile raw sources (JavaScript) or run migrations for setting up the database structure.
+It may take some time as each containers will also setup itself, for instance by
+installing dependencies (PHP, JavaScript etc.), compiling sources (JavaScript) 
+or run migrations for setting up the database structure.
 
 Next time you run this command, the containers should be ready faster as most of the 
 setting up will already be done.
@@ -117,7 +118,7 @@ git config --global core.excludesfile "$Env:USERPROFILE\.gitignore"
 
 Then create the global `.gitignore` file according to the location specified previously.
 
-You may now edit it with:
+You may now edit it, according to your environment, with:
 
 ```
 # IDE
