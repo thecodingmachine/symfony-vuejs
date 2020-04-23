@@ -57,9 +57,18 @@ the Linux users!
 
 ### Starting the Docker Compose stack
 
-Make sure that there is no application running on port 80 (Vagrant users can skip this check).
+Copy the file `.env.dist` to a file named `.env`. For instance:
 
-Good? Start all the Docker containers with the following commands:
+```
+cp .env.dist .env
+```
+
+> Edit the `.env.dist` by updating the default values of `DOMAIN`, `MYSQL_DATABASE` and `APP_SECRET`
+> environment variables.
+
+Next make sure that there is no application running on port 80 (Vagrant users can skip this check).
+
+Good? You may now start all the Docker containers with the following commands:
 
 ```
 make up
