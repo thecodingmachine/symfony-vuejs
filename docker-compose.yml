@@ -24,7 +24,7 @@ services:
       # Vue.js
       VUE_APP_GRAPHQL_HTTP: "http://$API_SUBDOMAIN.$DOMAIN/graphql"
     volumes:
-      - ./src/webapp:/var/www/html:rw
+      - ./src/webapp:/var/www/html
 
   api:
     image: thecodingmachine/php:7.4-v3-apache
@@ -44,7 +44,7 @@ services:
       DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql:3306/$MYSQL_DATABASE?server_version=8.0"
       TESTS_DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql_tests:3306/$MYSQL_DATABASE?server_version=8.0"
     volumes:
-      - ./src/api:/var/www/html:rw
+      - ./src/api:/var/www/html
 
   mysql:
     image: mysql:8.0
