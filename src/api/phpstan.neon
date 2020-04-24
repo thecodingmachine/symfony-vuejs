@@ -1,0 +1,17 @@
+includes:
+    - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
+    - vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
+    - vendor/pepakriz/phpstan-exception-rules/extension.neon
+
+parameters:
+    excludes_analyse:
+        - %currentWorkingDirectory%/src/Domain/Model/Generated/*.php
+        - %currentWorkingDirectory%/src/Infrastructure/Dao/Generated/*.php
+        - %currentWorkingDirectory%/src/Kernel.php
+    exceptionRules:
+        reportUnusedCatchesOfUncheckedExceptions: false
+        reportUnusedCheckedThrowsInSubtypes: false
+        reportCheckedThrowsInGlobalScope: false
+        ignoreDescriptiveUncheckedExceptions: false
+        checkedExceptions:
+            - App\Domain\Throwable\BaseThrowable

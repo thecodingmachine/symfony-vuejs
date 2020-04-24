@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
+
+    <arg name="basepath" value="."/>
+    <arg name="cache" value=".phpcs-cache"/>
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="16"/>
+    <!-- Ignore warnings, show progress of the run and show sniff names -->
+    <arg value="nps"/>
+
+    <!-- Include full Doctrine Coding Standard -->
+    <rule ref="Doctrine"/>
+
+    <!-- Directories to be checked -->
+    <file>src/</file>
+    <file>tests/</file>
+
+    <!-- Directories NOT to be checked -->
+    <exclude-pattern>src/Domain/Model/Generated/**</exclude-pattern>
+    <exclude-pattern>src/Domain/Assert/**</exclude-pattern>
+    <exclude-pattern>src/Infrastructure/Dao/Generated/**</exclude-pattern>
+    <exclude-pattern>src/Kernel.php</exclude-pattern>
+
+</ruleset>

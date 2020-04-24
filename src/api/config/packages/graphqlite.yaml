@@ -1,0 +1,7 @@
+# Read more about GraphQLite available options at: https://graphqlite.thecodingmachine.io/docs/symfony-bundle
+graphqlite:
+  namespace:
+    controllers: App\Infrastructure\Controller\GraphQL\
+    types:
+      - App\Domain\Model\
+      - App\Infrastructure\Security\
