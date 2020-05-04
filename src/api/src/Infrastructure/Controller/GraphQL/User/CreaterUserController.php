@@ -7,9 +7,10 @@ namespace App\Infrastructure\Controller\GraphQL\User;
 use App\Application\User\CreateUser;
 use App\Domain\Model\User;
 use App\Domain\Throwable\Exist\UserWithEmailExist;
-use App\Domain\Throwable\NotFound\RoleNotFound;
+use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
+use TheCodingMachine\GraphQLite\Annotations\Right;
 
 final class CreaterUserController extends AbstractController
 {
@@ -21,26 +22,23 @@ final class CreaterUserController extends AbstractController
     }
 
     /**
-     * @throws RoleNotFound
      * @throws UserWithEmailExist
-     *
-     * TODO: security
+     * @throws UserNotFoundByEmail
      *
      * @Mutation
+     * @Right("ROLE_ADMINISTRATOR")
      */
     public function createUser(
-        string $roleId,
         string $firstName,
         string $lastName,
         string $email,
-        string $password
+        string $role
     ) : User {
         return $this->createUser->create(
-            $roleId,
             $firstName,
             $lastName,
             $email,
-            $password
+            $role
         );
     }
 }

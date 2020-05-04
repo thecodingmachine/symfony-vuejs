@@ -8,5 +8,5 @@ monolog:
             channels: ["!event"]
         nested:
             type: stream
-            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            path: '%env(MONOLOG_LOGGING_PATH)%'
             level: debug

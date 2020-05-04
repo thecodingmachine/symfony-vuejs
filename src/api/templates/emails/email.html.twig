@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+{% include 'emails/header.html.twig' %}
+{% block body %}{% endblock %}
+{% include 'emails/footer.html.twig' %}
+</body>
+</html>

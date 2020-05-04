@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Domain\Assert\Assert;
+use App\Domain\Enum\RoleEnum;
 use App\Domain\Model\Generated\BaseUser;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 use function Safe\password_hash;
@@ -62,5 +63,13 @@ class User extends BaseUser
             ->minLength(8);
 
         parent::setPassword(password_hash($password, PASSWORD_DEFAULT));
+    }
+
+    public function setRole(string $role) : void
+    {
+        Assert::that($role)
+            ->choice(RoleEnum::values());
+
+        parent::setRole($role);
     }
 }

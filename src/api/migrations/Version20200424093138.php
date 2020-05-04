@@ -6,8 +6,8 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use TheCodingMachine\FluidSchema\TdbmFluidSchema;
 use RuntimeException;
+use TheCodingMachine\FluidSchema\TdbmFluidSchema;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -16,46 +16,18 @@ final class Version20200424093138 extends AbstractMigration
 {
     public function getDescription() : string
     {
-        return 'Create rights, roles, roles_rights, users, companies, users_companies and products tables.';
+        return 'Create session table.';
     }
 
     public function up(Schema $schema) : void
     {
         $db = new TdbmFluidSchema($schema);
 
-        $db->table('rights')
-            ->column('id')->guid()->primaryKey()->comment('@UUID')->graphqlField()
-            ->column('code')->string(255)->notNull()->unique()->graphqlField();
-
-        $db->table('roles')
-            ->column('id')->guid()->primaryKey()->comment('@UUID')->graphqlField()
-            ->column('code')->string(255)->notNull()->unique()->graphqlField();
-
-        $db->junctionTable('roles', 'rights')->graphqlField();
-
-        $db->table('users')
-            ->column('id')->guid()->primaryKey()->comment('@UUID')->graphqlField()
-            ->column('role_id')->references('roles')->notNull()->graphqlField()
-            ->column('first_name')->string(255)->notNull()->graphqlField()
-            ->column('last_name')->string(255)->notNull()->graphqlField()
-            ->column('email')->string(255)->notNull()->unique()->graphqlField()
-            ->column('password')->string(255)->null()->default(null);
-
-        $db->table('companies')
-            ->column('id')->guid()->primaryKey()->comment('@UUID')->graphqlField()
-            ->column('name')->string(255)->notNull()->unique()->graphqlField()
-            ->column('website')->string(255)->notNull()->unique()->graphqlField()
-            ->column('logo_filename')->string(255)->null()->default(null)->graphqlField();
-
-        $db->junctionTable('users', 'companies')->graphqlField();
-
-        $db->table('products')
-            ->column('id')->guid()->primaryKey()->comment('@UUID')->graphqlField()
-            ->column('company_id')->references('companies')->notNull()->graphqlField()
-            ->column('name')->string(255)->notNull()->unique()->graphqlField()
-            ->column('price')->float()->null()->default(null)->graphqlField()
-            ->column('margin')->float()->null()->default(null)->graphqlField()
-            ->column('picture_filename')->string(255)->null()->default(null)->graphqlField();
+        $db->table('sessions')
+            ->column('sess_id')->string(128)->notNull()->primaryKey()
+            ->column('sess_data')->blob()->notNull()
+            ->column('sess_time')->integer()->notNull()
+            ->column('sess_lifetime')->integer()->notNull();
     }
 
     public function down(Schema $schema) : void

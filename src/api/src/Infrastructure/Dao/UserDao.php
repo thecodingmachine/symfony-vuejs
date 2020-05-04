@@ -11,6 +11,8 @@ namespace App\Infrastructure\Dao;
 use App\Domain\Model\User;
 use App\Domain\Repository\UserRepository;
 use App\Domain\Throwable\Exist\UserWithEmailExist;
+use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
+use App\Domain\Throwable\NotFound\UserNotFoundById;
 use App\Infrastructure\Dao\Generated\BaseUserDao;
 
 /**
@@ -18,20 +20,38 @@ use App\Infrastructure\Dao\Generated\BaseUserDao;
  */
 class UserDao extends BaseUserDao implements UserRepository
 {
-    public function create(User $user) : void
+    /**
+     * @throws UserNotFoundById
+     */
+    public function mustFindOneById(string $id) : User
     {
-        $this->save($user);
+        $user = $this->findOne(['id' => $id]);
+
+        if ($user !== null) {
+            return $user;
+        }
+
+        throw new UserNotFoundById($id);
     }
 
-    public function update(User $user) : void
+    /**
+     * @throws UserNotFoundByEmail
+     */
+    public function mustFindOneByEmail(string $email) : User
     {
-        $this->save($user);
+        $user = $this->findOneByEmail($email);
+
+        if ($user !== null) {
+            return $user;
+        }
+
+        throw new UserNotFoundByEmail($email);
     }
 
     /**
      * @throws UserWithEmailExist
      */
-    public function mustNotFindOneWithEmail(string $email) : void
+    public function mustNotFindOneByEmail(string $email) : void
     {
         $user = $this->findOneByEmail($email);
 

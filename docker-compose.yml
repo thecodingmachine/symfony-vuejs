@@ -18,10 +18,10 @@ services:
       - traefik.enable=true
       - traefik.http.routers.webapp_router.rule=Host(`$DOMAIN`)
     environment:
-      # Docker image
+      # Docker image.
       APACHE_DOCUMENT_ROOT: "dist/"
       # STARTUP_COMMAND_1: "npm install"
-      # Vue.js
+      # Vue.js.
       VUE_APP_GRAPHQL_HTTP: "http://$API_SUBDOMAIN.$DOMAIN/graphql"
     volumes:
       - ./src/webapp:/var/www/html
@@ -32,20 +32,33 @@ services:
       - traefik.enable=true
       - traefik.http.routers.api_router.rule=Host(`$API_SUBDOMAIN.$DOMAIN`)
     environment:
-      # Docker image
+      # Docker image.
       APACHE_DOCUMENT_ROOT: "public/"
       PHP_EXTENSION_XDEBUG: "1"
+      PHP_EXTENSION_AMQP: "1"
       PHP_INI_MEMORY_LIMIT: "1G"
       #STARTUP_COMMAND_1: "composer install"
-      # Symfony
+      #STARTUP_COMMAND_2: "sleep 10 & php bin/console messenger:consume async -vv &" # For consuming asynchronous tasks and notifications.
+      # Symfony.
       APP_ENV: "dev"
       APP_SECRET: "$APP_SECRET"
-      # Database
+      # Monolog.
+      MONOLOG_LOGGING_PATH: "php://stderr"
+      # Database.
       DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql:3306/$MYSQL_DATABASE?server_version=8.0"
       TESTS_DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql_tests:3306/$MYSQL_DATABASE?server_version=8.0"
+      # Messenger.
+      MESSENGER_TRANSPORT_DSN: "amqp://$RABBITMQ_DEFAULT_USER:$RABBITMQ_DEFAULT_PASS@rabbitmq:5672/%2f/messages"
+      # Mailer.
+      MAILER_URL: "smtp://mailcatcher:1025?encryption=&auth_mode="
+      MAIL_FROM: "no-reply@$DOMAIN"
+      # MISC.
+      WEBAPP_URL: "http://$DOMAIN/"
+      WEBAPP_UPATE_PASSWORD_ROUTE_FORMAT: "update-password/%s/%s"
     volumes:
       - ./src/api:/var/www/html
 
+  # For business data and sessions.
   mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
@@ -78,6 +91,20 @@ services:
       PMA_HOSTS: "mysql, mysql_tests"
       PMA_USER: "$MYSQL_USER"
       PMA_PASSWORD: "$MYSQL_PASSWORD"
+
+  # For asynchronous tasks and notifications.
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.rabbitmq_router.rule=Host(`rabbitmq.$DOMAIN`)
+      - traefik.http.routers.rabbitmq_router.service=rabbitmq_service
+      - traefik.http.services.rabbitmq_service.loadbalancer.server.port=15672
+    environment:
+      RABBITMQ_DEFAULT_USER: "$RABBITMQ_DEFAULT_USER"
+      RABBITMQ_DEFAULT_PASS: "$RABBITMQ_DEFAULT_PASS"
+    tmpfs:
+      - /var/lib/rabbitmq
 
   mailcatcher:
     image: schickling/mailcatcher:latest

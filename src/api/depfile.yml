@@ -17,7 +17,7 @@ layers:
         regex: src/Infrastructure
 ruleset:
   Domain: ~
-  UseCase:
+  Application:
     - Domain
   Infrastructure:
     - Domain

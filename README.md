@@ -6,7 +6,7 @@
 
 > Replace this title and the following description with your project name and description.
 
-A example of a web application built with Vue.js, Symfony 5 and GraphQL.
+An example of a web application built with Vue.js, Symfony 5 and GraphQL.
 
 ## Setup
 
@@ -27,7 +27,7 @@ Vagrant allows us to abstract the MacOS filesystem bringing an almost Linux-like
 
 #### Windows
 
-Having a Linux-like terminal is strongly advised in order to run the `Makefile` commands.
+A Linux-like terminal is strongly advised in order to run the `Makefile` commands.
 Vagrant might also be an interesting solution regarding performances.
 
 If not possible, you may also directly run the commands specified in the `Makefile`. 
@@ -45,7 +45,7 @@ On MacOs, run `sudo nano /etc/hosts` to edit it.
 
 On Windows, edit the file `C:\Windows\System32\drivers\etc\hosts` with administrative privileges.
 
-If you're using Vagrant, check that there no application running 
+If you're using Vagrant, check there no application running 
 on port 80 (like Apache or another virtual machine).
 
 If OK, run `make vagrant`, then `vagrant up` and finally `vagrant ssh` 
@@ -66,7 +66,7 @@ cp .env.dist .env
 > Edit the `.env.dist` by updating the default values of `DOMAIN`, `MYSQL_DATABASE` and `APP_SECRET`
 > environment variables.
 
-Next make sure that there is no application running on port 80 (Vagrant users can skip this check).
+Next make sure there is no application running on port 80 (Vagrant users can skip this check).
 
 Good? You may now start all the Docker containers with the following commands:
 
@@ -74,7 +74,7 @@ Good? You may now start all the Docker containers with the following commands:
 make up
 ```
 
-It may take some time as each containers will also setup itself, for instance by
+It may take some time as each container will also setup itself, for instance by
 installing dependencies (PHP, JavaScript etc.), compiling sources (JavaScript) 
 or run migrations for setting up the database structure.
 
@@ -130,9 +130,11 @@ You may now edit it, according to your environment, with:
 .vagrant
 ```
 
-### Services documentation
+### Documentations
 
-// TODO
+Make sure you have read the following documentations:
+
+* [API](src/api/README.md)
 
 ### How to stop the stack?
 

@@ -22,6 +22,6 @@ abstract class NotFound extends RuntimeException implements ClientAware, BaseThr
 
     public function getCategory() : string
     {
-        return 'Exist';
+        return 'Not found';
     }
 }

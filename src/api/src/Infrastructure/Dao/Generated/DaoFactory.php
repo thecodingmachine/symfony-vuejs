@@ -35,14 +35,9 @@ class DaoFactory
     private $productDao = null;
 
     /**
-     * @var \App\Infrastructure\Dao\RightDao|null
+     * @var \App\Infrastructure\Dao\ResetPasswordTokenDao|null
      */
-    private $rightDao = null;
-
-    /**
-     * @var \App\Infrastructure\Dao\RoleDao|null
-     */
-    private $roleDao = null;
+    private $resetPasswordTokenDao = null;
 
     /**
      * @var \App\Infrastructure\Dao\UserDao|null
@@ -96,32 +91,18 @@ class DaoFactory
         $this->productDao = $productDao;
     }
 
-    public function getRightDao() : \App\Infrastructure\Dao\RightDao
+    public function getResetPasswordTokenDao() : \App\Infrastructure\Dao\ResetPasswordTokenDao
     {
-        if (!$this->rightDao) {
-            $this->rightDao = $this->container->get('App\\Infrastructure\\Dao\\RightDao');
+        if (!$this->resetPasswordTokenDao) {
+            $this->resetPasswordTokenDao = $this->container->get('App\\Infrastructure\\Dao\\ResetPasswordTokenDao');
         }
 
-        return $this->rightDao;
+        return $this->resetPasswordTokenDao;
     }
 
-    public function setRightDao(\App\Infrastructure\Dao\RightDao $rightDao) : void
+    public function setResetPasswordTokenDao(\App\Infrastructure\Dao\ResetPasswordTokenDao $resetPasswordTokenDao) : void
     {
-        $this->rightDao = $rightDao;
-    }
-
-    public function getRoleDao() : \App\Infrastructure\Dao\RoleDao
-    {
-        if (!$this->roleDao) {
-            $this->roleDao = $this->container->get('App\\Infrastructure\\Dao\\RoleDao');
-        }
-
-        return $this->roleDao;
-    }
-
-    public function setRoleDao(\App\Infrastructure\Dao\RoleDao $roleDao) : void
-    {
-        $this->roleDao = $roleDao;
+        $this->resetPasswordTokenDao = $resetPasswordTokenDao;
     }
 
     public function getUserDao() : \App\Infrastructure\Dao\UserDao

@@ -15,6 +15,7 @@
     <rule ref="Doctrine"/>
 
     <!-- Directories to be checked -->
+    <file>migrations/</file>
     <file>src/</file>
     <file>tests/</file>
 

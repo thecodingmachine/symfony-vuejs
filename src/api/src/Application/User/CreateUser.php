@@ -4,45 +4,45 @@ declare(strict_types=1);
 
 namespace App\Application\User;
 
+use App\Application\User\ResetPassword\ResetPassword;
 use App\Domain\Model\User;
-use App\Domain\Repository\RoleRepository;
 use App\Domain\Repository\UserRepository;
 use App\Domain\Throwable\Exist\UserWithEmailExist;
-use App\Domain\Throwable\NotFound\RoleNotFound;
+use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
 
 final class CreateUser
 {
-    private RoleRepository $roleRepository;
     private UserRepository $userRepository;
+    private ResetPassword $resetPassword;
 
-    public function __construct(RoleRepository $roleRepository, UserRepository $userRepository)
-    {
-        $this->roleRepository = $roleRepository;
+    public function __construct(
+        UserRepository $userRepository,
+        ResetPassword $resetPassword
+    ) {
         $this->userRepository = $userRepository;
+        $this->resetPassword  = $resetPassword;
     }
 
     /**
-     * @throws RoleNotFound
      * @throws UserWithEmailExist
+     * @throws UserNotFoundByEmail
      */
     public function create(
-        string $roleId,
         string $firstName,
         string $lastName,
         string $email,
-        string $password
+        string $role
     ) : User {
-        $role = $this->roleRepository->mustFindOneById($roleId);
-        $this->userRepository->mustNotFindOneWithEmail($email);
+        $this->userRepository->mustNotFindOneByEmail($email);
 
         $user = new User(
-            $role,
             $firstName,
             $lastName,
-            $email
+            $email,
+            $role
         );
-        $user->setPassword($password);
-        $this->userRepository->create($user);
+        $this->userRepository->save($user);
+        $this->resetPassword->reset($email);
 
         return $user;
     }

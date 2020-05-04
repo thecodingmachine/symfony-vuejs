@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Infrastructure\Security;
 
 use App\Domain\Model\Company;
-use App\Domain\Model\Right;
 use App\Domain\Model\User;
 use RuntimeException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -22,12 +21,9 @@ final class SerializableUser implements UserInterface
     private string $lastName;
     private string $email;
     private string $password;
+    private string $role;
     /** @var Company[] */
     private array $companies;
-    /** @var Right[] */
-    private array $rights;
-    /** @var string[] */
-    private array $symfonyRoles;
 
     public function __construct(User $user)
     {
@@ -35,19 +31,13 @@ final class SerializableUser implements UserInterface
             throw new RuntimeException('Password should not be null');
         }
 
-        $this->id           = $user->getId();
-        $this->firstName    = $user->getFirstName();
-        $this->lastName     = $user->getLastName();
-        $this->email        = $user->getEmail();
-        $this->password     = $user->getPassword();
-        $this->companies    = $user->getCompanies();
-        $this->rights       = $user->getRole()->getRights();
-        $this->symfonyRoles = [];
-
-        foreach ($this->rights as $right) {
-            // 'ROLE_' is a required prefix for Symfony.
-            $this->symfonyRoles[] = 'ROLE_' . $right->getCode();
-        }
+        $this->id        = $user->getId();
+        $this->firstName = $user->getFirstName();
+        $this->lastName  = $user->getLastName();
+        $this->email     = $user->getEmail();
+        $this->password  = $user->getPassword();
+        $this->role      = $user->getRole();
+        $this->companies = $user->getCompanies();
     }
 
     /**
@@ -83,6 +73,14 @@ final class SerializableUser implements UserInterface
     }
 
     /**
+     * @Field
+     */
+    public function getRole() : string
+    {
+        return $this->role;
+    }
+
+    /**
      * @return Company[]
      *
      * @Field
@@ -93,21 +91,14 @@ final class SerializableUser implements UserInterface
     }
 
     /**
-     * @return Right[]
-     *
-     * @Field
-     */
-    public function getRights() : array
-    {
-        return $this->rights;
-    }
-
-    /**
      * @return string[]
      */
     public function getRoles() : array
     {
-        return $this->symfonyRoles;
+        return [
+            // 'ROLE_' is a required prefix for Symfony.
+            'ROLE_' . $this->role,
+        ];
     }
 
     public function getPassword() : string

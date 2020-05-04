@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Model\Generated;
 
-use App\Domain\Model\Role;
+use App\Domain\Model\ResetPasswordToken;
 use App\Domain\Model\Company;
 use TheCodingMachine\TDBM\AbstractTDBMObject;
 use TheCodingMachine\TDBM\ResultIterator;
@@ -34,18 +34,18 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     /**
      * The constructor takes all compulsory arguments.
      *
-     * @param \App\Domain\Model\Role $role
      * @param string $firstName
      * @param string $lastName
      * @param string $email
+     * @param string $role
      */
-    public function __construct(\App\Domain\Model\Role $role, string $firstName, string $lastName, string $email)
+    public function __construct(string $firstName, string $lastName, string $email, string $role)
     {
         parent::__construct();
-        $this->setRole($role);
         $this->setFirstName($firstName);
         $this->setLastName($lastName);
         $this->setEmail($email);
+        $this->setRole($role);
         $this->setId(Uuid::uuid1()->toString());
     }
 
@@ -68,24 +68,6 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     public function setId(string $id) : void
     {
         $this->set('id', $id, 'users');
-    }
-
-    /**
-     * Returns the Role object bound to this object via the role_id column.
-     *
-     * @GraphqlField
-     */
-    public function getRole() : \App\Domain\Model\Role
-    {
-        return $this->getRef('from__role_id__to__table__roles__columns__id', 'users');
-    }
-
-    /**
-     * The setter for the Role object bound to this object via the role_id column.
-     */
-    public function setRole(\App\Domain\Model\Role $object) : void
-    {
-        $this->setRef('from__role_id__to__table__roles__columns__id', $object, 'users');
     }
 
     /**
@@ -169,6 +151,37 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     public function setPassword(?string $password) : void
     {
         $this->set('password', $password, 'users');
+    }
+
+    /**
+     * The getter for the "role" column.
+     *
+     * @return string
+     * @GraphqlField
+     */
+    public function getRole() : string
+    {
+        return $this->get('role', 'users');
+    }
+
+    /**
+     * The setter for the "role" column.
+     *
+     * @param string $role
+     */
+    public function setRole(string $role) : void
+    {
+        $this->set('role', $role, 'users');
+    }
+
+    /**
+     * Returns the ResetPasswordToken pointing to this bean via the user_id column.
+     *
+     * @
+     */
+    public function getResetPasswordToken() : ?\App\Domain\Model\ResetPasswordToken
+    {
+        return $this->retrieveManyToOneRelationshipsStorage('reset_password_tokens', 'from__user_id__to__table__users__columns__id', ['reset_password_tokens.user_id' => $this->get('id', 'users')])->first();
     }
 
     /**
@@ -259,15 +272,7 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
         if ($tableName === 'users') {
             if (self::$foreignKeys === null) {
                 self::$foreignKeys = new ForeignKeys([
-                    'from__role_id__to__table__roles__columns__id' => [
-                        'foreignTable' => 'roles',
-                        'localColumns' => [
-                            'role_id'
-                        ],
-                        'foreignColumns' => [
-                            'id'
-                        ]
-                    ]
+
                 ]);
             }
             return self::$foreignKeys;
@@ -286,15 +291,11 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     {
         $array = [];
         $array['id'] = $this->getId();
-        if ($stopRecursion) {
-            $array['role'] = ['id' => $this->getRole()->getId()];
-        } else {
-            $array['role'] = $this->getRole()->jsonSerialize(true);
-        }
         $array['firstName'] = $this->getFirstName();
         $array['lastName'] = $this->getLastName();
         $array['email'] = $this->getEmail();
         $array['password'] = $this->getPassword();
+        $array['role'] = $this->getRole();
         if (!$stopRecursion) {
             $array['companies'] = array_map(function (Company $object) {
                 return $object->jsonSerialize(true);
@@ -312,15 +313,6 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     public function getUsedTables() : array
     {
         return [ 'users' ];
-    }
-
-    /**
-     * Method called when the bean is removed from database.
-     */
-    public function onDelete() : void
-    {
-        parent::onDelete();
-        $this->setRef('from__role_id__to__table__roles__columns__id', null, 'users');
     }
 
     public function __clone()
