@@ -54,7 +54,7 @@ services:
       MAIL_FROM: "no-reply@$DOMAIN"
       # MISC.
       WEBAPP_URL: "http://$DOMAIN/"
-      WEBAPP_UPATE_PASSWORD_ROUTE_FORMAT: "update-password/%s/%s"
+      WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT: "update-password/%s/%s"
     volumes:
       - ./src/api:/var/www/html
 

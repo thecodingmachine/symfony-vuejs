@@ -25,7 +25,7 @@ For instance:
 
 ```php
 // this code do X because of Y <- incorrect
-//  Do X because of Y. <- correct
+// Do X because of Y. <- correct
 ``` 
 
 ### Creating a use case

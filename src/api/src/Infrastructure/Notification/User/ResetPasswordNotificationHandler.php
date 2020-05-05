@@ -6,20 +6,12 @@ namespace App\Infrastructure\Notification\User;
 
 use App\Application\User\ResetPassword\ResetPasswordNotification;
 use App\Infrastructure\Helper\MiscConfiguration;
-use App\Infrastructure\Task\EmailTask;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
+use App\Infrastructure\Notification\Notifier;
+use App\Infrastructure\Task\SendEmailTask;
 use function Safe\sprintf;
 
-final class ResetPasswordNotificationHandler implements MessageHandlerInterface
+final class ResetPasswordNotificationHandler extends Notifier
 {
-    private MessageBusInterface $messageBus;
-
-    public function __construct(MessageBusInterface $messageBus)
-    {
-        $this->messageBus = $messageBus;
-    }
-
     public function __invoke(ResetPasswordNotification $notification) : void
     {
         $subject  = 'Reset password';
@@ -29,7 +21,7 @@ final class ResetPasswordNotificationHandler implements MessageHandlerInterface
             $template = 'emails/user/welcome_new_user.html.twig';
         }
 
-        $emailTask = new EmailTask(
+        $task = new SendEmailTask(
             $notification->getEmail(),
             $subject,
             $template,
@@ -45,6 +37,7 @@ final class ResetPasswordNotificationHandler implements MessageHandlerInterface
                     ),
             ]
         );
-        $this->messageBus->dispatch($emailTask);
+
+        $this->messageBus->dispatch($task);
     }
 }

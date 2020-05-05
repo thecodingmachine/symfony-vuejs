@@ -86,6 +86,7 @@ Once everything is ready, the following endpoints should be available:
 * http://companies-and-products.localhost
 * http://api.companies-and-products.localhost
 * http://phpmyadmin.companies-and-products.localhost
+* http://rabbitmq.companies-and-products.loclahost
 * http://mailcatcher.companies-and-products.loclahost
 
 > Update the domain with the one used in your project.

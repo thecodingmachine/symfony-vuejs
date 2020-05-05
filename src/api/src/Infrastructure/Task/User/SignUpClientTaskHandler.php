@@ -32,7 +32,7 @@ final class SignUpClientTaskHandler implements MessageHandlerInterface
             );
         } catch (BaseThrowable $e) {
             // We do not want to throw a domain exception
-            // as this task will be retried otherwise.
+            // as this task would be retried otherwise.
             // Indeed, a domain exception occurs when a business rule
             // is not fulfilled. If it happens, it will happened every time
             // we retry this task.

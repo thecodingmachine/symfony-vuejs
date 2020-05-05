@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Task;
 
-final class EmailTask implements AsyncTask
+final class SendEmailTask implements AsyncTask
 {
     private string $to;
     private string $subject;

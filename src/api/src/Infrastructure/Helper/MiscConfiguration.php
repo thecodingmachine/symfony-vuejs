@@ -6,18 +6,17 @@ namespace App\Infrastructure\Helper;
 
 use RuntimeException;
 use function getenv;
-use function is_string;
 
 final class MiscConfiguration
 {
     private const MAIL_FROM                           = 'MAIL_FROM';
     private const WEBAPP_URL                          = 'WEBAPP_URL';
-    private const WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT = 'WEBAPP_UPATE_PASSWORD_ROUTE_FORMAT';
+    private const WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT = 'WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT';
 
     private static function mustGetStringFromEnvVar(string $envVar) : string
     {
         $value = getenv($envVar);
-        if (is_string($value)) {
+        if ($value !== false) {
             return $value;
         }
 

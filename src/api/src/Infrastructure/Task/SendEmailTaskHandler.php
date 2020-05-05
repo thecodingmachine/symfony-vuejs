@@ -11,7 +11,7 @@ use Swift_Message;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Twig\Environment;
 
-final class EmailTaskHandler implements MessageHandlerInterface
+final class SendEmailTaskHandler implements MessageHandlerInterface
 {
     private Swift_Mailer $mailer;
     private Environment $twig;
@@ -24,7 +24,7 @@ final class EmailTaskHandler implements MessageHandlerInterface
         $this->mailFrom = MiscConfiguration::mustGetMailFrom();
     }
 
-    public function __invoke(EmailTask $task) : void
+    public function __invoke(SendEmailTask $task) : void
     {
         $message = (new Swift_Message($task->getSubject()))
             ->setFrom($this->mailFrom)
