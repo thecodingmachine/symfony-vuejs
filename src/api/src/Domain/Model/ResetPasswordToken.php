@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Domain\Model\Generated\BaseResetPasswordToken;
-use Symfony\Component\Validator\Constraints as Assert;
 use function Safe\password_hash;
 use const PASSWORD_DEFAULT;
 

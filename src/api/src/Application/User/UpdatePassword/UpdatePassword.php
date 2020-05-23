@@ -40,19 +40,16 @@ final class UpdatePassword
     ) : void {
         $resetPasswordToken = $this->resetPasswordTokenRepository->mustFindOneById($resetPasswordTokenId);
 
-        // Token not valid.
         $token = $resetPasswordToken->getToken();
         if (! password_verify($plainToken, $token)) {
             throw new WrongResetPasswordToken();
         }
 
-        // Token expired.
         $now = new DateTimeImmutable();
         if ($now > $resetPasswordToken->getValidUntil()) {
             throw new ResetPasswordTokenExpired();
         }
 
-        // Validate password.
         $passwordProxy = new PasswordProxy($newPassword);
         $violations    = $this->validator->validate($passwordProxy);
         InvalidPassword::throwException($violations);
