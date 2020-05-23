@@ -49,11 +49,6 @@ class User extends BaseUser
         return parent::getEmail();
     }
 
-    public function getPassword() : ?string
-    {
-        return parent::getPassword();
-    }
-
     public function setPassword(?string $password) : void
     {
         if ($password === null) {

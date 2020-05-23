@@ -18,14 +18,6 @@ use const PASSWORD_DEFAULT;
  */
 class ResetPasswordToken extends BaseResetPasswordToken
 {
-    /**
-     * @Assert\NotBlank
-     */
-    public function getToken() : string
-    {
-        return parent::getToken();
-    }
-
     public function setToken(string $token) : void
     {
         parent::setToken(password_hash($token, PASSWORD_DEFAULT));
