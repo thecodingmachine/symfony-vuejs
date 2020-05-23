@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application\User\UpdatePassword;
 
-use App\Domain\Throwable\BaseThrowable;
+use App\Domain\Throwable\BusinessRule;
 use GraphQL\Error\ClientAware;
 use RuntimeException;
 use Throwable;
 
-final class ResetPasswordTokenExpired extends RuntimeException implements ClientAware, BaseThrowable
+final class ResetPasswordTokenExpired extends RuntimeException implements ClientAware, BusinessRule
 {
     public function __construct(string $message = '', int $code = 400, ?Throwable $previous = null)
     {

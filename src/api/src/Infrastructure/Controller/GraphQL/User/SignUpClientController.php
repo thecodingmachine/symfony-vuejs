@@ -7,7 +7,9 @@ namespace App\Infrastructure\Controller\GraphQL\User;
 use App\Infrastructure\Task\User\SignUpClientTask;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
+use TheCodingMachine\Graphqlite\Validator\Annotations\Assertion;
 
 final class SignUpClientController extends AbstractController
 {
@@ -20,6 +22,9 @@ final class SignUpClientController extends AbstractController
 
     /**
      * @Mutation
+     * @Assertion(for="firstName", constraint={@Assert\NotBlank, @Assert\Length(max = 255)})
+     * @Assertion(for="lastName", constraint={@Assert\NotBlank, @Assert\Length(max = 255)})
+     * @Assertion(for="email", constraint={@Assert\NotBlank, @Assert\Length(max = 255), @Assert\Email})
      */
     public function signUpClient(
         string $firstName,

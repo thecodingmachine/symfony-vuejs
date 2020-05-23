@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domain\Throwable\NotFound;
 
-use App\Domain\Throwable\BaseThrowable;
+use App\Domain\Throwable\BusinessRule;
 use GraphQL\Error\ClientAware;
 use RuntimeException;
 
-abstract class NotFound extends RuntimeException implements ClientAware, BaseThrowable
+abstract class NotFound extends RuntimeException implements ClientAware, BusinessRule
 {
     public function __construct(string $message)
     {

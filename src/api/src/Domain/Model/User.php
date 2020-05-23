@@ -8,9 +8,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
-use App\Domain\Assert\Assert;
-use App\Domain\Enum\RoleEnum;
 use App\Domain\Model\Generated\BaseUser;
+use Symfony\Component\Validator\Constraints as Assert;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 use function Safe\password_hash;
 use const PASSWORD_DEFAULT;
@@ -22,32 +21,37 @@ use const PASSWORD_DEFAULT;
  */
 class User extends BaseUser
 {
-    public function setFirstName(string $firstName) : void
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(max = 255)
+     */
+    public function getFirstName() : string
     {
-        Assert::that($firstName)
-            ->notBlank()
-            ->maxLength(255);
-
-        parent::setFirstName($firstName);
+        return parent::getFirstName();
     }
 
-    public function setLastName(string $lastName) : void
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(max = 255)
+     */
+    public function getLastName() : string
     {
-        Assert::that($lastName)
-            ->notBlank()
-            ->maxLength(255);
-
-        parent::setLastName($lastName);
+        return parent::getLastName();
     }
 
-    public function setEmail(string $email) : void
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(max = 255)
+     * @Assert\Email
+     */
+    public function getEmail() : string
     {
-        Assert::that($email)
-            ->notBlank()
-            ->maxLength(255)
-            ->email();
+        return parent::getEmail();
+    }
 
-        parent::setEmail($email);
+    public function getPassword() : ?string
+    {
+        return parent::getPassword();
     }
 
     public function setPassword(?string $password) : void
@@ -58,18 +62,14 @@ class User extends BaseUser
             return;
         }
 
-        Assert::that($password)
-            ->notBlank()
-            ->minLength(8);
-
         parent::setPassword(password_hash($password, PASSWORD_DEFAULT));
     }
 
-    public function setRole(string $role) : void
+    /**
+     * @Assert\Choice(callback={"App\Domain\Enum\RoleEnum", "values"})
+     */
+    public function getRole() : string
     {
-        Assert::that($role)
-            ->choice(RoleEnum::values());
-
-        parent::setRole($role);
+        return parent::getRole();
     }
 }

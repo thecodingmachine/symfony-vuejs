@@ -7,7 +7,7 @@ namespace App\Infrastructure\Notification;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-abstract class Notifier implements MessageHandlerInterface
+abstract class NotificationHandler implements MessageHandlerInterface
 {
     protected MessageBusInterface $messageBus;
 

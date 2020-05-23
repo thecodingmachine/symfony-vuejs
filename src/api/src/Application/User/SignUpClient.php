@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\User;
 
+use App\Application\User\CreateUser\CreateUser;
+use App\Application\User\CreateUser\InvalidUser;
 use App\Domain\Enum\RoleEnum;
 use App\Domain\Model\User;
 use App\Domain\Throwable\Exist\UserWithEmailExist;
@@ -20,6 +22,7 @@ final class SignUpClient
 
     /**
      * @throws UserWithEmailExist
+     * @throws InvalidUser
      * @throws UserNotFoundByEmail
      */
     public function signUp(

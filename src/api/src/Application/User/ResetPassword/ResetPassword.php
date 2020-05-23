@@ -41,15 +41,13 @@ final class ResetPassword
         $validUntil = $validUntil->add(new DateInterval('P1D')); // Add one day to current date time.
 
         // Check if there is already a token for this user.
-        // If not, we create it. Otherwise we re-use it.
+        // If so, we delete it.
         $resetPasswordToken = $user->getResetPasswordToken();
-        if ($resetPasswordToken === null) {
-            $resetPasswordToken = new ResetPasswordToken($user, $plainToken, $validUntil);
-        } else {
-            $resetPasswordToken->setToken($plainToken);
-            $resetPasswordToken->setValidUntil($validUntil);
+        if ($resetPasswordToken !== null) {
+            $this->resetPasswordTokenRepository->delete($resetPasswordToken);
         }
 
+        $resetPasswordToken = new ResetPasswordToken($user, $plainToken, $validUntil);
         $this->resetPasswordTokenRepository->save($resetPasswordToken);
 
         $notification = new ResetPasswordNotification($user, $resetPasswordToken, $plainToken);

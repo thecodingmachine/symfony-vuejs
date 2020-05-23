@@ -5,13 +5,24 @@ declare(strict_types=1);
 namespace App\Infrastructure\Notification\User;
 
 use App\Application\User\ResetPassword\ResetPasswordNotification;
-use App\Infrastructure\Helper\MiscConfiguration;
-use App\Infrastructure\Notification\Notifier;
+use App\Infrastructure\Notification\NotificationHandler;
 use App\Infrastructure\Task\SendEmailTask;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use function Safe\sprintf;
 
-final class ResetPasswordNotificationHandler extends Notifier
+final class ResetPasswordNotificationHandler extends NotificationHandler
 {
+    private string $webappUrl;
+    private string $webappUpdatePasswordRouteFormat;
+
+    public function __construct(MessageBusInterface $messageBus, ContainerBagInterface $parameters)
+    {
+        $this->webappUrl                       = $parameters->get('app.webapp_url');
+        $this->webappUpdatePasswordRouteFormat = $parameters->get('app.webapp_update_password_route_format');
+        parent::__construct($messageBus);
+    }
+
     public function __invoke(ResetPasswordNotification $notification) : void
     {
         $subject  = 'Reset password';
@@ -29,9 +40,9 @@ final class ResetPasswordNotificationHandler extends Notifier
                 'firstName' => $notification->getFirstName(),
                 'lastName' => $notification->getLastName(),
                 'update_password_url' =>
-                    MiscConfiguration::mustGetWebAppUrl() .
+                    $this->webappUrl .
                     sprintf(
-                        MiscConfiguration::mustGetWebAppUpdatePasswordRouteFormat(),
+                        $this->webappUpdatePasswordRouteFormat,
                         $notification->getResetPasswordTokenId(),
                         $notification->getPlainToken()
                     ),

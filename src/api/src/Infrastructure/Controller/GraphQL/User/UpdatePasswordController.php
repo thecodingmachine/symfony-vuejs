@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Controller\GraphQL\User;
 
-use App\Application\User\UpdatePassword\InvalidResetPasswordToken;
+use App\Application\User\UpdatePassword\InvalidPassword;
 use App\Application\User\UpdatePassword\ResetPasswordTokenExpired;
 use App\Application\User\UpdatePassword\UpdatePassword;
+use App\Application\User\UpdatePassword\WrongResetPasswordToken;
 use App\Domain\Throwable\NotFound\ResetPasswordTokenNotFoundById;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
@@ -22,8 +23,9 @@ final class UpdatePasswordController extends AbstractController
 
     /**
      * @throws ResetPasswordTokenNotFoundById
-     * @throws InvalidResetPasswordToken
+     * @throws WrongResetPasswordToken
      * @throws ResetPasswordTokenExpired
+     * @throws InvalidPassword
      *
      * @Mutation
      */

@@ -20,7 +20,7 @@ services:
     environment:
       # Docker image.
       APACHE_DOCUMENT_ROOT: "dist/"
-      # STARTUP_COMMAND_1: "npm install"
+      # STARTUP_COMMAND_1: "npm ci"
       # Vue.js.
       VUE_APP_GRAPHQL_HTTP: "http://$API_SUBDOMAIN.$DOMAIN/graphql"
     volumes:
@@ -50,9 +50,9 @@ services:
       # Messenger.
       MESSENGER_TRANSPORT_DSN: "amqp://$RABBITMQ_DEFAULT_USER:$RABBITMQ_DEFAULT_PASS@rabbitmq:5672/%2f/messages"
       # Mailer.
-      MAILER_URL: "smtp://mailcatcher:1025?encryption=&auth_mode="
+      MAILER_URL: "smtp://mailhog:1025?encryption=&auth_mode="
       MAIL_FROM: "no-reply@$DOMAIN"
-      # MISC.
+      # Web app.
       WEBAPP_URL: "http://$DOMAIN/"
       WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT: "update-password/%s/%s"
     volumes:
@@ -106,13 +106,14 @@ services:
     tmpfs:
       - /var/lib/rabbitmq
 
-  mailcatcher:
-    image: schickling/mailcatcher:latest
+  # For catching and displaying e-mails.
+  mailhog:
+    image: mailhog/mailhog:latest
     labels:
       - traefik.enable=true
-      - traefik.http.routers.mailcatcher_router.rule=Host(`mailcatcher.$DOMAIN`)
-      - traefik.http.routers.mailcatcher_router.service=mailcatcher_service
-      - traefik.http.services.mailcatcher_service.loadbalancer.server.port=1080
+      - traefik.http.routers.mailhog_router.rule=Host(`mailhog.$DOMAIN`)
+      - traefik.http.routers.mailhog_router.service=mailhog_service
+      - traefik.http.services.mailhog_service.loadbalancer.server.port=8025
 
 volumes:
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Task\User;
 
 use App\Application\User\SignUpClient;
-use App\Domain\Throwable\BaseThrowable;
+use App\Domain\Throwable\BusinessRule;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -30,7 +30,7 @@ final class SignUpClientTaskHandler implements MessageHandlerInterface
                 $task->getLastName(),
                 $task->getEmail()
             );
-        } catch (BaseThrowable $e) {
+        } catch (BusinessRule $e) {
             // We do not want to throw a domain exception
             // as this task would be retried otherwise.
             // Indeed, a domain exception occurs when a business rule

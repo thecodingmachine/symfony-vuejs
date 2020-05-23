@@ -14,4 +14,4 @@ parameters:
         reportCheckedThrowsInGlobalScope: false
         ignoreDescriptiveUncheckedExceptions: false
         checkedExceptions:
-            - App\Domain\Throwable\BaseThrowable
+            - App\Domain\Throwable\BusinessRule

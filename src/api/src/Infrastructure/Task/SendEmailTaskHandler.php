@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Task;
 
-use App\Infrastructure\Helper\MiscConfiguration;
 use RuntimeException;
 use Swift_Mailer;
 use Swift_Message;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Twig\Environment;
 
@@ -17,11 +17,11 @@ final class SendEmailTaskHandler implements MessageHandlerInterface
     private Environment $twig;
     private string $mailFrom;
 
-    public function __construct(Swift_Mailer $mailer, Environment $twig)
+    public function __construct(Swift_Mailer $mailer, Environment $twig, ContainerBagInterface $parameters)
     {
         $this->mailer   = $mailer;
         $this->twig     = $twig;
-        $this->mailFrom = MiscConfiguration::mustGetMailFrom();
+        $this->mailFrom = $parameters->get('app.mail_from');
     }
 
     public function __invoke(SendEmailTask $task) : void

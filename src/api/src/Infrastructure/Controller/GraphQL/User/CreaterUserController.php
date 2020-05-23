@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Controller\GraphQL\User;
 
-use App\Application\User\CreateUser;
+use App\Application\User\CreateUser\CreateUser;
+use App\Application\User\CreateUser\InvalidUser;
 use App\Domain\Model\User;
 use App\Domain\Throwable\Exist\UserWithEmailExist;
 use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
@@ -24,6 +25,7 @@ final class CreaterUserController extends AbstractController
     /**
      * @throws UserWithEmailExist
      * @throws UserNotFoundByEmail
+     * @throws InvalidUser
      *
      * @Mutation
      * @Right("ROLE_ADMINISTRATOR")

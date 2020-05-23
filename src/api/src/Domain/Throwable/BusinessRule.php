@@ -6,6 +6,6 @@ namespace App\Domain\Throwable;
 
 use Throwable;
 
-interface BaseThrowable extends Throwable
+interface BusinessRule extends Throwable
 {
 }

@@ -1,7 +1,4 @@
 {
-    "beberlei/assert": {
-        "version": "v3.2.7"
-    },
     "beberlei/porpaginas": {
         "version": "v1.2"
     },
@@ -347,6 +344,12 @@
             "src/Controller/.gitignore",
             "src/Kernel.php"
         ]
+    },
+    "symfony/http-client": {
+        "version": "v5.0.8"
+    },
+    "symfony/http-client-contracts": {
+        "version": "v2.1.1"
     },
     "symfony/http-foundation": {
         "version": "v5.0.7"

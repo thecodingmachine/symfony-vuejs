@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
-use App\Domain\Assert\Assert;
 use App\Domain\Model\Generated\BaseResetPasswordToken;
+use Symfony\Component\Validator\Constraints as Assert;
 use function Safe\password_hash;
 use const PASSWORD_DEFAULT;
 
@@ -18,11 +18,16 @@ use const PASSWORD_DEFAULT;
  */
 class ResetPasswordToken extends BaseResetPasswordToken
 {
+    /**
+     * @Assert\NotBlank
+     */
+    public function getToken() : string
+    {
+        return parent::getToken();
+    }
+
     public function setToken(string $token) : void
     {
-        Assert::that($token)
-            ->notBlank();
-
         parent::setToken(password_hash($token, PASSWORD_DEFAULT));
     }
 }
