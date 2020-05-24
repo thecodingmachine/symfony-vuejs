@@ -34,12 +34,14 @@ final class CreaterUserController extends AbstractController
         string $firstName,
         string $lastName,
         string $email,
+        string $locale,
         string $role
     ) : User {
         return $this->createUser->create(
             $firstName,
             $lastName,
             $email,
+            $locale,
             $role
         );
     }

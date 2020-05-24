@@ -29,6 +29,7 @@ final class Version20200424154558 extends AbstractMigration
             ->column('last_name')->string(255)->notNull()->graphqlField()
             ->column('email')->string(255)->notNull()->unique()->graphqlField()
             ->column('password')->string(255)->null()->default(null)
+            ->column('locale')->string(2)->notNull()->graphqlField()
             ->column('role')->string(255)->notNull()->graphqlField();
 
         $db->table('companies')

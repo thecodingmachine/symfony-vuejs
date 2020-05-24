@@ -13,6 +13,7 @@ class ResetPasswordNotification implements Notification
     private string $firstName;
     private string $lastName;
     private string $email;
+    private string $locale;
     private string $resetPasswordTokenId;
     private string $plainToken;
     private bool $isNewUser;
@@ -25,6 +26,7 @@ class ResetPasswordNotification implements Notification
         $this->firstName            = $user->getFirstName();
         $this->lastName             = $user->getLastName();
         $this->email                = $user->getEmail();
+        $this->locale               = $user->getLocale();
         $this->resetPasswordTokenId = $resetPasswordToken->getId();
         $this->plainToken           = $plainToken;
         $this->isNewUser            = $user->getPassword() === null;
@@ -43,6 +45,11 @@ class ResetPasswordNotification implements Notification
     public function getEmail() : string
     {
         return $this->email;
+    }
+
+    public function getLocale() : string
+    {
+        return $this->locale;
     }
 
     public function getResetPasswordTokenId() : string

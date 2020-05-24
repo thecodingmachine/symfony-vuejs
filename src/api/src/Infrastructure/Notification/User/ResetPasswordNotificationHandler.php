@@ -25,28 +25,32 @@ final class ResetPasswordNotificationHandler extends NotificationHandler
 
     public function __invoke(ResetPasswordNotification $notification) : void
     {
-        $subject  = 'Reset password';
-        $template = 'emails/user/reset_password.html.twig';
-        if ($notification->isNewUser()) {
-            $subject  = 'Welcome!';
-            $template = 'emails/user/welcome_new_user.html.twig';
-        }
+        $domain = $notification->isNewUser() ?
+            'emails_user_welcome_new_user' :
+            'emails_user_reset_password';
+
+        $template = $notification->isNewUser() ?
+            'emails/user/welcome_new_user.html.twig' :
+            'emails/user/reset_password.html.twig';
+
+        $templateData = [
+            'firstName' => $notification->getFirstName(),
+            'lastName' => $notification->getLastName(),
+            'update_password_url' =>
+                $this->webappUrl .
+                sprintf(
+                    $this->webappUpdatePasswordRouteFormat,
+                    $notification->getResetPasswordTokenId(),
+                    $notification->getPlainToken()
+                ),
+        ];
 
         $task = new SendEmailTask(
+            $domain,
+            $notification->getLocale(),
             $notification->getEmail(),
-            $subject,
             $template,
-            [
-                'firstName' => $notification->getFirstName(),
-                'lastName' => $notification->getLastName(),
-                'update_password_url' =>
-                    $this->webappUrl .
-                    sprintf(
-                        $this->webappUpdatePasswordRouteFormat,
-                        $notification->getResetPasswordTokenId(),
-                        $notification->getPlainToken()
-                    ),
-            ]
+            $templateData
         );
 
         $this->messageBus->dispatch($task);

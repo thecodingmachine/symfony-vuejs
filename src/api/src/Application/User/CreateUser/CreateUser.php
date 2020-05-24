@@ -36,6 +36,7 @@ final class CreateUser
         string $firstName,
         string $lastName,
         string $email,
+        string $locale,
         string $role
     ) : User {
         $this->userRepository->mustNotFindOneByEmail($email);
@@ -44,6 +45,7 @@ final class CreateUser
             $firstName,
             $lastName,
             $email,
+            $locale,
             $role
         );
 

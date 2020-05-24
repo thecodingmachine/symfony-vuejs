@@ -61,6 +61,14 @@ class User extends BaseUser
     }
 
     /**
+     * @Assert\Choice(callback={"App\Domain\Enum\LocaleEnum", "values"})
+     */
+    public function getLocale() : string
+    {
+        return parent::getLocale();
+    }
+
+    /**
      * @Assert\Choice(callback={"App\Domain\Enum\RoleEnum", "values"})
      */
     public function getRole() : string

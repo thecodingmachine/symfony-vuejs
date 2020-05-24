@@ -28,7 +28,8 @@ final class SignUpClientTaskHandler implements MessageHandlerInterface
             $this->signUpClient->signUp(
                 $task->getFirstName(),
                 $task->getLastName(),
-                $task->getEmail()
+                $task->getEmail(),
+                $task->getLocale()
             );
         } catch (BusinessRule $e) {
             // We do not want to throw a domain exception

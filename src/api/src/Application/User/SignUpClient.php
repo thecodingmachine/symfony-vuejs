@@ -28,7 +28,8 @@ final class SignUpClient
     public function signUp(
         string $firstName,
         string $lastName,
-        string $email
+        string $email,
+        string $locale
     ) : User {
         return $this
             ->createUser
@@ -36,6 +37,7 @@ final class SignUpClient
                 $firstName,
                 $lastName,
                 $email,
+                $locale,
                 RoleEnum::CLIENT
             );
     }

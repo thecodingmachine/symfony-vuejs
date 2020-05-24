@@ -37,14 +37,16 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
      * @param string $firstName
      * @param string $lastName
      * @param string $email
+     * @param string $locale
      * @param string $role
      */
-    public function __construct(string $firstName, string $lastName, string $email, string $role)
+    public function __construct(string $firstName, string $lastName, string $email, string $locale, string $role)
     {
         parent::__construct();
         $this->setFirstName($firstName);
         $this->setLastName($lastName);
         $this->setEmail($email);
+        $this->setLocale($locale);
         $this->setRole($role);
         $this->setId(Uuid::uuid1()->toString());
     }
@@ -151,6 +153,27 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     public function setPassword(?string $password) : void
     {
         $this->set('password', $password, 'users');
+    }
+
+    /**
+     * The getter for the "locale" column.
+     *
+     * @return string
+     * @GraphqlField
+     */
+    public function getLocale() : string
+    {
+        return $this->get('locale', 'users');
+    }
+
+    /**
+     * The setter for the "locale" column.
+     *
+     * @param string $locale
+     */
+    public function setLocale(string $locale) : void
+    {
+        $this->set('locale', $locale, 'users');
     }
 
     /**
@@ -295,6 +318,7 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
         $array['lastName'] = $this->getLastName();
         $array['email'] = $this->getEmail();
         $array['password'] = $this->getPassword();
+        $array['locale'] = $this->getLocale();
         $array['role'] = $this->getRole();
         if (!$stopRecursion) {
             $array['companies'] = array_map(function (Company $object) {

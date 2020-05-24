@@ -42,6 +42,8 @@ services:
       # Symfony.
       APP_ENV: "dev"
       APP_SECRET: "$APP_SECRET"
+      # i18n.
+      DEFAULT_LOCALE: "en" # For e-mails.
       # Monolog.
       MONOLOG_LOGGING_PATH: "php://stderr"
       # Database.
@@ -58,7 +60,7 @@ services:
     volumes:
       - ./src/api:/var/www/html
 
-  # For business data and sessions.
+  # For business data and user sessions.
   mysql:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password

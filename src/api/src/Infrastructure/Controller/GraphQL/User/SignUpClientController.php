@@ -25,11 +25,13 @@ final class SignUpClientController extends AbstractController
      * @Assertion(for="firstName", constraint={@Assert\NotBlank, @Assert\Length(max = 255)})
      * @Assertion(for="lastName", constraint={@Assert\NotBlank, @Assert\Length(max = 255)})
      * @Assertion(for="email", constraint={@Assert\NotBlank, @Assert\Length(max = 255), @Assert\Email})
+     * @Assertion(for="locale", constraint={@Assert\Choice(callback={"App\Domain\Enum\LocaleEnum", "values"})})
      */
     public function signUpClient(
         string $firstName,
         string $lastName,
-        string $email
+        string $email,
+        string $locale
     ) : bool {
         // As there is no security on this endpoint,
         // we make sure that no one is able to check
@@ -37,7 +39,8 @@ final class SignUpClientController extends AbstractController
         $task = new SignUpClientTask(
             $firstName,
             $lastName,
-            $email
+            $email,
+            $locale
         );
         $this->messageBus->dispatch($task);
 
