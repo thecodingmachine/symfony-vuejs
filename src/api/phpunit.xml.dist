@@ -12,7 +12,7 @@
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
-        <server name="SYMFONY_PHPUNIT_VERSION" value="7.5" />
+        <server name="SYMFONY_PHPUNIT_VERSION" value="9.1" />
     </php>
 
     <testsuites>
@@ -24,10 +24,19 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
+            <exclude>
+                <directory>src/Domain/Model/Generated</directory>
+                <directory>src/Infrastructure/Dao/Generated</directory>
+            </exclude>
         </whitelist>
     </filter>
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
+
+    <logging>
+        <log type="coverage-html" target="coverage"/>
+        <log type="coverage-text" target="php://stdout"/>
+    </logging>
 </phpunit>

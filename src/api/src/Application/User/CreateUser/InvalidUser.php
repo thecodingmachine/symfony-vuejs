@@ -16,6 +16,8 @@ final class InvalidUser extends InvalidModel
      */
     public static function throwException(ConstraintViolationListInterface $constraintViolationList) : void
     {
-        parent::throwException($constraintViolationList);
+        if ($constraintViolationList->count() > 0) {
+            throw new self($constraintViolationList);
+        }
     }
 }

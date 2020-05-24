@@ -32,7 +32,7 @@ final class ResetPassword
     /**
      * @throws UserNotFoundByEmail
      */
-    public function reset(string $email) : void
+    public function reset(string $email) : ResetPasswordNotification
     {
         $user = $this->userRepository->mustFindOneByEmail($email);
 
@@ -52,5 +52,7 @@ final class ResetPassword
 
         $notification = new ResetPasswordNotification($user, $resetPasswordToken, $plainToken);
         $this->messageBus->dispatch($notification);
+
+        return $notification;
     }
 }

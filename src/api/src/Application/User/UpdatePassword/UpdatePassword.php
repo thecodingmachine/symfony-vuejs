@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\User\UpdatePassword;
 
+use App\Domain\Model\User;
 use App\Domain\Repository\ResetPasswordTokenRepository;
 use App\Domain\Repository\UserRepository;
 use App\Domain\Throwable\NotFound\ResetPasswordTokenNotFoundById;
@@ -37,7 +38,7 @@ final class UpdatePassword
         string $resetPasswordTokenId,
         string $plainToken,
         string $newPassword
-    ) : void {
+    ) : User {
         $resetPasswordToken = $this->resetPasswordTokenRepository->mustFindOneById($resetPasswordTokenId);
 
         $token = $resetPasswordToken->getToken();
@@ -59,5 +60,7 @@ final class UpdatePassword
 
         $this->userRepository->save($user);
         $this->resetPasswordTokenRepository->delete($resetPasswordToken);
+
+        return $user;
     }
 }

@@ -32,6 +32,22 @@ For instance:
 
 ### Tests
 
+// TODO explain how to write tests.
+
+Before pushing your commits to the repository or even while coding, run the following command:
+
+```
+php bin/phpunit
+```
+
+It will execute all tests and display the result and the code coverage.
+Speaking of code coverage, an HTML output is also available under the `converage` folder.
+Do not hesitate to take a look at it!
+
+From time to time, also check the [PHPUnit release page](https://github.com/sebastianbergmann/phpunit/releases)
+and update the `<server name="SYMFONY_PHPUNIT_VERSION" value="X.Z" />` entry from the file `phpunit.xml.dist` 
+when a major (**X**.Y.Z) or minor (X.**Y**.Z) is available.
+
 ### Static analysis tools
 
 Before pushing your commits to the repository or even while coding, run the following commands:
@@ -43,7 +59,7 @@ composer phpstan &&
 composer deptrac
 ```
 
-They will analyze your code and give you feedbacks on what's wrong.
+They will analyze your code and give you feedback on what's wrong.
 `composer csfix` will also format your code.
 
 ## Composer
