@@ -7,14 +7,12 @@ namespace App\Application\User\UpdatePassword;
 use App\Domain\Throwable\BusinessRule;
 use GraphQL\Error\ClientAware;
 use RuntimeException;
-use Throwable;
 
 final class WrongResetPasswordToken extends RuntimeException implements ClientAware, BusinessRule
 {
-    public function __construct(string $message = '', int $code = 400, ?Throwable $previous = null)
+    public function __construct()
     {
-        $code = $code !== 400 ? 400 : $code;
-        parent::__construct($message, $code, $previous);
+        parent::__construct('', 400);
     }
 
     public function isClientSafe() : bool
