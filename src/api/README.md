@@ -40,13 +40,14 @@ Before pushing your commits to the repository or even while coding, run the foll
 php bin/phpunit
 ```
 
-It will execute all tests and display the result and the code coverage.
+It will execute all tests and display the result and the code coverage in your terminal.
+
 Speaking of code coverage, an HTML output is also available under the `converage` folder.
 Do not hesitate to take a look at it!
 
-From time to time, also check the [PHPUnit release page](https://github.com/sebastianbergmann/phpunit/releases)
-and update the `<server name="SYMFONY_PHPUNIT_VERSION" value="X.Z" />` entry from the file `phpunit.xml.dist` 
-when a major (**X**.Y.Z) or minor (X.**Y**.Z) is available.
+From time to time, also check the [PHPUnit release page](https://github.com/sebastianbergmann/phpunit/releases).
+If a new major (**X**.Y.Z) or minor (X.**Y**.Z) release is available, 
+update the `<server name="SYMFONY_PHPUNIT_VERSION" value="X.Z" />` entry from the file `phpunit.xml.dist`.
 
 ### Static analysis tools
 
