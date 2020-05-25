@@ -21,6 +21,7 @@ final class SerializableUser implements UserInterface
     private string $lastName;
     private string $email;
     private string $password;
+    private string $locale;
     private string $role;
     /** @var Company[] */
     private array $companies;
@@ -36,6 +37,7 @@ final class SerializableUser implements UserInterface
         $this->lastName  = $user->getLastName();
         $this->email     = $user->getEmail();
         $this->password  = $user->getPassword();
+        $this->locale    = $user->getLocale();
         $this->role      = $user->getRole();
         $this->companies = $user->getCompanies();
     }
@@ -70,6 +72,14 @@ final class SerializableUser implements UserInterface
     public function getEmail() : string
     {
         return $this->email;
+    }
+
+    /**
+     * @Field
+     */
+    public function getLocale() : string
+    {
+        return $this->locale;
     }
 
     /**

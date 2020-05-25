@@ -1,30 +1,45 @@
+# This Docker Compose file should only be used for your development environment!
 version: '3'
 
 services:
 
   traefik:
-    image: traefik:2.1
+    image: traefik:2.2
     command:
       - --providers.docker
       - --providers.docker.exposedByDefault=false
+      - --api.dashboard=true
+      - --api.insecure=true
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik_dashboard_router.rule=Host(`traefik.$DOMAIN`)
+      - traefik.http.routers.traefik_dashboard_router.service=traefik_dashboard_service
+      - traefik.http.services.traefik_dashboard_service.loadbalancer.server.port=8080
     ports:
       - "80:80"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
   webapp:
-    image: thecodingmachine/nodejs:12-apache
+    image: thecodingmachine/nodejs:12
     labels:
       - traefik.enable=true
       - traefik.http.routers.webapp_router.rule=Host(`$DOMAIN`)
+      - traefik.http.routers.webapp_router.service=webapp_service
+      - traefik.http.services.webapp_service.loadbalancer.server.port=3000
+    expose:
+      - "3000"
+    command: yarn dev
     environment:
       # Docker image.
-      APACHE_DOCUMENT_ROOT: "dist/"
-      # STARTUP_COMMAND_1: "npm ci"
-      # Vue.js.
+      STARTUP_COMMAND_1: "yarn install"
+      # Nuxt.js
+      # Host 0.0.0.0 is designated to tell Nuxt.js to resolve a host address, which is accessible to connections outside
+      # of the host machine.
+      HOST: "0.0.0.0"
       VUE_APP_GRAPHQL_HTTP: "http://$API_SUBDOMAIN.$DOMAIN/graphql"
     volumes:
-      - ./src/webapp:/var/www/html
+      - ./src/webapp:/usr/src/app
 
   api:
     image: thecodingmachine/php:7.4-v3-apache
@@ -42,9 +57,7 @@ services:
       # Symfony.
       APP_ENV: "dev"
       APP_SECRET: "$APP_SECRET"
-      # i18n.
-      DEFAULT_LOCALE: "en" # For e-mails.
-      # Monolog.
+      # Logging.
       MONOLOG_LOGGING_PATH: "php://stderr"
       # Database.
       DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql:3306/$MYSQL_DATABASE?server_version=8.0"
@@ -54,9 +67,13 @@ services:
       # Mailer.
       MAILER_URL: "smtp://mailhog:1025?encryption=&auth_mode="
       MAIL_FROM: "no-reply@$DOMAIN"
-      # Web app.
+      # Notifications (e-mails) i18n.
+      DEFAULT_LOCALE: "en" # For e-mails.
+      # Web app (notifications).
       WEBAPP_URL: "http://$DOMAIN/"
       WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT: "update-password/%s/%s"
+      # CORS.
+      CORS_ALLOW_ORIGIN: "http://$DOMAIN" # Never use "*": https://stackoverflow.com/questions/52060784/graphql-and-csrf-protection.
     volumes:
       - ./src/api:/var/www/html
 

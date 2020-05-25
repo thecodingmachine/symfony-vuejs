@@ -6,7 +6,7 @@
 
 > Replace this title and the following description with your project name and description.
 
-An example of a web application built with Vue.js, Symfony 5 and GraphQL.
+An example of a web application built with Nuxt.js, Symfony 5 and GraphQL.
 
 ## Setup
 
@@ -83,6 +83,7 @@ setting up will already be done.
 
 Once everything is ready, the following endpoints should be available:
 
+* http://traefik.companies-and-products.localhost
 * http://companies-and-products.localhost
 * http://api.companies-and-products.localhost
 * http://phpmyadmin.companies-and-products.localhost
@@ -145,3 +146,23 @@ If you're a Vagrant user, you may also stop the virtual machine with `vagrant ha
 
 If you're not going to work on the project for while, you may also destroy 
 the virtual machine using `vagrant destroy`.
+
+### How to view the logs of the Docker containers?
+
+All aggregated logs:
+
+```
+docker-compose logs -f
+```
+
+Logs of one service:
+
+```
+docker-compose logs -f SERVICE_NAME
+```
+
+For instance, if you want the logs of the `api` service:
+
+```
+docker-compose logs -f api
+```
