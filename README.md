@@ -92,6 +92,12 @@ Once everything is ready, the following endpoints should be available:
 
 > Update the domain with the one used in your project.
 
+**You may finally start the message consumer with:**
+ 
+```
+make consume
+```
+
 ## What's next?
 
 ### Configuring Git

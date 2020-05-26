@@ -52,8 +52,8 @@ services:
       PHP_EXTENSION_XDEBUG: "1"
       PHP_EXTENSION_AMQP: "1"
       PHP_INI_MEMORY_LIMIT: "1G"
-      #STARTUP_COMMAND_1: "composer install"
-      #STARTUP_COMMAND_2: "sleep 10 & php bin/console messenger:consume async -vv &" # For consuming asynchronous tasks and notifications.
+      STARTUP_COMMAND_1: "composer install"
+      STARTUP_COMMAND_2: "php bin/console doctrine:migrations:migrate -n"
       # Symfony.
       APP_ENV: "dev"
       APP_SECRET: "$APP_SECRET"
@@ -67,7 +67,7 @@ services:
       # Mailer.
       MAILER_URL: "smtp://mailhog:1025?encryption=&auth_mode="
       MAIL_FROM: "no-reply@$DOMAIN"
-      # Notifications (e-mails) i18n.
+      # i18n.
       DEFAULT_LOCALE: "en" # For e-mails.
       # Web app (notifications).
       WEBAPP_URL: "http://$DOMAIN/"
