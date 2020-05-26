@@ -4,26 +4,25 @@ declare(strict_types=1);
 
 namespace App\Application\User\UpdatePassword;
 
+use App\Domain\Model\Proxy\PasswordProxy;
 use App\Domain\Model\User;
 use App\Domain\Repository\ResetPasswordTokenRepository;
 use App\Domain\Repository\UserRepository;
+use App\Domain\Throwable\Invalid\InvalidPassword;
+use App\Domain\Throwable\Invalid\InvalidUser;
 use App\Domain\Throwable\NotFound\ResetPasswordTokenNotFoundById;
 use Safe\DateTimeImmutable;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use function password_verify;
 
 final class UpdatePassword
 {
-    private ValidatorInterface $validator;
     private ResetPasswordTokenRepository $resetPasswordTokenRepository;
     private UserRepository $userRepository;
 
     public function __construct(
-        ValidatorInterface $validator,
         ResetPasswordTokenRepository $resetPasswordTokenRepository,
         UserRepository $userRepository
     ) {
-        $this->validator                    = $validator;
         $this->resetPasswordTokenRepository = $resetPasswordTokenRepository;
         $this->userRepository               = $userRepository;
     }
@@ -33,6 +32,7 @@ final class UpdatePassword
      * @throws WrongResetPasswordToken
      * @throws ResetPasswordTokenExpired
      * @throws InvalidPassword
+     * @throws InvalidUser
      */
     public function update(
         string $resetPasswordTokenId,
@@ -52,13 +52,9 @@ final class UpdatePassword
         }
 
         $passwordProxy = new PasswordProxy($newPassword);
-        $violations    = $this->validator->validate($passwordProxy);
-        InvalidPassword::throwException($violations);
+        $user          = $resetPasswordToken->getUser();
 
-        $user = $resetPasswordToken->getUser();
-        $user->setPassword($passwordProxy->getPlainPassword());
-
-        $this->userRepository->save($user);
+        $this->userRepository->updatePassword($user, $passwordProxy);
         $this->resetPasswordTokenRepository->delete($resetPasswordToken);
 
         return $user;

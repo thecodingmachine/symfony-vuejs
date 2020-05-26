@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\User\UpdatePassword;
+namespace App\Domain\Model\Proxy;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

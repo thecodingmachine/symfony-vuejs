@@ -53,7 +53,7 @@ services:
       PHP_EXTENSION_AMQP: "1"
       PHP_INI_MEMORY_LIMIT: "1G"
       STARTUP_COMMAND_1: "composer install || composer install --pref-source"
-      STARTUP_COMMAND_2: "php bin/console doctrine:migrations:migrate -n"
+      #STARTUP_COMMAND_2: "php bin/console doctrine:migrations:migrate -n"
       # Symfony.
       APP_ENV: "dev"
       APP_SECRET: "$APP_SECRET"

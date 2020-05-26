@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Application\User;
 
 use App\Application\User\ResetPassword\ResetPassword;
-use App\Application\User\UpdatePassword\InvalidPassword;
 use App\Application\User\UpdatePassword\ResetPasswordTokenExpired;
 use App\Application\User\UpdatePassword\UpdatePassword;
 use App\Application\User\UpdatePassword\WrongResetPasswordToken;
@@ -14,6 +13,7 @@ use App\Domain\Enum\RoleEnum;
 use App\Domain\Model\User;
 use App\Domain\Repository\ResetPasswordTokenRepository;
 use App\Domain\Repository\UserRepository;
+use App\Domain\Throwable\Invalid\InvalidPassword;
 use App\Domain\Throwable\NotFound\ResetPasswordTokenNotFoundById;
 use App\Tests\Application\ApplicationTestCase;
 use App\Tests\Application\DummyValues;

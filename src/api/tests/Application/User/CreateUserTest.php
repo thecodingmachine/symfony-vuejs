@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Application\User;
 
-use App\Application\User\CreateUser\CreateUser;
-use App\Application\User\CreateUser\InvalidUser;
+use App\Application\User\CreateUser;
 use App\Domain\Enum\LocaleEnum;
 use App\Domain\Enum\RoleEnum;
 use App\Domain\Throwable\Exist\UserWithEmailExist;
+use App\Domain\Throwable\Invalid\InvalidUser;
 use App\Tests\Application\ApplicationTestCase;
 use App\Tests\Application\DummyValues;
 

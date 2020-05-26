@@ -2,27 +2,24 @@
 
 declare(strict_types=1);
 
-namespace App\Application\User\CreateUser;
+namespace App\Application\User;
 
 use App\Application\User\ResetPassword\ResetPassword;
 use App\Domain\Model\User;
 use App\Domain\Repository\UserRepository;
 use App\Domain\Throwable\Exist\UserWithEmailExist;
+use App\Domain\Throwable\Invalid\InvalidUser;
 use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class CreateUser
 {
-    private ValidatorInterface $validator;
     private UserRepository $userRepository;
     private ResetPassword $resetPassword;
 
     public function __construct(
-        ValidatorInterface $validator,
         UserRepository $userRepository,
         ResetPassword $resetPassword
     ) {
-        $this->validator      = $validator;
         $this->userRepository = $userRepository;
         $this->resetPassword  = $resetPassword;
     }
@@ -48,9 +45,6 @@ final class CreateUser
             $locale,
             $role
         );
-
-        $violations = $this->validator->validate($user);
-        InvalidUser::throwException($violations);
 
         $this->userRepository->save($user);
         $this->resetPassword->reset($email);

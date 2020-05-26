@@ -8,6 +8,10 @@ parameters:
         - %currentWorkingDirectory%/src/Domain/Model/Generated/*.php
         - %currentWorkingDirectory%/src/Infrastructure/Dao/Generated/*.php
         - %currentWorkingDirectory%/src/Kernel.php
+    ignoreErrors:
+        -
+            message: '#PHPDoc tag @throws .* is not compatible with parent#'
+            path: %currentWorkingDirectory%/src/Infrastructure/Dao/*.php
     exceptionRules:
         reportUnusedCatchesOfUncheckedExceptions: false
         reportUnusedCheckedThrowsInSubtypes: false

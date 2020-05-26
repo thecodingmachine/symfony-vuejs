@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Application\User\UpdatePassword;
+namespace App\Domain\Throwable\Invalid;
 
-use App\Domain\Throwable\InvalidModel;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-final class InvalidPassword extends InvalidModel
+final class InvalidUser extends Invalid
 {
     /**
      * @param ConstraintViolationListInterface<mixed> $constraintViolationList
      *
-     * @throws InvalidPassword
+     * @throws InvalidUser
      */
     public static function throwException(ConstraintViolationListInterface $constraintViolationList) : void
     {

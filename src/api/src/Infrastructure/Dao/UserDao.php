@@ -8,18 +8,58 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Dao;
 
+use App\Domain\Model\Proxy\PasswordProxy;
 use App\Domain\Model\User;
+use App\Domain\Repository\Search\User\InvalidUsersFilters;
+use App\Domain\Repository\Search\User\UsersFilters;
 use App\Domain\Repository\UserRepository;
 use App\Domain\Throwable\Exist\UserWithEmailExist;
+use App\Domain\Throwable\Invalid\InvalidPassword;
+use App\Domain\Throwable\Invalid\InvalidUser;
 use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
 use App\Domain\Throwable\NotFound\UserNotFoundById;
 use App\Infrastructure\Dao\Generated\BaseUserDao;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use TheCodingMachine\TDBM\ResultIterator;
+use TheCodingMachine\TDBM\TDBMService;
 
 /**
  * The UserDao class will maintain the persistence of User class into the users table.
  */
 class UserDao extends BaseUserDao implements UserRepository
 {
+    private ValidatorInterface $validator;
+
+    public function __construct(TDBMService $tdbmService, ValidatorInterface $validator)
+    {
+        $this->validator = $validator;
+        parent::__construct($tdbmService);
+    }
+
+    /**
+     * @throws InvalidUser
+     */
+    public function save(User $user) : void
+    {
+        $violations = $this->validator->validate($user);
+        InvalidUser::throwException($violations);
+
+        parent::save($user);
+    }
+
+    /**
+     * @throws InvalidPassword
+     * @throws InvalidUser
+     */
+    public function updatePassword(User $user, PasswordProxy $passwordProxy) : void
+    {
+        $violations = $this->validator->validate($passwordProxy);
+        InvalidPassword::throwException($violations);
+
+        $user->setPassword($passwordProxy->getPlainPassword());
+        $this->save($user);
+    }
+
     /**
      * @throws UserNotFoundById
      */
@@ -60,5 +100,28 @@ class UserDao extends BaseUserDao implements UserRepository
         }
 
         throw new UserWithEmailExist($email);
+    }
+
+    /**
+     * @return User[]|ResultIterator
+     *
+     * @throws InvalidUsersFilters
+     */
+    public function search(UsersFilters $filters) : ResultIterator
+    {
+        $violations = $this->validator->validate($filters);
+        InvalidUsersFilters::throwException($violations);
+
+        return $this->find(
+            [
+                'first_name LIKE :search OR last_name LIKE :search OR email LIKE :search',
+                'role = :role',
+            ],
+            [
+                'search' => '%' . $filters->getSearch() . '%',
+                'role' => $filters->getRole(),
+            ],
+            $filters->getSortBy() . ' ' . $filters->getSortOrder()
+        );
     }
 }

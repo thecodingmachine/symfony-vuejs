@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Application\User\CreateUser;
+namespace App\Domain\Repository\Search\User;
 
-use App\Domain\Throwable\InvalidModel;
+use App\Domain\Throwable\Invalid\Invalid;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-final class InvalidUser extends InvalidModel
+final class InvalidUsersFilters extends Invalid
 {
     /**
      * @param ConstraintViolationListInterface<mixed> $constraintViolationList
      *
-     * @throws InvalidUser
+     * @throws InvalidUsersFilters
      */
     public static function throwException(ConstraintViolationListInterface $constraintViolationList) : void
     {
