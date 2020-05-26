@@ -52,7 +52,7 @@ services:
       PHP_EXTENSION_XDEBUG: "1"
       PHP_EXTENSION_AMQP: "1"
       PHP_INI_MEMORY_LIMIT: "1G"
-      STARTUP_COMMAND_1: "composer install"
+      STARTUP_COMMAND_1: "composer install || composer install --pref-source"
       STARTUP_COMMAND_2: "php bin/console doctrine:migrations:migrate -n"
       # Symfony.
       APP_ENV: "dev"
@@ -68,7 +68,7 @@ services:
       MAILER_URL: "smtp://mailhog:1025?encryption=&auth_mode="
       MAIL_FROM: "no-reply@$DOMAIN"
       # i18n.
-      DEFAULT_LOCALE: "en" # For e-mails.
+      DEFAULT_LOCALE: "en"
       # Web app (notifications).
       WEBAPP_URL: "http://$DOMAIN/"
       WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT: "update-password/%s/%s"
