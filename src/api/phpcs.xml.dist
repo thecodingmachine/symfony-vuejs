@@ -14,6 +14,12 @@
     <!-- Include full Doctrine Coding Standard -->
     <rule ref="Doctrine"/>
 
+    <!-- Remove this specific rule for tests as it causes troubles with Pest -->
+    <rule ref="SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic">
+        <severity>0</severity>
+        <exclude-pattern>tests/**</exclude-pattern>
+    </rule>
+
     <!-- Directories to be checked -->
     <file>migrations/</file>
     <file>src/</file>
@@ -24,5 +30,4 @@
     <exclude-pattern>src/Domain/Assert/**</exclude-pattern>
     <exclude-pattern>src/Infrastructure/Dao/Generated/**</exclude-pattern>
     <exclude-pattern>src/Kernel.php</exclude-pattern>
-
 </ruleset>

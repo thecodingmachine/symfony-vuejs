@@ -1,3 +1,4 @@
+.deptrac.cache
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -14,11 +15,8 @@
 /phpcs.xml
 ###< squizlabs/php_codesniffer ###
 
-###> symfony/phpunit-bridge ###
-.phpunit
-.phpunit.result.cache
+###> phpunit/phpunit ###
 /phpunit.xml
+.phpunit.result.cache
 /coverage
-###< symfony/phpunit-bridge ###
-
-.deptrac.cache
+###< phpunit/phpunit ###

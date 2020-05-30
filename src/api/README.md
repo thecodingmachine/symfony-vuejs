@@ -37,7 +37,7 @@ For instance:
 Before pushing your commits to the repository or even while coding, run the following command:
 
 ```
-php bin/phpunit
+composer pest
 ```
 
 It will execute all tests and display the result and the code coverage in your terminal.
@@ -45,9 +45,10 @@ It will execute all tests and display the result and the code coverage in your t
 Speaking of code coverage, an HTML output is also available under the `converage` folder.
 Do not hesitate to take a look at it!
 
-From time to time, also check the [PHPUnit release page](https://github.com/sebastianbergmann/phpunit/releases).
-If a new major (**X**.Y.Z) or minor (X.**Y**.Z) release is available, 
-update the `<server name="SYMFONY_PHPUNIT_VERSION" value="X.Z" />` entry from the file `phpunit.xml.dist`.
+From time to time, also check the [Pest release page](https://github.com/pestphp/pest/releases)
+and [PHP Unit release page](https://github.com/sebastianbergmann/phpunit/releases).
+If new releases are available, run `composer update`.
+If a new major (**X**.Y.Z) or minor (X.**Y**.Z) release is available, update your `composer.json` file first.
 
 ### Static analysis tools
 

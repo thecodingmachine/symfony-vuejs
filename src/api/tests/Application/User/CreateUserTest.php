@@ -2,37 +2,26 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Application\User;
-
 use App\Application\User\CreateUser;
 use App\Domain\Enum\LocaleEnum;
 use App\Domain\Enum\RoleEnum;
 use App\Domain\Throwable\Exist\UserWithEmailExist;
 use App\Domain\Throwable\Invalid\InvalidUser;
-use App\Tests\Application\ApplicationTestCase;
 use App\Tests\Application\DummyValues;
 
-final class CreateUserTest extends ApplicationTestCase
-{
-    private CreateUser $createUser;
-
-    protected function setUp() : void
-    {
-        parent::setUp();
-        $this->createUser = self::$container->get(CreateUser::class);
-    }
-
-    /**
-     * @dataProvider validDataProvider
-     */
-    public function testCreateUser(
+it(
+    'creates a user',
+    function (
         string $firstName,
         string $lastName,
         string $email,
         string $locale,
         string $role
     ) : void {
-        $user = $this->createUser->create(
+        $createUser = self::$container->get(CreateUser::class);
+        assert($createUser instanceof CreateUser);
+
+        $user = $createUser->create(
             $firstName,
             $lastName,
             $email,
@@ -40,56 +29,33 @@ final class CreateUserTest extends ApplicationTestCase
             $role
         );
 
-        $this->assertEquals($firstName, $user->getFirstName());
-        $this->assertEquals($lastName, $user->getLastName());
-        $this->assertEquals($email, $user->getEmail());
-        $this->assertNull($user->getPassword());
-        $this->assertEquals($locale, $user->getLocale());
-        $this->assertEquals($role, $user->getRole());
+        assertEquals($firstName, $user->getFirstName());
+        assertEquals($lastName, $user->getLastName());
+        assertEquals($email, $user->getEmail());
+        assertNull($user->getPassword());
+        assertEquals($locale, $user->getLocale());
+        assertEquals($role, $user->getRole());
     }
+)
+    ->with([
+        ['Foo', 'Bar', 'foo.bar@baz.com', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
+        ['Foo', 'Bar', 'foo.bar@baz.com', LocaleEnum::EN, RoleEnum::COMPANY],
+        ['Foo', 'Bar', 'foo.bar@baz.com', LocaleEnum::FR, RoleEnum::CLIENT],
+    ]);
 
-    /**
-     * @return array<string,array<string,string>>
-     */
-    public function validDataProvider() : array
-    {
-        return [
-            'Create an administrator user' => $this->createArgs(
-                'Foo',
-                'Bar',
-                'foo.bar@baz.com',
-                LocaleEnum::EN,
-                RoleEnum::ADMINISTRATOR
-            ),
-            'Create a company user'=> $this->createArgs(
-                'Foo',
-                'Bar',
-                'foo.bar@baz.com',
-                LocaleEnum::EN,
-                RoleEnum::COMPANY
-            ),
-            'Create a client user'=> $this->createArgs(
-                'Foo',
-                'Bar',
-                'foo.bar@baz.com',
-                LocaleEnum::FR,
-                RoleEnum::CLIENT
-            ),
-        ];
-    }
-
-    /**
-     * @dataProvider invalidDataProvider
-     */
-    public function testCreateUserWithModelViolations(
+it(
+    'throws an exception if invalid data',
+    function (
         string $firstName,
         string $lastName,
         string $email,
         string $locale,
         string $role
     ) : void {
-        $this->expectException(InvalidUser::class);
-        $this->createUser->create(
+        $createUser = self::$container->get(CreateUser::class);
+        assert($createUser instanceof CreateUser);
+
+        $createUser->create(
             $firstName,
             $lastName,
             $email,
@@ -97,84 +63,46 @@ final class CreateUserTest extends ApplicationTestCase
             $role
         );
     }
+)
+    ->with([
+        // Blank first name.
+        [DummyValues::BLANK, 'Bar', 'foo', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
+        // First name > 255.
+        [DummyValues::CHAR256, 'Bar', 'foo', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
+        // Blank last name.
+        ['Foo', DummyValues::BLANK, 'foo', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
+        // Last name > 255.
+        ['Foo', DummyValues::CHAR256, 'foo', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
+        // Invalid e-mail.
+        ['Foo', 'Bar', 'foo', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
+        // Invalid locale.
+        ['Foo', 'Bar', 'foo.bar@baz.com', 'foo', RoleEnum::ADMINISTRATOR],
+        // Invalid role.
+        ['Foo', 'Bar', 'foo.bar@baz.com', LocaleEnum::EN, 'foo'],
+    ])
+    ->throws(InvalidUser::class);
 
-    /**
-     * @return array<string,array<string,string>>
-     */
-    public function invalidDataProvider() : array
-    {
-        return [
-            'Create a user with a blank first name' => $this->createArgs(
-                DummyValues::BLANK,
-                'Bar',
-                'foo',
-                LocaleEnum::EN,
-                RoleEnum::ADMINISTRATOR
-            ),
-            'Create a user with a first name > 255' => $this->createArgs(
-                DummyValues::CHAR256,
-                'Bar',
-                'foo',
-                LocaleEnum::EN,
-                RoleEnum::ADMINISTRATOR
-            ),
-            'Create a user with a blank last name' => $this->createArgs(
-                'Foo',
-                DummyValues::BLANK,
-                'foo',
-                LocaleEnum::EN,
-                RoleEnum::ADMINISTRATOR
-            ),
-            'Create a user with a last name > 255' => $this->createArgs(
-                'Foo',
-                DummyValues::CHAR256,
-                'foo',
-                LocaleEnum::EN,
-                RoleEnum::ADMINISTRATOR
-            ),
-            'Create a user with an invalid e-mail' => $this->createArgs(
-                'Foo',
-                'Bar',
-                'foo',
-                LocaleEnum::EN,
-                RoleEnum::ADMINISTRATOR
-            ),
-            'Create a user with an invalid locale' => $this->createArgs(
-                'Foo',
-                'Bar',
-                'foo.bar@baz.com',
-                'foo',
-                RoleEnum::ADMINISTRATOR
-            ),
-            'Create a user with an invalid role' => $this->createArgs(
-                'Foo',
-                'Bar',
-                'foo.bar@baz.com',
-                LocaleEnum::EN,
-                'foo'
-            ),
-        ];
-    }
-
-    /**
-     * @dataProvider duplicateDataProvider
-     */
-    public function testCreateExistingUser(
+it(
+    'throws an exception if an e-mail is already used',
+    function (
         string $firstName,
         string $lastName,
         string $email,
         string $locale,
         string $role
     ) : void {
-        $this->createUser->create(
+        $createUser = self::$container->get(CreateUser::class);
+        assert($createUser instanceof CreateUser);
+
+        $createUser->create(
             $firstName,
             $lastName,
             $email,
             $locale,
             $role
         );
-        $this->expectException(UserWithEmailExist::class);
-        $this->createUser->create(
+
+        $createUser->create(
             $firstName,
             $lastName,
             $email,
@@ -182,39 +110,8 @@ final class CreateUserTest extends ApplicationTestCase
             $role
         );
     }
-
-    /**
-     * @return array<string,array<string,string>>
-     */
-    public function duplicateDataProvider() : array
-    {
-        return [
-            'Create an existing user' => $this->createArgs(
-                'Foo',
-                'Bar',
-                'foo.bar@baz.com',
-                LocaleEnum::EN,
-                RoleEnum::ADMINISTRATOR
-            ),
-        ];
-    }
-
-    /**
-     * @return array<string,string>
-     */
-    private function createArgs(
-        string $firstName,
-        string $lastName,
-        string $email,
-        string $locale,
-        string $role
-    ) : array {
-        return [
-            'firstName' => $firstName,
-            'lastName' => $lastName,
-            'email' => $email,
-            'locale' => $locale,
-            'role' => $role,
-        ];
-    }
-}
+)
+    ->with([
+        ['Foo', 'Bar', 'foo.bar@baz.com', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
+    ])
+    ->throws(UserWithEmailExist::class);

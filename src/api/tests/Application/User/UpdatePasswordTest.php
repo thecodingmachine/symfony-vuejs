@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Application\User;
-
 use App\Application\User\ResetPassword\ResetPassword;
 use App\Application\User\UpdatePassword\ResetPasswordTokenExpired;
 use App\Application\User\UpdatePassword\UpdatePassword;
@@ -15,127 +13,136 @@ use App\Domain\Repository\ResetPasswordTokenRepository;
 use App\Domain\Repository\UserRepository;
 use App\Domain\Throwable\Invalid\InvalidPassword;
 use App\Domain\Throwable\NotFound\ResetPasswordTokenNotFoundById;
-use App\Tests\Application\ApplicationTestCase;
 use App\Tests\Application\DummyValues;
-use DateInterval;
 use Safe\DateTimeImmutable;
-use function assert;
-use function password_verify;
 
-final class UpdatePasswordTest extends ApplicationTestCase
-{
-    private const EMAIL = 'foo.bar@baz.com';
-    private ResetPassword $resetPassword;
-    private UpdatePassword $updatePassword;
-    private ResetPasswordTokenRepository $resetPasswordTokenRepository;
+beforeEach(function () : void {
+    $userRepository = self::$container->get(UserRepository::class);
+    assert($userRepository instanceof UserRepository);
 
-    protected function setUp() : void
-    {
-        parent::setUp();
-        $this->resetPassword                = self::$container->get(ResetPassword::class);
-        $this->updatePassword               = self::$container->get(UpdatePassword::class);
-        $this->resetPasswordTokenRepository = self::$container->get(ResetPasswordTokenRepository::class);
-        $userRepository                     = self::$container->get(UserRepository::class);
-        assert($userRepository instanceof UserRepository);
+    $user = new User(
+        'Foo',
+        'Bar',
+        'foo.bar@baz.com',
+        LocaleEnum::EN,
+        RoleEnum::ADMINISTRATOR
+    );
+    $userRepository->save($user);
+});
 
-        $user = new User(
-            'Foo',
-            'Bar',
-            self::EMAIL,
-            LocaleEnum::EN,
-            RoleEnum::ADMINISTRATOR
-        );
-        $userRepository->save($user);
-    }
+it(
+    'updates the password and deletes the token',
+    function (string $email, string $password) : void {
+        $resetPassword                = self::$container->get(ResetPassword::class);
+        $updatePassword               = self::$container->get(UpdatePassword::class);
+        $resetPasswordTokenRepository = self::$container->get(ResetPasswordTokenRepository::class);
+        assert($resetPassword instanceof ResetPassword);
+        assert($updatePassword instanceof UpdatePassword);
+        assert($resetPasswordTokenRepository instanceof  ResetPasswordTokenRepository);
 
-    public function testUpdatePassword() : void
-    {
-        $notification = $this->resetPassword->reset(self::EMAIL);
-        $password     = 'foobarfoo';
-
-        $user = $this->updatePassword->update(
+        $notification = $resetPassword->reset($email);
+        $user         = $updatePassword->update(
             $notification->getResetPasswordTokenId(),
             $notification->getPlainToken(),
             $password
         );
 
-        $this->assertTrue(password_verify($password, $user->getPassword()));
-
-        $this->expectException(ResetPasswordTokenNotFoundById::class);
-        $this->resetPasswordTokenRepository->mustFindOneById($notification->getResetPasswordTokenId());
+        assertTrue(password_verify($password, $user->getPassword()));
+        $resetPasswordTokenRepository->mustFindOneById($notification->getResetPasswordTokenId());
     }
+)
+    ->throws(ResetPasswordTokenNotFoundById::class)
+    ->with([['foo.bar@baz.com', 'foobarfoo']]);
 
-    public function testUpdatePasswordWithNonExistingTokenId() : void
-    {
-        $notification = $this->resetPassword->reset(self::EMAIL);
+it(
+    'throws an exception if the token does not exist',
+    function (string $email, string $password) : void {
+        $resetPassword  = self::$container->get(ResetPassword::class);
+        $updatePassword = self::$container->get(UpdatePassword::class);
+        assert($resetPassword instanceof ResetPassword);
+        assert($updatePassword instanceof UpdatePassword);
 
-        $this->expectException(ResetPasswordTokenNotFoundById::class);
-        $this->updatePassword->update(
+        $notification = $resetPassword->reset($email);
+        $updatePassword->update(
             'foo',
             $notification->getPlainToken(),
-            'foobarfoo'
+            $password
         );
     }
+)
+    ->throws(ResetPasswordTokenNotFoundById::class)
+    ->with([['foo.bar@baz.com', 'foobarfoo']]);
 
-    public function testUpdatePasswordWithWrongToken() : void
-    {
-        $notification = $this->resetPassword->reset(self::EMAIL);
+it(
+    'throws an exception if wrong token',
+    function (string $email, string $password) : void {
+        $resetPassword  = self::$container->get(ResetPassword::class);
+        $updatePassword = self::$container->get(UpdatePassword::class);
+        assert($resetPassword instanceof ResetPassword);
+        assert($updatePassword instanceof UpdatePassword);
 
-        $this->expectException(WrongResetPasswordToken::class);
-        $this->updatePassword->update(
+        $notification = $resetPassword->reset($email);
+        $updatePassword->update(
             $notification->getResetPasswordTokenId(),
             'foo',
-            'foobarfoo'
+            $password
         );
     }
+)
+    ->throws(WrongResetPasswordToken::class)
+    ->with([['foo.bar@baz.com', 'foobarfoo']]);
 
-    public function testUpdatePasswordWithExpiredToken() : void
-    {
-        $notification       = $this->resetPassword->reset(self::EMAIL);
-        $resetPasswordToken = $this->resetPasswordTokenRepository->mustFindOneById($notification->getResetPasswordTokenId());
+it(
+    'throws an exception if token expired',
+    function (string $email, string $password) : void {
+        $resetPassword                = self::$container->get(ResetPassword::class);
+        $updatePassword               = self::$container->get(UpdatePassword::class);
+        $resetPasswordTokenRepository = self::$container->get(ResetPasswordTokenRepository::class);
+        assert($resetPassword instanceof ResetPassword);
+        assert($updatePassword instanceof UpdatePassword);
+        assert($resetPasswordTokenRepository instanceof  ResetPasswordTokenRepository);
+
+        $notification       = $resetPassword->reset($email);
+        $resetPasswordToken = $resetPasswordTokenRepository->mustFindOneById($notification->getResetPasswordTokenId());
 
         $validUntil = new DateTimeImmutable();
         $validUntil = $validUntil->sub(new DateInterval('P1D'));
         $resetPasswordToken->setValidUntil($validUntil);
+        $resetPasswordTokenRepository->save($resetPasswordToken);
 
-        $this->resetPasswordTokenRepository->save($resetPasswordToken);
-
-        $this->expectException(ResetPasswordTokenExpired::class);
-        $this->updatePassword->update(
-            $notification->getResetPasswordTokenId(),
-            $notification->getPlainToken(),
-            'foobarfoo'
-        );
-    }
-
-    /**
-     * @dataProvider invalidDataProvider
-     */
-    public function testUpdatePasswordWithModelViolations(string $password) : void
-    {
-        $notification = $this->resetPassword->reset(self::EMAIL);
-
-        $this->expectException(InvalidPassword::class);
-        $this->updatePassword->update(
+        $updatePassword->update(
             $notification->getResetPasswordTokenId(),
             $notification->getPlainToken(),
             $password
         );
     }
+)
+    ->throws(ResetPasswordTokenExpired::class)
+    ->with([['foo.bar@baz.com', 'foobarfoo']]);
 
-    /**
-     * @return array<string,array<string,string>>
-     */
-    public function invalidDataProvider() : array
-    {
+it(
+    'throws an exception if invalid password',
+    function (string $email, string $password) : void {
+        $resetPassword  = self::$container->get(ResetPassword::class);
+        $updatePassword = self::$container->get(UpdatePassword::class);
+        assert($resetPassword instanceof ResetPassword);
+        assert($updatePassword instanceof UpdatePassword);
+
+        $notification = $resetPassword->reset($email);
+        $updatePassword->update(
+            $notification->getResetPasswordTokenId(),
+            $notification->getPlainToken(),
+            $password
+        );
+    }
+)
+    ->with([
+        // Blank password.
+        ['foo.bar@baz.com', DummyValues::BLANK],
+        // Password < 8.
+        ['foo.bar@baz.com','foo'],
         // We do not test "@Assert\NotCompromisedPassword"
         // as it is disable when "APP_ENV = test".
         // See config/packages/test/validator.yaml.
-        return [
-            'Update with blank password' => [
-                'password' => DummyValues::BLANK,
-            ],
-            'Update with password < 8' => ['password' => 'foo'],
-        ];
-    }
-}
+    ])
+    ->throws(InvalidPassword::class);

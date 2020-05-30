@@ -7,7 +7,7 @@ namespace App\Tests\Application;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-abstract class ApplicationTestCase extends WebTestCase
+class ApplicationTestCase extends WebTestCase
 {
     protected Connection $dbal;
 
