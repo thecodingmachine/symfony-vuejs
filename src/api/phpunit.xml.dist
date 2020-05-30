@@ -25,6 +25,7 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
             <exclude>
+                <directory>src/Kernel.php</directory>
                 <directory>src/Domain/Model/Generated</directory>
                 <directory>src/Infrastructure/Dao/Generated</directory>
             </exclude>

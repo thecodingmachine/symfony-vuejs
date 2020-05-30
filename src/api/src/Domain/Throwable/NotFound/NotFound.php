@@ -12,7 +12,7 @@ abstract class NotFound extends RuntimeException implements ClientAware, Busines
 {
     public function __construct(string $message)
     {
-        parent::__construct($message, 400);
+        parent::__construct($message, 404);
     }
 
     public function isClientSafe() : bool

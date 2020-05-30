@@ -16,7 +16,6 @@
 
     <!-- Remove this specific rule for tests as it causes troubles with Pest -->
     <rule ref="SlevomatCodingStandard.Functions.StaticClosure.ClosureNotStatic">
-        <severity>0</severity>
         <exclude-pattern>tests/**</exclude-pattern>
     </rule>
 
