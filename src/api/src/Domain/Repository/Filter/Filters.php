@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Repository\Search;
+namespace App\Domain\Repository\Filter;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class Filters
 {
     protected string $sortBy;
-    /** @Assert\Choice(callback={"App\Domain\Repository\Search\SortOrderEnum", "values"}) */
+    /** @Assert\Choice(callback={"App\Domain\Repository\Filter\SortOrderEnum", "values"}) */
     private string $sortOrder;
 
     public function __construct(?string $sortBy = null, ?string $sortOrder = null)

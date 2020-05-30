@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Repository\Search\User;
+namespace App\Domain\Repository\Filter\User;
 
 use App\Domain\Throwable\Invalid\Invalid;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

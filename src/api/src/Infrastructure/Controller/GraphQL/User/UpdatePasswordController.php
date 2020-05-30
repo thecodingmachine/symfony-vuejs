@@ -36,12 +36,12 @@ final class UpdatePasswordController extends AbstractController
         string $plainToken,
         string $newPassword
     ) : bool {
-         $this->updatePassword->update(
-             $resetPasswordTokenId,
-             $plainToken,
-             $newPassword
-         );
+        $this->updatePassword->update(
+            $resetPasswordTokenId,
+            $plainToken,
+            $newPassword
+        );
 
-         return true;
+        return true;
     }
 }

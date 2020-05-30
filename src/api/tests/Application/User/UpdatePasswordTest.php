@@ -129,7 +129,7 @@ final class UpdatePasswordTest extends ApplicationTestCase
     public function invalidDataProvider() : array
     {
         // We do not test "@Assert\NotCompromisedPassword"
-        // as it is disable in when "APP_ENV = test".
+        // as it is disable when "APP_ENV = test".
         // See config/packages/test/validator.yaml.
         return [
             'Update with blank password' => [

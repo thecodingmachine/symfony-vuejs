@@ -53,10 +53,12 @@ services:
       PHP_EXTENSION_AMQP: "1"
       PHP_INI_MEMORY_LIMIT: "1G"
       STARTUP_COMMAND_1: "composer install || composer install --pref-source"
-      #STARTUP_COMMAND_2: "php bin/console doctrine:migrations:migrate -n"
+      STARTUP_COMMAND_2: "php bin/console doctrine:migrations:migrate -n --allow-no-migration"
       # Symfony.
       APP_ENV: "dev"
       APP_SECRET: "$APP_SECRET"
+      # CORS.
+      CORS_ALLOW_ORIGIN: "http://$DOMAIN" # Never use "*": https://stackoverflow.com/questions/52060784/graphql-and-csrf-protection.
       # Logging.
       MONOLOG_LOGGING_PATH: "php://stderr"
       # Database.
@@ -69,11 +71,9 @@ services:
       MAIL_FROM: "no-reply@$DOMAIN"
       # i18n.
       DEFAULT_LOCALE: "en"
-      # Web app (notifications).
+      # Notifications data.
       WEBAPP_URL: "http://$DOMAIN/"
       WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT: "update-password/%s/%s"
-      # CORS.
-      CORS_ALLOW_ORIGIN: "http://$DOMAIN" # Never use "*": https://stackoverflow.com/questions/52060784/graphql-and-csrf-protection.
     volumes:
       - ./src/api:/var/www/html
 

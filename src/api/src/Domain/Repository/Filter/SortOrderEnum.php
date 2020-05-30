@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Repository\Search;
+namespace App\Domain\Repository\Filter;
 
 use App\Domain\Enum\StringEnum;
 

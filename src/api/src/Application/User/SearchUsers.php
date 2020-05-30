@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Application\User;
 
 use App\Domain\Model\User;
-use App\Domain\Repository\Search\User\InvalidUsersFilters;
-use App\Domain\Repository\Search\User\UsersFilters;
+use App\Domain\Repository\Filter\User\InvalidUsersFilters;
+use App\Domain\Repository\Filter\User\UsersFilters;
 use App\Domain\Repository\UserRepository;
 use TheCodingMachine\TDBM\ResultIterator;
 

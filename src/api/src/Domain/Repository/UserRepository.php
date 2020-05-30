@@ -6,8 +6,8 @@ namespace App\Domain\Repository;
 
 use App\Domain\Model\Proxy\PasswordProxy;
 use App\Domain\Model\User;
-use App\Domain\Repository\Search\User\InvalidUsersFilters;
-use App\Domain\Repository\Search\User\UsersFilters;
+use App\Domain\Repository\Filter\User\InvalidUsersFilters;
+use App\Domain\Repository\Filter\User\UsersFilters;
 use App\Domain\Throwable\Exist\UserWithEmailExist;
 use App\Domain\Throwable\Invalid\InvalidPassword;
 use App\Domain\Throwable\Invalid\InvalidUser;

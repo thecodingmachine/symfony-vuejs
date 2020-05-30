@@ -6,13 +6,13 @@ namespace App\Infrastructure\Controller\GraphQL\User;
 
 use App\Application\User\SearchUsers;
 use App\Domain\Model\User;
-use App\Domain\Repository\Search\User\InvalidUsersFilters;
+use App\Domain\Repository\Filter\User\InvalidUsersFilters;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 use TheCodingMachine\TDBM\ResultIterator;
 
-final class GetUsersController extends AbstractController
+final class SearchUsersController extends AbstractController
 {
     private SearchUsers $searchUsers;
 
@@ -29,7 +29,7 @@ final class GetUsersController extends AbstractController
      * @Query
      * @Right("ROLE_ADMINISTRATOR")
      */
-    public function users(
+    public function searchUsers(
         ?string $search = null,
         ?string $role = null,
         ?string $sortBy = null,

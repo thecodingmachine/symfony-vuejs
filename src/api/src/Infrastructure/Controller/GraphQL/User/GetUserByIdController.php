@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Controller\GraphQL\User;
 
+use App\Application\User\GetUser;
 use App\Domain\Model\User;
-use App\Domain\Repository\UserRepository;
 use App\Domain\Throwable\NotFound\UserNotFoundById;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 
-final class GetUserController extends AbstractController
+final class GetUserByIdController extends AbstractController
 {
-    private UserRepository $userRepository;
+    private GetUser $getUser;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(GetUser $getUser)
     {
-        $this->userRepository = $userRepository;
+        $this->getUser = $getUser;
     }
 
     /**
@@ -26,10 +26,8 @@ final class GetUserController extends AbstractController
      * @Query
      * @Right("ROLE_ADMINISTRATOR")
      */
-    public function user(string $id) : User
+    public function getUserById(string $id) : User
     {
-        // There is no need to create a dedicated use case
-        // for that action.
-        return $this->userRepository->mustFindOneById($id);
+        return $this->getUser->byId($id);
     }
 }
