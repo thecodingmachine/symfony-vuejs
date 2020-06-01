@@ -12,7 +12,8 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: lazy
+            anonymous: true
+            lazy: true
             provider: custom_user_provider
 
             # activate different ways to authenticate
