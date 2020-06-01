@@ -1,5 +1,4 @@
 framework:
-    secret: '%env(APP_SECRET)%'
     #csrf_protection: true
     #http_method_override: true
 
@@ -8,8 +7,8 @@ framework:
     session:
         handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         cookie_secure: auto
-        #cookie_samesite: lax
-        cookie_samesite: null # CORS requests and SameSite cookies issue: https://github.com/whatwg/fetch/issues/769.
+        #cookie_samesite: lax # CORS requests and SameSite cookies issue: https://github.com/whatwg/fetch/issues/769.
+        cookie_samesite: null
 
     #esi: true
     #fragments: true

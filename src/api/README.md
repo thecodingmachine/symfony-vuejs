@@ -58,7 +58,8 @@ Before pushing your commits to the repository or even while coding, run the foll
 composer csfix &&
 composer cscheck &&
 composer phpstan &&
-composer deptrac
+composer deptrac &&
+composer yaml-lint
 ```
 
 They will analyze your code and give you feedback on what's wrong.

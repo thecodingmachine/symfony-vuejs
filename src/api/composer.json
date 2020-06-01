@@ -82,7 +82,8 @@
         "csfix": "phpcbf",
         "cscheck": "phpcs",
         "phpstan": "phpstan analyse src/ -c phpstan.neon --level=max --no-progress -vvv --memory-limit=1024M",
-        "deptrac": "php deptrac.phar"
+        "deptrac": "php deptrac.phar",
+        "yaml-lint": "yaml-lint config translations"
     },
     "conflict": {
         "symfony/symfony": "*"
