@@ -11,7 +11,7 @@ use App\Domain\Repository\ResetPasswordTokenRepository;
 use App\Domain\Repository\UserRepository;
 use App\Domain\Throwable\NotFound\ResetPasswordTokenNotFoundById;
 use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
-use App\Tests\AsyncTransport;
+use App\Tests\Application\AsyncTransport;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
 
 beforeEach(function () : void {

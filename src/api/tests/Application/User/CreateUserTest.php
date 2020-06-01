@@ -83,7 +83,7 @@ it(
     ->throws(InvalidUser::class);
 
 it(
-    'throws an exception if an e-mail is already used',
+    'throws an exception if an e-mail is already associated to a user',
     function (
         string $firstName,
         string $lastName,

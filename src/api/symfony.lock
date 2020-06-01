@@ -1,4 +1,7 @@
 {
+    "aws/aws-sdk-php": {
+        "version": "3.138.10"
+    },
     "beberlei/porpaginas": {
         "version": "v1.2"
     },
@@ -108,11 +111,39 @@
     "greenlion/php-sql-parser": {
         "version": "4.3.0"
     },
+    "guzzlehttp/guzzle": {
+        "version": "6.5.4"
+    },
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.6.1"
+    },
     "laminas/laminas-diactoros": {
         "version": "2.2.3"
     },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.0.3"
+    },
+    "league/flysystem": {
+        "version": "1.0.69"
+    },
+    "league/flysystem-aws-s3-v3": {
+        "version": "1.0.24"
+    },
+    "league/flysystem-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "8ad3ded1f39fedce098e43259741f42092a1010e"
+        },
+        "files": [
+            "config/packages/flysystem.yaml",
+            "var/storage/.gitignore"
+        ]
     },
     "monolog/monolog": {
         "version": "2.0.2"
@@ -140,6 +171,9 @@
     },
     "mouf/utils.value.value-interface": {
         "version": "v1.0.0"
+    },
+    "mtdowling/jmespath.php": {
+        "version": "2.5.0"
     },
     "myclabs/deep-copy": {
         "version": "1.9.5"
@@ -283,6 +317,9 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "ramsey/uuid": {
         "version": "3.9.3"
@@ -503,6 +540,9 @@
             "config/packages/prod/monolog.yaml",
             "config/packages/test/monolog.yaml"
         ]
+    },
+    "symfony/options-resolver": {
+        "version": "v5.1.0"
     },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.17.0"

@@ -65,6 +65,12 @@ services:
       # Database.
       DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql:3306/$MYSQL_DATABASE?server_version=8.0"
       TESTS_DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql_tests:3306/$MYSQL_DATABASE?server_version=8.0"
+      # Storage.
+      # Note: the environment variables names might differ according to your storage source (see src/api/config/packages/flysystem.yaml).
+      STORAGE_SOURCE: 'uploads.storage.minio'
+      MINIO_ENDPOINT: 'http://minio:9000'
+      MINIO_STORAGE_KEY: '$MINIO_STORAGE_KEY'
+      MINIO_SECRET_KEY: '$MINIO_SECRET_KEY'
       # Messenger.
       MESSENGER_TRANSPORT_DSN: "amqp://$RABBITMQ_DEFAULT_USER:$RABBITMQ_DEFAULT_PASS@rabbitmq:5672/%2f/messages"
       # Mailer.
@@ -135,7 +141,25 @@ services:
       - traefik.http.routers.mailhog_router.service=mailhog_service
       - traefik.http.services.mailhog_service.loadbalancer.server.port=8025
 
+  # For uploads.
+  minio:
+    image: minio/minio:latest
+    command: server /data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.minio_router.rule=Host(`minio.$DOMAIN`)
+      - traefik.http.routers.minio_router.service=minio_service
+      - traefik.http.services.minio_service.loadbalancer.server.port=9000
+    environment:
+      MINIO_ACCESS_KEY: "$MINIO_ACCESS_KEY"
+      MINIO_SECRET_KEY: "$MINIO_SECRET_KEY"
+    volumes:
+      - minio_data:/data
+
 volumes:
 
   mysql_data:
+    driver: local
+
+  minio_data:
     driver: local

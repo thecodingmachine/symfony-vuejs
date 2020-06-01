@@ -35,7 +35,7 @@ final class Version20200424154558 extends AbstractMigration
         $db->table('companies')
             ->column('id')->guid()->primaryKey()->comment('@UUID')->graphqlField()
             ->column('name')->string(255)->notNull()->unique()->graphqlField()
-            ->column('website')->string(255)->notNull()->unique()->graphqlField()
+            ->column('website')->string(255)->null()->default(null)->graphqlField()
             ->column('logo_filename')->string(255)->null()->default(null)->graphqlField();
 
         $db->junctionTable('users', 'companies')->graphqlField();

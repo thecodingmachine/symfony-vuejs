@@ -1,0 +1,29 @@
+# Read the documentation at https://github.com/thephpleague/flysystem-bundle/blob/master/docs/1-getting-started.md
+services:
+    minio.client:
+        class: 'Aws\S3\S3Client'
+        arguments:
+            - endpoint: '%env(MINIO_ENDPOINT)%'
+              credentials:
+                  key: '%env(MINIO_STORAGE_KEY)%'
+                  secret: '%env(MINIO_SECRET_KEY)%'
+
+flysystem:
+    storages:
+#        default.storage:
+#            adapter: 'local'
+#            options:
+#                directory: '%kernel.project_dir%/var/storage/default'
+        uploads.storage.minio:
+            adapter: 'aws'
+            options:
+                client: 'minio.client'
+                bucket: 'uploads'
+
+        uploads.storage.memory:
+            adapter: 'memory'
+
+        uploads.storage:
+            adapter: 'lazy'
+            options:
+                source: '%env(STORAGE_SOURCE)%'
