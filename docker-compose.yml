@@ -54,7 +54,8 @@ services:
       PHP_EXTENSION_INTL: "1"
       PHP_INI_MEMORY_LIMIT: "1G"
       STARTUP_COMMAND_1: "composer install || composer install --pref-source"
-      STARTUP_COMMAND_2: "php bin/console doctrine:migrations:migrate -n --allow-no-migration"
+      STARTUP_COMMAND_2: "php bin/console doctrine:migrations:migrate -n --allow-no-migration" #FIXME: if no flag --allow-no-migration, the command fails. Why?
+      STARTUP_COMMAND_3: "php bin/console app:init-storage:minio"
       # Symfony.
       APP_ENV: "dev"
       APP_SECRET: "$APP_SECRET"
@@ -66,18 +67,19 @@ services:
       DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql:3306/$MYSQL_DATABASE?server_version=8.0"
       TESTS_DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql_tests:3306/$MYSQL_DATABASE?server_version=8.0"
       # Storage.
-      # Note: the environment variables names might differ according to your storage source (see src/api/config/packages/flysystem.yaml).
+      # Note: the values might differ according to your storage source (see src/api/config/packages/flysystem.yaml).
       STORAGE_SOURCE: 'uploads.storage.minio'
-      MINIO_ENDPOINT: 'http://minio:9000'
-      MINIO_STORAGE_KEY: '$MINIO_STORAGE_KEY'
-      MINIO_SECRET_KEY: '$MINIO_SECRET_KEY'
+      STORAGE_ENDPOINT: 'http://minio:9000'
+      STORAGE_BUCKET: '$STORAGE_BUCKET'
+      STORAGE_ACCESS_KEY: '$STORAGE_ACCESS_KEY'
+      STORAGE_SECRET_KEY: '$STORAGE_SECRET_KEY'
       # Messenger.
       MESSENGER_TRANSPORT_DSN: "amqp://$RABBITMQ_DEFAULT_USER:$RABBITMQ_DEFAULT_PASS@rabbitmq:5672/%2f/messages"
       # Mailer.
       MAILER_URL: "smtp://mailhog:1025?encryption=&auth_mode="
       MAIL_FROM: "no-reply@$DOMAIN"
       # i18n.
-      DEFAULT_LOCALE: "en"
+      DEFAULT_LOCALE: "en" # Only used for translating notifications.
       # Notifications data.
       WEBAPP_URL: "http://$DOMAIN/"
       WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT: "update-password/%s/%s"
@@ -118,6 +120,21 @@ services:
       PMA_USER: "$MYSQL_USER"
       PMA_PASSWORD: "$MYSQL_PASSWORD"
 
+  # For uploads.
+  minio:
+    image: minio/minio:latest
+    command: server /data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.minio_router.rule=Host(`minio.$DOMAIN`)
+      - traefik.http.routers.minio_router.service=minio_service
+      - traefik.http.services.minio_service.loadbalancer.server.port=9000
+    environment:
+      MINIO_ACCESS_KEY: "$STORAGE_ACCESS_KEY"
+      MINIO_SECRET_KEY: "$STORAGE_SECRET_KEY"
+    volumes:
+      - minio_data:/data
+
   # For asynchronous tasks and notifications.
   rabbitmq:
     image: rabbitmq:3.8-management-alpine
@@ -140,21 +157,6 @@ services:
       - traefik.http.routers.mailhog_router.rule=Host(`mailhog.$DOMAIN`)
       - traefik.http.routers.mailhog_router.service=mailhog_service
       - traefik.http.services.mailhog_service.loadbalancer.server.port=8025
-
-  # For uploads.
-  minio:
-    image: minio/minio:latest
-    command: server /data
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.minio_router.rule=Host(`minio.$DOMAIN`)
-      - traefik.http.routers.minio_router.service=minio_service
-      - traefik.http.services.minio_service.loadbalancer.server.port=9000
-    environment:
-      MINIO_ACCESS_KEY: "$MINIO_ACCESS_KEY"
-      MINIO_SECRET_KEY: "$MINIO_SECRET_KEY"
-    volumes:
-      - minio_data:/data
 
 volumes:
 

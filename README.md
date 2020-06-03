@@ -87,6 +87,7 @@ Once everything is ready, the following endpoints should be available:
 * http://companies-and-products.localhost
 * http://api.companies-and-products.localhost
 * http://phpmyadmin.companies-and-products.localhost
+* http://minio.companies-and-products.localhost
 * http://rabbitmq.companies-and-products.loclahost
 * http://mailhog.companies-and-products.loclahost
 

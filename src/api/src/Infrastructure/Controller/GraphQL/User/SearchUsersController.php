@@ -6,7 +6,7 @@ namespace App\Infrastructure\Controller\GraphQL\User;
 
 use App\Application\User\SearchUsers;
 use App\Domain\Model\User;
-use App\Domain\Repository\Filter\User\InvalidUsersFilters;
+use App\Domain\Throwable\Invalid\InvalidUsersFilters;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Right;

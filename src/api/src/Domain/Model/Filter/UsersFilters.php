@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Repository\Filter\User;
+namespace App\Domain\Model\Filter;
 
-use App\Domain\Repository\Filter\Filters;
+use App\Domain\Enum\Filter\UsersSortByEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class UsersFilters extends Filters
@@ -35,7 +35,7 @@ final class UsersFilters extends Filters
     }
 
     /**
-     * @Assert\Choice(callback={"App\Domain\Repository\Filter\User\UsersSortByEnum", "values"})
+     * @Assert\Choice(callback={"App\Domain\Enum\Filter\UsersSortByEnum", "values"})
      */
     public function getSortBy() : string
     {

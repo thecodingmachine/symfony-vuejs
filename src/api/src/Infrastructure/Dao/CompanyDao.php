@@ -8,11 +8,49 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Dao;
 
+use App\Domain\Model\Company;
+use App\Domain\Repository\CompanyRepository;
+use App\Domain\Throwable\Exist\CompanyWithNameExist;
+use App\Domain\Throwable\Invalid\InvalidCompany;
 use App\Infrastructure\Dao\Generated\BaseCompanyDao;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use TheCodingMachine\TDBM\TDBMService;
 
 /**
  * The CompanyDao class will maintain the persistence of Company class into the companies table.
  */
-class CompanyDao extends BaseCompanyDao
+class CompanyDao extends BaseCompanyDao implements CompanyRepository
 {
+    private ValidatorInterface $validator;
+
+    public function __construct(TDBMService $tdbmService, ValidatorInterface $validator)
+    {
+        $this->validator = $validator;
+        parent::__construct($tdbmService);
+    }
+
+    /**
+     * @throws InvalidCompany
+     */
+    public function save(Company $company) : void
+    {
+        $violations = $this->validator->validate($company);
+        InvalidCompany::throwException($violations);
+
+        parent::save($company);
+    }
+
+    /**
+     * @throws CompanyWithNameExist
+     */
+    public function mustNotFindOneByName(string $name) : void
+    {
+        $company = $this->findOneByName($name);
+
+        if ($company === null) {
+            return;
+        }
+
+        throw new CompanyWithNameExist($name);
+    }
 }

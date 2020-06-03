@@ -4,7 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    # Parameters are values which are use directly in the code.
+    # Parameters are values which are used directly in the code.
+    app.storage_bucket: '%env(STORAGE_BUCKET)%'
+    app.storage_source: '%env(STORAGE_SOURCE)%'
     app.mail_from: '%env(MAIL_FROM)%'
     app.webapp_url: '%env(WEBAPP_URL)%'
     app.webapp_update_password_route_format: '%env(WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT)%'
@@ -35,3 +37,7 @@ services:
     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
         arguments:
             - '%env(DATABASE_URL)%'
+
+    App\Infrastructure\Command\InitializeMinIOStorage:
+        arguments:
+            - '@minio.client'

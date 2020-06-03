@@ -13,6 +13,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "league/flysystem-aws-s3-v3": "^1.0",
         "league/flysystem-bundle": "^1.5",
+        "league/flysystem-memory": "^1.0",
         "nelmio/cors-bundle": "^2.0",
         "symfony/apache-pack": "^1.0",
         "symfony/console": "*",

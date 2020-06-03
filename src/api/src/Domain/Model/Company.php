@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Domain\Model\Generated\BaseCompany;
+use Symfony\Component\Validator\Constraints as Assert;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
 /**
@@ -18,4 +19,31 @@ use TheCodingMachine\GraphQLite\Annotations\Type;
  */
 class Company extends BaseCompany
 {
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(max = 255)
+     */
+    public function getName() : string
+    {
+        return parent::getName();
+    }
+
+    /**
+     * @Assert\NotBlank(allowNull = true)
+     * @Assert\Length(max = 255)
+     * @@Assert\Url
+     */
+    public function getWebsite() : ?string
+    {
+        return parent::getWebsite();
+    }
+
+    /**
+     * @Assert\NotBlank(allowNull = true)
+     * @Assert\Length(max = 255)
+     */
+    public function getLogoFilename() : ?string
+    {
+        return parent::getLogoFilename();
+    }
 }

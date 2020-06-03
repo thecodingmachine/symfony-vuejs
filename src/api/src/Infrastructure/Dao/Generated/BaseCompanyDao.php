@@ -224,19 +224,4 @@ abstract class BaseCompanyDao
                 ];
         return $this->findOne($filter, [], $additionalTablesFetch);
     }
-
-    /**
-     * Get a Company filtered by website.
-     *
-     * @param string $website
-     * @param string[] $additionalTablesFetch A list of additional tables to fetch (for performance improvement)
-     * @return \App\Domain\Model\Company|null
-     */
-    public function findOneByWebsite(string $website, array $additionalTablesFetch = []) : ?\App\Domain\Model\Company
-    {
-        $filter = [
-                    'website' => $website,
-                ];
-        return $this->findOne($filter, [], $additionalTablesFetch);
-    }
 }

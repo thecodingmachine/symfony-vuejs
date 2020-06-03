@@ -145,6 +145,9 @@
             "var/storage/.gitignore"
         ]
     },
+    "league/flysystem-memory": {
+        "version": "1.0.2"
+    },
     "monolog/monolog": {
         "version": "2.0.2"
     },

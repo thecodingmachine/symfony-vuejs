@@ -7,47 +7,32 @@ namespace App\Infrastructure\Storage;
 use App\Domain\Model\Storable\CompanyLogo;
 use App\Domain\Store\CompanyLogoStore;
 use App\Domain\Throwable\Invalid\InvalidCompanyLogo;
-use League\Flysystem\FilesystemInterface;
-use RuntimeException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class CompanyLogoStorage implements CompanyLogoStore
+final class CompanyLogoStorage extends Storage implements CompanyLogoStore
 {
-    private ValidatorInterface $validator;
-    private FilesystemInterface $uploadsStorage;
-
-    public function __construct(ValidatorInterface $validator, FilesystemInterface $uploadsStorage)
-    {
-        $this->validator      = $validator;
-        $this->uploadsStorage = $uploadsStorage;
-    }
-
     /**
      * @throws InvalidCompanyLogo
      */
-    public function put(CompanyLogo $logo) : string
+    public function write(CompanyLogo $logo) : string
     {
         $violations = $this->validator->validate($logo);
         InvalidCompanyLogo::throwException($violations);
 
-        $result = $this->uploadsStorage->putStream(
+        parent::store(
             'company/' . $logo->getGeneratedFileName(),
             $logo->getResource()
         );
 
-        if ($result !== false) {
-            return $logo->getGeneratedFileName();
-        }
-
-        throw new RuntimeException(
-            'Failed to store company logo "' .
-            $logo->getGeneratedFileName() .
-            '"'
-        );
+        return $logo->getGeneratedFileName();
     }
 
     public function delete(string $fileName) : void
     {
-        // TODO: Implement delete() method.
+        parent::delete('company/' . $fileName);
+    }
+
+    public function exist(string $fileName) : bool
+    {
+        return parent::exist('company/' . $fileName);
     }
 }

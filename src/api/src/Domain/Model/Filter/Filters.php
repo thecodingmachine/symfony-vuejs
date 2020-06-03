@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Repository\Filter;
+namespace App\Domain\Model\Filter;
 
+use App\Domain\Enum\Filter\SortOrderEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class Filters
 {
     protected string $sortBy;
-    /** @Assert\Choice(callback={"App\Domain\Repository\Filter\SortOrderEnum", "values"}) */
+    /** @Assert\Choice(callback={"App\Domain\Enum\Filter\SortOrderEnum", "values"}) */
     private string $sortOrder;
 
     public function __construct(?string $sortBy = null, ?string $sortOrder = null)

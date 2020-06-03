@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Repository\Filter\User;
+namespace App\Domain\Throwable\Invalid;
 
-use App\Domain\Throwable\Invalid\Invalid;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 final class InvalidUsersFilters extends Invalid

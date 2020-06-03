@@ -35,13 +35,11 @@ abstract class BaseCompany extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
      * The constructor takes all compulsory arguments.
      *
      * @param string $name
-     * @param string $website
      */
-    public function __construct(string $name, string $website)
+    public function __construct(string $name)
     {
         parent::__construct();
         $this->setName($name);
-        $this->setWebsite($website);
         $this->setId(Uuid::uuid1()->toString());
     }
 
@@ -90,10 +88,10 @@ abstract class BaseCompany extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
     /**
      * The getter for the "website" column.
      *
-     * @return string
+     * @return string|null
      * @GraphqlField
      */
-    public function getWebsite() : string
+    public function getWebsite() : ?string
     {
         return $this->get('website', 'companies');
     }
@@ -101,9 +99,9 @@ abstract class BaseCompany extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
     /**
      * The setter for the "website" column.
      *
-     * @param string $website
+     * @param string|null $website
      */
-    public function setWebsite(string $website) : void
+    public function setWebsite(?string $website) : void
     {
         $this->set('website', $website, 'companies');
     }

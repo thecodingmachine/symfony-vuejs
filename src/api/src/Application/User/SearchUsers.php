@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\User;
 
+use App\Domain\Model\Filter\UsersFilters;
 use App\Domain\Model\User;
-use App\Domain\Repository\Filter\User\InvalidUsersFilters;
-use App\Domain\Repository\Filter\User\UsersFilters;
 use App\Domain\Repository\UserRepository;
+use App\Domain\Throwable\Invalid\InvalidUsersFilters;
 use TheCodingMachine\TDBM\ResultIterator;
 
 final class SearchUsers

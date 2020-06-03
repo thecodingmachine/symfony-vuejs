@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Domain\Model\Storable;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use function strtolower;
 
 final class CompanyLogo extends Storable
 {
     /** @Assert\Choice({"png", "jpg"}) */
-    protected function getExtension() : string
+    public function getExtension() : string
     {
-        return $this->fileInfo->getExtension();
+        return strtolower($this->fileInfo->getExtension());
     }
 }

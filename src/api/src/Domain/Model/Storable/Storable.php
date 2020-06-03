@@ -4,27 +4,24 @@ declare(strict_types=1);
 
 namespace App\Domain\Model\Storable;
 
-use App\Domain\Constraint\IsResourceValidator as ResourceAssert;
+use App\Domain\Constraint as DomainAssert;
 use Ramsey\Uuid\Uuid;
-use RuntimeException;
 use SplFileInfo;
-use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class Storable
 {
     protected SplFileInfo $fileInfo;
     private string $generatedBaseFileName;
     /**
-     * @var resource|null $resource
-     * @Assert\NotNull
-     * @ResourceAssert\IsResource
+     * @var resource $resource
+     * @DomainAssert\IsResource
      */
     private $resource;
 
     /**
-     * @param resource|null $resource
+     * @param resource $resource
      */
-    public function __construct(?string $fileName, $resource)
+    public function __construct(string $fileName, $resource)
     {
         $this->fileInfo              = new SplFileInfo($fileName);
         $this->generatedBaseFileName = Uuid::uuid4()->toString();
@@ -46,14 +43,8 @@ abstract class Storable
      */
     public function getResource()
     {
-        if ($this->resource === null) {
-            throw new RuntimeException(
-                'Instance of ' . self::class . ' should have been validated'
-            );
-        }
-
         return $this->resource;
     }
 
-    abstract protected function getExtension() : string;
+    abstract public function getExtension() : string;
 }

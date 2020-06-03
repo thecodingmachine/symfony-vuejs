@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Repository;
 
+use App\Domain\Model\Filter\UsersFilters;
 use App\Domain\Model\Proxy\PasswordProxy;
 use App\Domain\Model\User;
-use App\Domain\Repository\Filter\User\InvalidUsersFilters;
-use App\Domain\Repository\Filter\User\UsersFilters;
 use App\Domain\Throwable\Exist\UserWithEmailExist;
 use App\Domain\Throwable\Invalid\InvalidPassword;
 use App\Domain\Throwable\Invalid\InvalidUser;
+use App\Domain\Throwable\Invalid\InvalidUsersFilters;
 use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
 use App\Domain\Throwable\NotFound\UserNotFoundById;
 use TheCodingMachine\TDBM\ResultIterator;

@@ -12,7 +12,9 @@ interface CompanyLogoStore
     /**
      * @throws InvalidCompanyLogo
      */
-    public function put(CompanyLogo $logo) : string;
+    public function write(CompanyLogo $logo) : string;
 
     public function delete(string $fileName) : void;
+
+    public function exist(string $fileName) : bool;
 }

@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use App\Application\User\SearchUsers;
+use App\Domain\Enum\Filter\SortOrderEnum;
+use App\Domain\Enum\Filter\UsersSortByEnum;
 use App\Domain\Enum\LocaleEnum;
 use App\Domain\Enum\RoleEnum;
 use App\Domain\Model\User;
-use App\Domain\Repository\Filter\SortOrderEnum;
-use App\Domain\Repository\Filter\User\InvalidUsersFilters;
-use App\Domain\Repository\Filter\User\UsersSortByEnum;
 use App\Domain\Repository\UserRepository;
+use App\Domain\Throwable\Invalid\InvalidUsersFilters;
 
 beforeEach(function () : void {
     $userRepository = self::$container->get(UserRepository::class);
