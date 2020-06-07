@@ -107,24 +107,24 @@ abstract class BaseCompany extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
     }
 
     /**
-     * The getter for the "logo_filename" column.
+     * The getter for the "logo" column.
      *
      * @return string|null
      * @GraphqlField
      */
-    public function getLogoFilename() : ?string
+    public function getLogo() : ?string
     {
-        return $this->get('logo_filename', 'companies');
+        return $this->get('logo', 'companies');
     }
 
     /**
-     * The setter for the "logo_filename" column.
+     * The setter for the "logo" column.
      *
-     * @param string|null $logoFilename
+     * @param string|null $logo
      */
-    public function setLogoFilename(?string $logoFilename) : void
+    public function setLogo(?string $logo) : void
     {
-        $this->set('logo_filename', $logoFilename, 'companies');
+        $this->set('logo', $logo, 'companies');
     }
 
     /**
@@ -247,7 +247,7 @@ abstract class BaseCompany extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
         $array['id'] = $this->getId();
         $array['name'] = $this->getName();
         $array['website'] = $this->getWebsite();
-        $array['logoFilename'] = $this->getLogoFilename();
+        $array['logo'] = $this->getLogo();
         if (!$stopRecursion) {
             $array['users'] = array_map(function (User $object) {
                 return $object->jsonSerialize(true);

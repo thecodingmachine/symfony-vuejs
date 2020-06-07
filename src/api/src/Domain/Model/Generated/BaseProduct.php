@@ -35,12 +35,14 @@ abstract class BaseProduct extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
      *
      * @param \App\Domain\Model\Company $company
      * @param string $name
+     * @param float $price
      */
-    public function __construct(\App\Domain\Model\Company $company, string $name)
+    public function __construct(\App\Domain\Model\Company $company, string $name, float $price)
     {
         parent::__construct();
         $this->setCompany($company);
         $this->setName($name);
+        $this->setPrice($price);
         $this->setId(Uuid::uuid1()->toString());
     }
 
@@ -108,10 +110,10 @@ abstract class BaseProduct extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
     /**
      * The getter for the "price" column.
      *
-     * @return float|null
+     * @return float
      * @GraphqlField
      */
-    public function getPrice() : ?float
+    public function getPrice() : float
     {
         return $this->get('price', 'products');
     }
@@ -119,53 +121,32 @@ abstract class BaseProduct extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
     /**
      * The setter for the "price" column.
      *
-     * @param float|null $price
+     * @param float $price
      */
-    public function setPrice(?float $price) : void
+    public function setPrice(float $price) : void
     {
         $this->set('price', $price, 'products');
     }
 
     /**
-     * The getter for the "margin" column.
+     * The getter for the "pictures" column.
      *
-     * @return float|null
+     * @return array|null
      * @GraphqlField
      */
-    public function getMargin() : ?float
+    public function getPictures() : ?array
     {
-        return $this->get('margin', 'products');
+        return $this->get('pictures', 'products');
     }
 
     /**
-     * The setter for the "margin" column.
+     * The setter for the "pictures" column.
      *
-     * @param float|null $margin
+     * @param array|null $pictures
      */
-    public function setMargin(?float $margin) : void
+    public function setPictures(?array $pictures) : void
     {
-        $this->set('margin', $margin, 'products');
-    }
-
-    /**
-     * The getter for the "picture_filename" column.
-     *
-     * @return string|null
-     * @GraphqlField
-     */
-    public function getPictureFilename() : ?string
-    {
-        return $this->get('picture_filename', 'products');
-    }
-
-    /**
-     * The setter for the "picture_filename" column.
-     *
-     * @param string|null $pictureFilename
-     */
-    public function setPictureFilename(?string $pictureFilename) : void
-    {
-        $this->set('picture_filename', $pictureFilename, 'products');
+        $this->set('pictures', $pictures, 'products');
     }
 
     /**
@@ -210,8 +191,7 @@ abstract class BaseProduct extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
         }
         $array['name'] = $this->getName();
         $array['price'] = $this->getPrice();
-        $array['margin'] = $this->getMargin();
-        $array['pictureFilename'] = $this->getPictureFilename();
+        $array['pictures'] = $this->getPictures();
         return $array;
     }
 

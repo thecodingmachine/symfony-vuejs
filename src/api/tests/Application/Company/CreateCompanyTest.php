@@ -27,7 +27,7 @@ it(
 
         assertEquals($name, $company->getName());
         assertEquals($website, $company->getWebsite());
-        assertNull($company->getLogoFilename());
+        assertNull($company->getLogo());
     }
 )
     ->with([
@@ -59,8 +59,8 @@ it(
             $storable
         );
 
-        assertNotNull($company->getLogoFilename());
-        assertTrue($companyLogoStore->fileExists($company->getLogoFilename()));
+        assertNotNull($company->getLogo());
+        assertTrue($companyLogoStore->fileExists($company->getLogo()));
     }
 )
     ->with(['foo.png', 'foo.jpg']);

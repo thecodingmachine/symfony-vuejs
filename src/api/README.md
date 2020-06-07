@@ -33,6 +33,7 @@ For instance:
 ### Tests
 
 // TODO explain how to write tests.
+// TODO explain that a use case must be injected somewhere before being usable in tests.
 
 Before pushing your commits to the repository or even while coding, run the following command:
 
@@ -146,3 +147,7 @@ php bin/console tdbm:generate
 ```
 
 ### Data for development
+
+// TODO
+
+## Housekeeping

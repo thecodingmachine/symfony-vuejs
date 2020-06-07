@@ -18,8 +18,10 @@ final class CreateCompany
     private CompanyRepository $companyRepository;
     private CompanyLogoStore $companyLogoStore;
 
-    public function __construct(CompanyRepository $companyRepository, CompanyLogoStore $companyLogoStore)
-    {
+    public function __construct(
+        CompanyRepository $companyRepository,
+        CompanyLogoStore $companyLogoStore
+    ) {
         $this->companyRepository = $companyRepository;
         $this->companyLogoStore  = $companyLogoStore;
     }
@@ -42,7 +44,7 @@ final class CreateCompany
 
         $company = new Company($name);
         $company->setWebsite($website);
-        $company->setLogoFilename($fileName);
+        $company->setLogo($fileName);
 
         try {
             $this->companyRepository->save($company);
@@ -53,7 +55,7 @@ final class CreateCompany
 
             throw $e;
         } catch (Throwable $e) {
-            // If any exception occurs, we delete
+            // If any exception occurs, delete
             // the logo from the store.
             $this->beforeThrowDeleteLogoIfExists($fileName);
 
@@ -63,7 +65,7 @@ final class CreateCompany
         return $company;
     }
 
-    private function beforeThrowDeleteLogoIfExists(?string $fileName = null): void
+    private function beforeThrowDeleteLogoIfExists(?string $fileName): void
     {
         if ($fileName === null) {
             return;

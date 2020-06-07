@@ -42,8 +42,8 @@ class Company extends BaseCompany
      * @Assert\NotBlank(allowNull = true)
      * @Assert\Length(max = 255)
      */
-    public function getLogoFilename(): ?string
+    public function getLogo(): ?string
     {
-        return parent::getLogoFilename();
+        return parent::getLogo();
     }
 }

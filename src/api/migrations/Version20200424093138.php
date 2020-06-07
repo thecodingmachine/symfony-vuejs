@@ -16,7 +16,7 @@ final class Version20200424093138 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Create session table.';
+        return 'Create sessions table.';
     }
 
     public function up(Schema $schema): void
