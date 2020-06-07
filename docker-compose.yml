@@ -72,7 +72,8 @@ services:
       MAILER_URL: "smtp://mailhog:1025?encryption=&auth_mode="
       MAIL_FROM: "no-reply@$DOMAIN"
       # Storage.
-      # Note: the values might differ according to your storage sources (see src/api/config/packages/flysystem.yaml).
+      # Note: in other environments, the following values might differ according
+      # to your storage sources (see src/api/config/packages/flysystem.yaml).
       STORAGE_PUBLIC_SOURCE: 'public.storage.minio'
       STORAGE_PRIVATE_SOURCE: 'private.storage.minio'
       STORAGE_ENDPOINT: 'http://minio:9000'

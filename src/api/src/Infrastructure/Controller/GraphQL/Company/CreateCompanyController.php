@@ -33,7 +33,7 @@ final class CreateCompanyController extends AbstractController
      * @throws InvalidCompany
      *
      * @Mutation
-
+     * @Right("ROLE_ADMINISTRATOR")
      */
     public function createCompany(
         string $name,
