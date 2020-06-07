@@ -34,6 +34,7 @@ For instance:
 
 // TODO explain how to write tests.
 // TODO explain that a use case must be injected somewhere before being usable in tests.
+// TODO group tests.
 
 Before pushing your commits to the repository or even while coding, run the following command:
 

@@ -60,8 +60,8 @@ it(
         assertCount(0, $transport->getSent());
     }
 )
-    ->throws(UserNotFoundByEmail::class)
-    ->with(['foo']);
+    ->with(['foo'])
+    ->throws(UserNotFoundByEmail::class);
 
 it(
     'deletes the previous token if called twice',
@@ -86,5 +86,5 @@ it(
         }
     }
 )
-    ->throws(ResetPasswordTokenNotFoundById::class)
-    ->with(['foo.bar@baz.com']);
+    ->with(['foo.bar@baz.com'])
+    ->throws(ResetPasswordTokenNotFoundById::class);
