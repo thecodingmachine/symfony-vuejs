@@ -19,11 +19,19 @@ abstract class Storage
         $this->storage   = $storage;
     }
 
+    abstract protected function getDirectoryName(): string;
+
+    private function getPath(string $fileName): string
+    {
+        return $this->getDirectoryName() . '/' . $fileName;
+    }
+
     /**
      * @param resource $resouce
      */
-    protected function put(string $path, $resouce): void
+    protected function put(string $fileName, $resouce): void
     {
+        $path   = $this->getPath($fileName);
         $result = $this->storage->putStream(
             $path,
             $resouce
@@ -40,8 +48,9 @@ abstract class Storage
         );
     }
 
-    protected function remove(string $path): void
+    public function delete(string $fileName): void
     {
+        $path   = $this->getPath($fileName);
         $result = $this->storage->delete($path);
 
         if ($result !== false) {
@@ -55,8 +64,10 @@ abstract class Storage
         );
     }
 
-    protected function has(string $path): bool
+    public function fileExists(string $fileName): bool
     {
+        $path = $this->getPath($fileName);
+
         return $this->storage->has($path);
     }
 }

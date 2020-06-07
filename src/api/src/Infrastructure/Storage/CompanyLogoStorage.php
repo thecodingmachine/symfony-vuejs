@@ -10,6 +10,11 @@ use App\Domain\Throwable\Invalid\InvalidCompanyLogo;
 
 final class CompanyLogoStorage extends PublicStorage implements CompanyLogoStore
 {
+    protected function getDirectoryName(): string
+    {
+        return 'company_logo';
+    }
+
     /**
      * @throws InvalidCompanyLogo
      */
@@ -19,20 +24,10 @@ final class CompanyLogoStorage extends PublicStorage implements CompanyLogoStore
         InvalidCompanyLogo::throwException($violations);
 
         parent::put(
-            'company_logo/' . $logo->getGeneratedFileName(),
+            $logo->getGeneratedFileName(),
             $logo->getResource()
         );
 
         return $logo->getGeneratedFileName();
-    }
-
-    public function delete(string $fileName): void
-    {
-        parent::remove('company_logo/' . $fileName);
-    }
-
-    public function fileExists(string $fileName): bool
-    {
-        return parent::has('company_logo/' . $fileName);
     }
 }
