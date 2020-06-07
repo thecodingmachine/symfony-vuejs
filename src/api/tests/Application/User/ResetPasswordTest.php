@@ -18,6 +18,8 @@ beforeEach(function (): void {
     $userRepository = self::$container->get(UserRepository::class);
     assert($userRepository instanceof UserRepository);
 
+    // We do not use the CreateUser use case
+    // as we check the notifications in the following tests.
     $user = new User(
         'Foo',
         'Bar',

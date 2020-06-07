@@ -9,11 +9,15 @@ declare(strict_types=1);
 namespace App\Infrastructure\Dao;
 
 use App\Domain\Model\Company;
+use App\Domain\Model\Filter\CompaniesFilters;
 use App\Domain\Repository\CompanyRepository;
 use App\Domain\Throwable\Exists\CompanyWithNameExists;
+use App\Domain\Throwable\Invalid\InvalidCompaniesFilters;
 use App\Domain\Throwable\Invalid\InvalidCompany;
+use App\Domain\Throwable\NotFound\CompanyNotFoundById;
 use App\Infrastructure\Dao\Generated\BaseCompanyDao;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\TDBMService;
 
 /**
@@ -41,6 +45,20 @@ class CompanyDao extends BaseCompanyDao implements CompanyRepository
     }
 
     /**
+     * @throws CompanyNotFoundById
+     */
+    public function mustFindOneById(string $id): Company
+    {
+        $company = $this->findOne(['id' => $id]);
+
+        if ($company !== null) {
+            return $company;
+        }
+
+        throw new CompanyNotFoundById($id);
+    }
+
+    /**
      * @throws CompanyWithNameExists
      */
     public function mustNotFindOneByName(string $name): void
@@ -52,5 +70,24 @@ class CompanyDao extends BaseCompanyDao implements CompanyRepository
         }
 
         throw new CompanyWithNameExists($name);
+    }
+
+    /**
+     * @return Company[]|ResultIterator
+     *
+     * @throws InvalidCompaniesFilters
+     */
+    public function search(CompaniesFilters $filters): ResultIterator
+    {
+        $violations = $this->validator->validate($filters);
+        InvalidCompaniesFilters::throwException($violations);
+
+        return $this->find(
+            ['name LIKE :search OR website LIKE :search'],
+            [
+                'search' => '%' . $filters->getSearch() . '%',
+            ],
+            $filters->getSortBy() . ' ' . $filters->getSortOrder()
+        );
     }
 }

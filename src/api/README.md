@@ -17,7 +17,7 @@ A PHP backend based on Symfony and with GraphQL endpoints.
 #### Comments
 
 Comments should only be added if a piece of code is not clear enough.
-Most of the time, using explicit class/function/exception names is the way to go.
+**Most of the time, using explicit class/function/exception names should be enough.**
 
 Anyway, comments have to start with an uppercase and end with a punctuation.
 

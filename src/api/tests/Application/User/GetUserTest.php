@@ -2,32 +2,27 @@
 
 declare(strict_types=1);
 
+use App\Application\User\CreateUser;
 use App\Application\User\GetUser;
 use App\Domain\Enum\LocaleEnum;
 use App\Domain\Enum\RoleEnum;
-use App\Domain\Model\User;
-use App\Domain\Repository\UserRepository;
 use App\Domain\Throwable\NotFound\UserNotFoundById;
-
-beforeEach(function (): void {
-});
 
 it(
     'gets a user',
     function (): void {
-        $userRepository = self::$container->get(UserRepository::class);
-        $getUser        = self::$container->get(GetUser::class);
-        assert($userRepository instanceof UserRepository);
+        $createUser = self::$container->get(CreateUser::class);
+        $getUser    = self::$container->get(GetUser::class);
+        assert($createUser instanceof CreateUser);
         assert($getUser instanceof GetUser);
 
-        $user = new User(
+        $user = $createUser->create(
             'Foo',
             'Bar',
             'foo.bar@baz.com',
             LocaleEnum::EN,
             RoleEnum::ADMINISTRATOR
         );
-        $userRepository->save($user);
 
         $foundUser = $getUser->byId($user->getId());
         assertEquals($user->getId(), $foundUser->getId());
@@ -37,19 +32,18 @@ it(
 it(
     'throws an exception if invalid id.',
     function (): void {
-        $userRepository = self::$container->get(UserRepository::class);
-        $getUser        = self::$container->get(GetUser::class);
-        assert($userRepository instanceof UserRepository);
+        $createUser = self::$container->get(CreateUser::class);
+        $getUser    = self::$container->get(GetUser::class);
+        assert($createUser instanceof CreateUser);
         assert($getUser instanceof GetUser);
 
-        $user = new User(
+        $createUser->create(
             'Foo',
             'Bar',
             'foo.bar@baz.com',
             LocaleEnum::EN,
             RoleEnum::ADMINISTRATOR
         );
-        $userRepository->save($user);
 
         $getUser->byId('foo');
     }

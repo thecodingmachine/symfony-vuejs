@@ -2,45 +2,42 @@
 
 declare(strict_types=1);
 
+use App\Application\User\CreateUser;
 use App\Application\User\SearchUsers;
 use App\Domain\Enum\Filter\SortOrderEnum;
 use App\Domain\Enum\Filter\UsersSortByEnum;
 use App\Domain\Enum\LocaleEnum;
 use App\Domain\Enum\RoleEnum;
 use App\Domain\Model\User;
-use App\Domain\Repository\UserRepository;
 use App\Domain\Throwable\Invalid\InvalidUsersFilters;
 
 beforeEach(function (): void {
-    $userRepository = self::$container->get(UserRepository::class);
-    assert($userRepository instanceof UserRepository);
+    $createUser = self::$container->get(CreateUser::class);
+    assert($createUser instanceof CreateUser);
 
-    $user = new User(
+    $createUser->create(
         'A',
         'A',
         'a.a@a.a',
         LocaleEnum::EN,
         RoleEnum::ADMINISTRATOR
     );
-    $userRepository->save($user);
 
-    $user = new User(
+    $createUser->create(
         'B',
         'B',
         'b.b@b.b',
         LocaleEnum::EN,
         RoleEnum::COMPANY
     );
-    $userRepository->save($user);
 
-    $user = new User(
+    $createUser->create(
         'c',
         'c',
         'c.c@c.c',
         LocaleEnum::EN,
         RoleEnum::CLIENT
     );
-    $userRepository->save($user);
 });
 
 it(
@@ -49,8 +46,8 @@ it(
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
-        $users = $searchUsers->search();
-        assertCount(3, $users);
+        $result = $searchUsers->search();
+        assertCount(3, $result);
     }
 );
 
@@ -60,10 +57,10 @@ it(
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
-        $users = $searchUsers->search($search);
-        assertCount(1, $users);
+        $result = $searchUsers->search($search);
+        assertCount(1, $result);
 
-        $user = $users->first();
+        $user = $result->first();
         assert($user instanceof User);
         assertStringContainsStringIgnoringCase($search, $user->getFirstName());
         assertStringContainsStringIgnoringCase($search, $user->getLastName());
@@ -78,10 +75,10 @@ it(
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
-        $users = $searchUsers->search(null, $role);
-        assertCount(1, $users);
+        $result = $searchUsers->search(null, $role);
+        assertCount(1, $result);
 
-        $user = $users->first();
+        $user = $result->first();
         assert($user instanceof User);
         assertEquals($role, $user->getRole());
     }
@@ -94,11 +91,11 @@ it(
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
-        $users = $searchUsers->search(null, null, UsersSortByEnum::FIRST_NAME, $sortOrder);
-        assertCount(3, $users);
+        $result = $searchUsers->search(null, null, UsersSortByEnum::FIRST_NAME, $sortOrder);
+        assertCount(3, $result);
 
         /** @var User[] $users */
-        $users = $users->toArray();
+        $users = $result->toArray();
         if ($sortOrder === SortOrderEnum::ASC) {
             assertStringContainsStringIgnoringCase('a', $users[0]->getFirstName());
             assertStringContainsStringIgnoringCase('b', $users[1]->getFirstName());
@@ -118,11 +115,11 @@ it(
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
-        $users = $searchUsers->search(null, null, UsersSortByEnum::LAST_NAME, $sortOrder);
-        assertCount(3, $users);
+        $result = $searchUsers->search(null, null, UsersSortByEnum::LAST_NAME, $sortOrder);
+        assertCount(3, $result);
 
         /** @var User[] $users */
-        $users = $users->toArray();
+        $users = $result->toArray();
         if ($sortOrder === SortOrderEnum::ASC) {
             assertStringContainsStringIgnoringCase('a', $users[0]->getLastName());
             assertStringContainsStringIgnoringCase('b', $users[1]->getLastName());
@@ -142,11 +139,11 @@ it(
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
-        $users = $searchUsers->search(null, null, UsersSortByEnum::EMAIL, $sortOrder);
-        assertCount(3, $users);
+        $result = $searchUsers->search(null, null, UsersSortByEnum::EMAIL, $sortOrder);
+        assertCount(3, $result);
 
         /** @var User[] $users */
-        $users = $users->toArray();
+        $users = $result->toArray();
         if ($sortOrder === SortOrderEnum::ASC) {
             assertStringContainsStringIgnoringCase('a', $users[0]->getEmail());
             assertStringContainsStringIgnoringCase('b', $users[1]->getEmail());
@@ -166,11 +163,11 @@ it(
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
-        $users = $searchUsers->search(null, null, UsersSortByEnum::ROLE, $sortOrder);
-        assertCount(3, $users);
+        $result = $searchUsers->search(null, null, UsersSortByEnum::ROLE, $sortOrder);
+        assertCount(3, $result);
 
         /** @var User[] $users */
-        $users = $users->toArray();
+        $users = $result->toArray();
         if ($sortOrder === SortOrderEnum::ASC) {
             assertEquals(RoleEnum::ADMINISTRATOR, $users[0]->getRole());
             assertEquals(RoleEnum::CLIENT, $users[1]->getRole());

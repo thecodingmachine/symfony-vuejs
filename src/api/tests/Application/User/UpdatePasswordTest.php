@@ -2,32 +2,30 @@
 
 declare(strict_types=1);
 
+use App\Application\User\CreateUser;
 use App\Application\User\ResetPassword\ResetPassword;
 use App\Application\User\UpdatePassword\ResetPasswordTokenExpired;
 use App\Application\User\UpdatePassword\UpdatePassword;
 use App\Application\User\UpdatePassword\WrongResetPasswordToken;
 use App\Domain\Enum\LocaleEnum;
 use App\Domain\Enum\RoleEnum;
-use App\Domain\Model\User;
 use App\Domain\Repository\ResetPasswordTokenRepository;
-use App\Domain\Repository\UserRepository;
 use App\Domain\Throwable\Invalid\InvalidPassword;
 use App\Domain\Throwable\NotFound\ResetPasswordTokenNotFoundById;
 use App\Tests\Application\DummyValues;
 use Safe\DateTimeImmutable;
 
 beforeEach(function (): void {
-    $userRepository = self::$container->get(UserRepository::class);
-    assert($userRepository instanceof UserRepository);
+    $createUser = self::$container->get(CreateUser::class);
+    assert($createUser instanceof CreateUser);
 
-    $user = new User(
+    $createUser->create(
         'Foo',
         'Bar',
         'foo.bar@baz.com',
         LocaleEnum::EN,
         RoleEnum::ADMINISTRATOR
     );
-    $userRepository->save($user);
 });
 
 it(
