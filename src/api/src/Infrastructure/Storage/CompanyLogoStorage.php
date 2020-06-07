@@ -23,11 +23,6 @@ final class CompanyLogoStorage extends PublicStorage implements CompanyLogoStore
         $violations = $this->validator->validate($logo);
         InvalidCompanyLogo::throwException($violations);
 
-        parent::put(
-            $logo->getGeneratedFileName(),
-            $logo->getResource()
-        );
-
-        return $logo->getGeneratedFileName();
+        return parent::put($logo);
     }
 }

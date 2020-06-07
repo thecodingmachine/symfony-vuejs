@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Storage;
 
+use App\Domain\Model\Storable\Storable;
 use League\Flysystem\FilesystemInterface;
 use RuntimeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Throwable;
 
 abstract class Storage
 {
@@ -27,18 +29,39 @@ abstract class Storage
     }
 
     /**
-     * @param resource $resouce
+     * @param Storable[] $storables
+     *
+     * @return string[]
      */
-    protected function put(string $fileName, $resouce): void
+    protected function putAll(array $storables): array
     {
-        $path   = $this->getPath($fileName);
-        $result = $this->storage->putStream(
+        $fileNames = [];
+        foreach ($storables as $storable) {
+            try {
+                $fileNames[] = $this->put($storable);
+            } catch (Throwable $e) {
+                // If any exception occurs, delete
+                // already stored pictures.
+                $this->deleteAll($fileNames);
+
+                throw $e;
+            }
+        }
+
+        return $fileNames;
+    }
+
+    protected function put(Storable $storable): string
+    {
+        $fileName = $storable->getGeneratedFileName();
+        $path     = $this->getPath($fileName);
+        $result   = $this->storage->putStream(
             $path,
-            $resouce
+            $storable->getResource()
         );
 
         if ($result === true) {
-            return;
+            return $fileName;
         }
 
         throw new RuntimeException(
@@ -46,6 +69,16 @@ abstract class Storage
             $path .
             '"'
         );
+    }
+
+    /**
+     * @param string[] $fileNames
+     */
+    public function deleteAll(array $fileNames): void
+    {
+        foreach ($fileNames as $fileName) {
+            $this->delete($fileName);
+        }
     }
 
     public function delete(string $fileName): void

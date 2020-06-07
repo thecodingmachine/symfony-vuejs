@@ -7,7 +7,6 @@ namespace App\Infrastructure\Storage;
 use App\Domain\Model\Storable\ProductPicture;
 use App\Domain\Store\ProductPictureStore;
 use App\Domain\Throwable\Invalid\InvalidProductPicture;
-use Throwable;
 
 final class ProductPictureStorage extends PublicStorage implements ProductPictureStore
 {
@@ -30,34 +29,6 @@ final class ProductPictureStorage extends PublicStorage implements ProductPictur
             InvalidProductPicture::throwException($violations);
         }
 
-        $storedPictures = [];
-        foreach ($pictures as $picture) {
-            try {
-                parent::put(
-                    $picture->getGeneratedFileName(),
-                    $picture->getResource()
-                );
-
-                $storedPictures[] = $picture->getGeneratedFileName();
-            } catch (Throwable $e) {
-                // If any exception occurs, delete
-                // already stored pictures.
-                $this->deleteAll($storedPictures);
-
-                throw $e;
-            }
-        }
-
-        return $storedPictures;
-    }
-
-    /**
-     * @param string[] $fileNames
-     */
-    public function deleteAll(array $fileNames): void
-    {
-        foreach ($fileNames as $fileName) {
-            parent::delete($fileName);
-        }
+        return parent::putAll($pictures);
     }
 }
