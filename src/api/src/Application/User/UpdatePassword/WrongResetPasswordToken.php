@@ -15,12 +15,12 @@ final class WrongResetPasswordToken extends RuntimeException implements ClientAw
         parent::__construct('', 400);
     }
 
-    public function isClientSafe() : bool
+    public function isClientSafe(): bool
     {
         return false;
     }
 
-    public function getCategory() : string
+    public function getCategory(): string
     {
         return 'Wrong reset password token';
     }

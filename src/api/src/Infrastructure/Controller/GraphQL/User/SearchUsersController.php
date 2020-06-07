@@ -34,7 +34,7 @@ final class SearchUsersController extends AbstractController
         ?string $role = null,
         ?string $sortBy = null,
         ?string $sortOrder = null
-    ) : ResultIterator {
+    ): ResultIterator {
         return $this->searchUsers->search(
             $search,
             $role,

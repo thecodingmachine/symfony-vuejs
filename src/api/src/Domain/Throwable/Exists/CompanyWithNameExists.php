@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Throwable\Exist;
+namespace App\Domain\Throwable\Exists;
 
-final class CompanyWithNameExist extends Exist
+final class CompanyWithNameExists extends Exists
 {
     public function __construct(string $name)
     {

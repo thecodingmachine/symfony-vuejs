@@ -32,7 +32,7 @@ final class SignUpClientController extends AbstractController
         string $lastName,
         string $email,
         string $locale
-    ) : bool {
+    ): bool {
         // As there is no security on this endpoint,
         // we make sure that no one is able to check
         // if an e-mail exists according to response time.

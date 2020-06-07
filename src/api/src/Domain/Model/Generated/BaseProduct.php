@@ -161,11 +161,11 @@ abstract class BaseProduct extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
     /**
      * The setter for the "picture_filename" column.
      *
-     * @param string|null $picture_filename
+     * @param string|null $pictureFilename
      */
-    public function setPictureFilename(?string $picture_filename) : void
+    public function setPictureFilename(?string $pictureFilename) : void
     {
-        $this->set('picture_filename', $picture_filename, 'products');
+        $this->set('picture_filename', $pictureFilename, 'products');
     }
 
     /**

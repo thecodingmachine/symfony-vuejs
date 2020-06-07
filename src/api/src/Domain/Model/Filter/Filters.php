@@ -19,16 +19,16 @@ abstract class Filters
         $this->sortOrder = $sortOrder ?: $this->getDefaultSortOrder();
     }
 
-    abstract public function getSortBy() : string;
+    abstract public function getSortBy(): string;
 
-    abstract protected function getDefaultSortBy() : string;
+    abstract protected function getDefaultSortBy(): string;
 
-    public function getSortOrder() : string
+    public function getSortOrder(): string
     {
         return $this->sortOrder;
     }
 
-    protected function getDefaultSortOrder() : string
+    protected function getDefaultSortOrder(): string
     {
         return SortOrderEnum::ASC;
     }

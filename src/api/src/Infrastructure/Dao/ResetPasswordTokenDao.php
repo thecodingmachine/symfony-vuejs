@@ -21,7 +21,7 @@ class ResetPasswordTokenDao extends BaseResetPasswordTokenDao implements ResetPa
     /**
      * @throws ResetPasswordTokenNotFoundById
      */
-    public function mustFindOneById(string $id) : ResetPasswordToken
+    public function mustFindOneById(string $id): ResetPasswordToken
     {
         $resetPasswordToken = $this->findOne(['id' => $id]);
 

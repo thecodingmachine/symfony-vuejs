@@ -9,5 +9,5 @@ interface StringEnum
     /**
      * @return string[]
      */
-    public static function values() : array;
+    public static function values(): array;
 }

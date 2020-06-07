@@ -16,7 +16,7 @@ use App\Domain\Throwable\NotFound\ResetPasswordTokenNotFoundById;
 use App\Tests\Application\DummyValues;
 use Safe\DateTimeImmutable;
 
-beforeEach(function () : void {
+beforeEach(function (): void {
     $userRepository = self::$container->get(UserRepository::class);
     assert($userRepository instanceof UserRepository);
 
@@ -32,7 +32,7 @@ beforeEach(function () : void {
 
 it(
     'updates the password and deletes the token',
-    function (string $email, string $password) : void {
+    function (string $email, string $password): void {
         $resetPassword                = self::$container->get(ResetPassword::class);
         $updatePassword               = self::$container->get(UpdatePassword::class);
         $resetPasswordTokenRepository = self::$container->get(ResetPasswordTokenRepository::class);
@@ -56,7 +56,7 @@ it(
 
 it(
     'throws an exception if the token does not exist',
-    function (string $email, string $password) : void {
+    function (string $email, string $password): void {
         $resetPassword  = self::$container->get(ResetPassword::class);
         $updatePassword = self::$container->get(UpdatePassword::class);
         assert($resetPassword instanceof ResetPassword);
@@ -75,7 +75,7 @@ it(
 
 it(
     'throws an exception if wrong token',
-    function (string $email, string $password) : void {
+    function (string $email, string $password): void {
         $resetPassword  = self::$container->get(ResetPassword::class);
         $updatePassword = self::$container->get(UpdatePassword::class);
         assert($resetPassword instanceof ResetPassword);
@@ -94,7 +94,7 @@ it(
 
 it(
     'throws an exception if token expired',
-    function (string $email, string $password) : void {
+    function (string $email, string $password): void {
         $resetPassword                = self::$container->get(ResetPassword::class);
         $updatePassword               = self::$container->get(UpdatePassword::class);
         $resetPasswordTokenRepository = self::$container->get(ResetPasswordTokenRepository::class);
@@ -122,7 +122,7 @@ it(
 
 it(
     'throws an exception if invalid password',
-    function (string $email, string $password) : void {
+    function (string $email, string $password): void {
         $resetPassword  = self::$container->get(ResetPassword::class);
         $updatePassword = self::$container->get(UpdatePassword::class);
         assert($resetPassword instanceof ResetPassword);

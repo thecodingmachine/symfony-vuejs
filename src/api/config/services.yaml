@@ -5,8 +5,10 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     # Parameters are values which are used directly in the code.
-    app.storage_bucket: '%env(STORAGE_BUCKET)%'
-    app.storage_source: '%env(STORAGE_SOURCE)%'
+    app.storage_public_source: '%env(STORAGE_PUBLIC_SOURCE)%'
+    app.storage_private_source: '%env(STORAGE_PRIVATE_SOURCE)%'
+    app.storage_public_bucket: '%env(STORAGE_PUBLIC_BUCKET)%'
+    app.storage_private_bucket: '%env(STORAGE_PRIVATE_BUCKET)%'
     app.mail_from: '%env(MAIL_FROM)%'
     app.webapp_url: '%env(WEBAPP_URL)%'
     app.webapp_update_password_route_format: '%env(WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT)%'

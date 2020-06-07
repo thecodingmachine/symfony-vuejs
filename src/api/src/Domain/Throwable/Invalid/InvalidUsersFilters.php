@@ -13,7 +13,7 @@ final class InvalidUsersFilters extends Invalid
      *
      * @throws InvalidUsersFilters
      */
-    public static function throwException(ConstraintViolationListInterface $constraintViolationList) : void
+    public static function throwException(ConstraintViolationListInterface $constraintViolationList): void
     {
         if ($constraintViolationList->count() > 0) {
             throw new self($constraintViolationList);

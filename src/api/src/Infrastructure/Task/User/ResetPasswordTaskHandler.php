@@ -22,7 +22,7 @@ final class ResetPasswordTaskHandler implements MessageHandlerInterface
         $this->logger        = $logger;
     }
 
-    public function __invoke(ResetPasswordTask $task) : void
+    public function __invoke(ResetPasswordTask $task): void
     {
         try {
             $this->resetPassword->reset($task->getEmail());

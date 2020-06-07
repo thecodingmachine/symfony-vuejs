@@ -11,20 +11,20 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 abstract class Storage
 {
     protected ValidatorInterface $validator;
-    protected FilesystemInterface $uploadsStorage;
+    protected FilesystemInterface $storage;
 
-    public function __construct(ValidatorInterface $validator, FilesystemInterface $uploadsStorage)
+    public function __construct(ValidatorInterface $validator, FilesystemInterface $storage)
     {
-        $this->validator      = $validator;
-        $this->uploadsStorage = $uploadsStorage;
+        $this->validator = $validator;
+        $this->storage   = $storage;
     }
 
     /**
      * @param resource $resouce
      */
-    protected function store(string $path, $resouce) : void
+    protected function put(string $path, $resouce): void
     {
-        $result = $this->uploadsStorage->putStream(
+        $result = $this->storage->putStream(
             $path,
             $resouce
         );
@@ -40,9 +40,9 @@ abstract class Storage
         );
     }
 
-    protected function delete(string $path) : void
+    protected function remove(string $path): void
     {
-        $result = $this->uploadsStorage->delete($path);
+        $result = $this->storage->delete($path);
 
         if ($result !== false) {
             return;
@@ -55,8 +55,8 @@ abstract class Storage
         );
     }
 
-    protected function exist(string $path) : bool
+    protected function has(string $path): bool
     {
-        return $this->uploadsStorage->has($path);
+        return $this->storage->has($path);
     }
 }

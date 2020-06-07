@@ -24,7 +24,7 @@ final class ResetPasswordController extends AbstractController
      * @Mutation
      * @Assertion(for="email", constraint={@Assert\NotBlank, @Assert\Length(max = 255), @Assert\Email})
      */
-    public function resetPassword(string $email) : bool
+    public function resetPassword(string $email): bool
     {
         // As there is no security on this endpoint,
         // we make sure that no one is able to check

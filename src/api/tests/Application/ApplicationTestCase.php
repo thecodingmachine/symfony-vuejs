@@ -11,7 +11,7 @@ class ApplicationTestCase extends WebTestCase
 {
     protected Connection $dbal;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         self::bootKernel();
         $this->dbal = self::$container->get(Connection::class);
@@ -19,7 +19,7 @@ class ApplicationTestCase extends WebTestCase
         parent::setUp();
     }
 
-    protected function tearDown() : void
+    protected function tearDown(): void
     {
         $this->dbal->rollBack();
         parent::tearDown();

@@ -34,7 +34,7 @@
         "thecodingmachine/tdbm-graphql-bundle": "^4.0@dev"
     },
     "require-dev": {
-        "doctrine/coding-standard": "^7.0",
+        "doctrine/coding-standard": "^8.0",
         "pepakriz/phpstan-exception-rules": "^0.10.1",
         "pestphp/pest": "^0.1.5",
         "phpstan/phpstan": "^0.12.19",

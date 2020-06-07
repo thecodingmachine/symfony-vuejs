@@ -10,6 +10,7 @@ use RuntimeException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+
 use function get_class;
 use function Safe\sprintf;
 
@@ -22,7 +23,7 @@ final class UserProvider implements UserProviderInterface
         $this->userDao = $userDao;
     }
 
-    public function loadUserByUsername(string $username) : UserInterface
+    public function loadUserByUsername(string $username): UserInterface
     {
         $user = $this->userDao->findOneByEmail($username);
         if ($user === null) {
@@ -32,7 +33,7 @@ final class UserProvider implements UserProviderInterface
         return new SerializableUser($user);
     }
 
-    public function refreshUser(UserInterface $user) : UserInterface
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (! $user instanceof SerializableUser) {
             throw new UnsupportedUserException(
@@ -43,7 +44,7 @@ final class UserProvider implements UserProviderInterface
         return $this->loadUserByUsername($user->getUsername());
     }
 
-    public function supportsClass(string $class) : bool
+    public function supportsClass(string $class): bool
     {
         return $class === User::class || $class === SerializableUser::class;
     }

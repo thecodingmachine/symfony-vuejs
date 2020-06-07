@@ -7,7 +7,7 @@ namespace App\Infrastructure\Controller\GraphQL\Company;
 use App\Application\Company\CreateCompany;
 use App\Domain\Model\Company;
 use App\Domain\Model\Storable\CompanyLogo;
-use App\Domain\Throwable\Exist\CompanyWithNameExist;
+use App\Domain\Throwable\Exists\CompanyWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidCompany;
 use App\Domain\Throwable\Invalid\InvalidCompanyLogo;
 use App\Infrastructure\Factory\StorableFactory;
@@ -15,6 +15,7 @@ use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Right;
+
 use function assert;
 
 final class CreateCompanyController extends AbstractController
@@ -27,30 +28,31 @@ final class CreateCompanyController extends AbstractController
     }
 
     /**
-     * @throws CompanyWithNameExist
+     * @throws CompanyWithNameExists
      * @throws InvalidCompanyLogo
      * @throws InvalidCompany
      *
      * @Mutation
-     * @Right("ROLE_ADMINISTRATOR")
+
      */
     public function createCompany(
         string $name,
         ?string $website = null,
         ?UploadedFileInterface $logo = null
-    ) : Company {
+    ): Company {
+        $storable = null;
         if ($logo !== null) {
-            $logo = StorableFactory::createFromUploadedFile(
+            $storable = StorableFactory::createFromUploadedFile(
                 $logo,
                 CompanyLogo::class
             );
-            assert($logo instanceof CompanyLogo);
+            assert($storable instanceof CompanyLogo);
         }
 
         return $this->createCompany->create(
             $name,
             $website,
-            $logo
+            $storable
         );
     }
 }

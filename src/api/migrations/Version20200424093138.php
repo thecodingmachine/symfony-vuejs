@@ -14,12 +14,12 @@ use TheCodingMachine\FluidSchema\TdbmFluidSchema;
  */
 final class Version20200424093138 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Create session table.';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $db = new TdbmFluidSchema($schema);
 
@@ -30,7 +30,7 @@ final class Version20200424093138 extends AbstractMigration
             ->column('sess_lifetime')->integer()->notNull();
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         throw new RuntimeException('Never rollback a migration!');
     }

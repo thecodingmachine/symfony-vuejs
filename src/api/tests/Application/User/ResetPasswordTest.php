@@ -14,7 +14,7 @@ use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
 use App\Tests\Application\AsyncTransport;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
 
-beforeEach(function () : void {
+beforeEach(function (): void {
     $userRepository = self::$container->get(UserRepository::class);
     assert($userRepository instanceof UserRepository);
 
@@ -30,7 +30,7 @@ beforeEach(function () : void {
 
 it(
     'dispatches a notification',
-    function (string $email) : void {
+    function (string $email): void {
         $resetPassword = self::$container->get(ResetPassword::class);
         $transport     = self::$container->get(AsyncTransport::KEY);
         assert($resetPassword instanceof ResetPassword);
@@ -48,7 +48,7 @@ it(
 
 it(
     'throws an exception if the e-mail is not associated to a user',
-    function (string $email) : void {
+    function (string $email): void {
         $resetPassword = self::$container->get(ResetPassword::class);
         $transport     = self::$container->get(AsyncTransport::KEY);
         assert($resetPassword instanceof ResetPassword);
@@ -63,7 +63,7 @@ it(
 
 it(
     'deletes the previous token if called twice',
-    function (string $email) : void {
+    function (string $email): void {
         $resetPassword                = self::$container->get(ResetPassword::class);
         $transport                    = self::$container->get(AsyncTransport::KEY);
         $resetPasswordTokenRepository = self::$container->get(ResetPasswordTokenRepository::class);

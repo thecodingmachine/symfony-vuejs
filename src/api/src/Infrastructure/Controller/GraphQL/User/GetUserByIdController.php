@@ -26,7 +26,7 @@ final class GetUserByIdController extends AbstractController
      * @Query
      * @Right("ROLE_ADMINISTRATOR")
      */
-    public function getUserById(string $id) : User
+    public function getUserById(string $id): User
     {
         return $this->getUser->byId($id);
     }

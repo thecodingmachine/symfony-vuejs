@@ -15,12 +15,12 @@ final class ResetPasswordTokenExpired extends RuntimeException implements Client
         parent::__construct('', 400);
     }
 
-    public function isClientSafe() : bool
+    public function isClientSafe(): bool
     {
         return false;
     }
 
-    public function getCategory() : string
+    public function getCategory(): string
     {
         return 'Reset password token expired';
     }

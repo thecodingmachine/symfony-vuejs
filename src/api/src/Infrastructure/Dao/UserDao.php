@@ -12,7 +12,7 @@ use App\Domain\Model\Filter\UsersFilters;
 use App\Domain\Model\Proxy\PasswordProxy;
 use App\Domain\Model\User;
 use App\Domain\Repository\UserRepository;
-use App\Domain\Throwable\Exist\UserWithEmailExist;
+use App\Domain\Throwable\Exists\UserWithEmailExists;
 use App\Domain\Throwable\Invalid\InvalidPassword;
 use App\Domain\Throwable\Invalid\InvalidUser;
 use App\Domain\Throwable\Invalid\InvalidUsersFilters;
@@ -39,7 +39,7 @@ class UserDao extends BaseUserDao implements UserRepository
     /**
      * @throws InvalidUser
      */
-    public function save(User $user) : void
+    public function save(User $user): void
     {
         $violations = $this->validator->validate($user);
         InvalidUser::throwException($violations);
@@ -51,7 +51,7 @@ class UserDao extends BaseUserDao implements UserRepository
      * @throws InvalidPassword
      * @throws InvalidUser
      */
-    public function updatePassword(User $user, PasswordProxy $passwordProxy) : void
+    public function updatePassword(User $user, PasswordProxy $passwordProxy): void
     {
         $violations = $this->validator->validate($passwordProxy);
         InvalidPassword::throwException($violations);
@@ -63,7 +63,7 @@ class UserDao extends BaseUserDao implements UserRepository
     /**
      * @throws UserNotFoundById
      */
-    public function mustFindOneById(string $id) : User
+    public function mustFindOneById(string $id): User
     {
         $user = $this->findOne(['id' => $id]);
 
@@ -77,7 +77,7 @@ class UserDao extends BaseUserDao implements UserRepository
     /**
      * @throws UserNotFoundByEmail
      */
-    public function mustFindOneByEmail(string $email) : User
+    public function mustFindOneByEmail(string $email): User
     {
         $user = $this->findOneByEmail($email);
 
@@ -89,9 +89,9 @@ class UserDao extends BaseUserDao implements UserRepository
     }
 
     /**
-     * @throws UserWithEmailExist
+     * @throws UserWithEmailExists
      */
-    public function mustNotFindOneByEmail(string $email) : void
+    public function mustNotFindOneByEmail(string $email): void
     {
         $user = $this->findOneByEmail($email);
 
@@ -99,7 +99,7 @@ class UserDao extends BaseUserDao implements UserRepository
             return;
         }
 
-        throw new UserWithEmailExist($email);
+        throw new UserWithEmailExists($email);
     }
 
     /**
@@ -107,7 +107,7 @@ class UserDao extends BaseUserDao implements UserRepository
      *
      * @throws InvalidUsersFilters
      */
-    public function search(UsersFilters $filters) : ResultIterator
+    public function search(UsersFilters $filters): ResultIterator
     {
         $violations = $this->validator->validate($filters);
         InvalidUsersFilters::throwException($violations);

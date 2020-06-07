@@ -30,22 +30,22 @@ final class SendEmailTask implements AsyncTask
         $this->templateData = $templateData;
     }
 
-    public function getDomain() : string
+    public function getDomain(): string
     {
         return $this->domain;
     }
 
-    public function getLocale() : string
+    public function getLocale(): string
     {
         return $this->locale;
     }
 
-    public function getTo() : string
+    public function getTo(): string
     {
         return $this->to;
     }
 
-    public function getTemplate() : string
+    public function getTemplate(): string
     {
         return $this->template;
     }
@@ -53,7 +53,7 @@ final class SendEmailTask implements AsyncTask
     /**
      * @return mixed[]
      */
-    public function getTemplateData() : array
+    public function getTemplateData(): array
     {
         return $this->templateData;
     }

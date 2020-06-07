@@ -11,7 +11,7 @@ final class UserNotFoundByEmail extends NotFound
         parent::__construct('"' . $email . '" is not assigned to a user');
     }
 
-    public function isClientSafe() : bool
+    public function isClientSafe(): bool
     {
         return false;
     }

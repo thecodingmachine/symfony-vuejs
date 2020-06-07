@@ -14,12 +14,12 @@ use TheCodingMachine\FluidSchema\TdbmFluidSchema;
  */
 final class Version20200424154558 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Create users, companies, users_companies and products tables.';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $db = new TdbmFluidSchema($schema);
 
@@ -49,7 +49,7 @@ final class Version20200424154558 extends AbstractMigration
             ->column('picture_filename')->string(255)->null()->default(null)->graphqlField();
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         throw new RuntimeException('Never rollback a migration!');
     }

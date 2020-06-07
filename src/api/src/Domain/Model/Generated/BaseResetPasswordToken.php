@@ -116,11 +116,11 @@ abstract class BaseResetPasswordToken extends \TheCodingMachine\TDBM\AbstractTDB
     /**
      * The setter for the "valid_until" column.
      *
-     * @param \DateTimeImmutable $valid_until
+     * @param \DateTimeImmutable $validUntil
      */
-    public function setValidUntil(\DateTimeImmutable $valid_until) : void
+    public function setValidUntil(\DateTimeImmutable $validUntil) : void
     {
-        $this->set('valid_until', $valid_until, 'reset_password_tokens');
+        $this->set('valid_until', $validUntil, 'reset_password_tokens');
     }
 
     /**

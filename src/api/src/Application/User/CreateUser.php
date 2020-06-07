@@ -7,7 +7,7 @@ namespace App\Application\User;
 use App\Application\User\ResetPassword\ResetPassword;
 use App\Domain\Model\User;
 use App\Domain\Repository\UserRepository;
-use App\Domain\Throwable\Exist\UserWithEmailExist;
+use App\Domain\Throwable\Exists\UserWithEmailExists;
 use App\Domain\Throwable\Invalid\InvalidUser;
 use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
 
@@ -25,7 +25,7 @@ final class CreateUser
     }
 
     /**
-     * @throws UserWithEmailExist
+     * @throws UserWithEmailExists
      * @throws InvalidUser
      * @throws UserNotFoundByEmail
      */
@@ -35,7 +35,7 @@ final class CreateUser
         string $email,
         string $locale,
         string $role
-    ) : User {
+    ): User {
         $this->userRepository->mustNotFindOneByEmail($email);
 
         $user = new User(

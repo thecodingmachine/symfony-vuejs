@@ -15,16 +15,30 @@ flysystem:
 #            adapter: 'local'
 #            options:
 #                directory: '%kernel.project_dir%/var/storage/default'
-        uploads.storage.minio:
+        public.storage.minio:
             adapter: 'aws'
             options:
                 client: 'minio.client'
-                bucket: '%env(STORAGE_BUCKET)%'
+                bucket: '%env(STORAGE_PUBLIC_BUCKET)%'
 
-        uploads.storage.memory:
+        public.storage.memory:
             adapter: 'memory'
 
-        uploads.storage:
+        public.storage:
             adapter: 'lazy'
             options:
-                source: '%env(STORAGE_SOURCE)%'
+                source: '%env(STORAGE_PUBLIC_SOURCE)%'
+
+        private.storage.minio:
+            adapter: 'aws'
+            options:
+                client: 'minio.client'
+                bucket: '%env(STORAGE_PRIVATE_BUCKET)%'
+
+        private.storage.memory:
+            adapter: 'memory'
+
+        private.storage:
+            adapter: 'lazy'
+            options:
+                source: '%env(STORAGE_PRIVATE_SOURCE)%'

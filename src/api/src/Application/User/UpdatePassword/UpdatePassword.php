@@ -12,6 +12,7 @@ use App\Domain\Throwable\Invalid\InvalidPassword;
 use App\Domain\Throwable\Invalid\InvalidUser;
 use App\Domain\Throwable\NotFound\ResetPasswordTokenNotFoundById;
 use Safe\DateTimeImmutable;
+
 use function password_verify;
 
 final class UpdatePassword
@@ -38,7 +39,7 @@ final class UpdatePassword
         string $resetPasswordTokenId,
         string $plainToken,
         string $newPassword
-    ) : User {
+    ): User {
         $resetPasswordToken = $this->resetPasswordTokenRepository->mustFindOneById($resetPasswordTokenId);
 
         $token = $resetPasswordToken->getToken();

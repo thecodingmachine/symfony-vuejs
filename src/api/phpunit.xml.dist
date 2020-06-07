@@ -13,7 +13,8 @@
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="KERNEL_CLASS" value="App\Kernel" />
-        <server name="STORAGE_SOURCE" value="uploads.storage.memory" force="true" />
+        <server name="STORAGE_PUBLIC_SOURCE" value="public.storage.memory" force="true" />
+        <server name="STORAGE_PRIVATE_SOURCE" value="private.storage.memory" force="true" />
     </php>
 
     <testsuites>

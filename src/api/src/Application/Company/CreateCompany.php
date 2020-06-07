@@ -8,7 +8,7 @@ use App\Domain\Model\Company;
 use App\Domain\Model\Storable\CompanyLogo;
 use App\Domain\Repository\CompanyRepository;
 use App\Domain\Store\CompanyLogoStore;
-use App\Domain\Throwable\Exist\CompanyWithNameExist;
+use App\Domain\Throwable\Exists\CompanyWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidCompany;
 use App\Domain\Throwable\Invalid\InvalidCompanyLogo;
 use Throwable;
@@ -25,7 +25,7 @@ final class CreateCompany
     }
 
     /**
-     * @throws CompanyWithNameExist
+     * @throws CompanyWithNameExists
      * @throws InvalidCompanyLogo
      * @throws InvalidCompany
      */
@@ -33,7 +33,7 @@ final class CreateCompany
         string $name,
         ?string $website = null,
         ?CompanyLogo $logo = null
-    ) : Company {
+    ): Company {
         $this->companyRepository->mustNotFindOneByName($name);
 
         $fileName = $logo !== null ?
@@ -63,7 +63,7 @@ final class CreateCompany
         return $company;
     }
 
-    private function beforeThrowDeleteLogoIfExists(?string $fileName = null) : void
+    private function beforeThrowDeleteLogoIfExists(?string $fileName = null): void
     {
         if ($fileName === null) {
             return;

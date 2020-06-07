@@ -20,7 +20,7 @@ final class GetUser
     /**
      * @throws UserNotFoundById
      */
-    public function byId(string $id) : User
+    public function byId(string $id): User
     {
         return $this->userRepository->mustFindOneById($id);
     }

@@ -11,7 +11,9 @@ namespace App\Domain\Model;
 use App\Domain\Model\Generated\BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 use TheCodingMachine\GraphQLite\Annotations\Type;
+
 use function Safe\password_hash;
+
 use const PASSWORD_DEFAULT;
 
 /**
@@ -25,7 +27,7 @@ class User extends BaseUser
      * @Assert\NotBlank
      * @Assert\Length(max = 255)
      */
-    public function getFirstName() : string
+    public function getFirstName(): string
     {
         return parent::getFirstName();
     }
@@ -34,7 +36,7 @@ class User extends BaseUser
      * @Assert\NotBlank
      * @Assert\Length(max = 255)
      */
-    public function getLastName() : string
+    public function getLastName(): string
     {
         return parent::getLastName();
     }
@@ -44,12 +46,12 @@ class User extends BaseUser
      * @Assert\Length(max = 255)
      * @Assert\Email
      */
-    public function getEmail() : string
+    public function getEmail(): string
     {
         return parent::getEmail();
     }
 
-    public function setPassword(?string $password) : void
+    public function setPassword(?string $password): void
     {
         if ($password === null) {
             parent::setPassword($password);
@@ -63,7 +65,7 @@ class User extends BaseUser
     /**
      * @Assert\Choice(callback={"App\Domain\Enum\LocaleEnum", "values"})
      */
-    public function getLocale() : string
+    public function getLocale(): string
     {
         return parent::getLocale();
     }
@@ -71,7 +73,7 @@ class User extends BaseUser
     /**
      * @Assert\Choice(callback={"App\Domain\Enum\RoleEnum", "values"})
      */
-    public function getRole() : string
+    public function getRole(): string
     {
         return parent::getRole();
     }

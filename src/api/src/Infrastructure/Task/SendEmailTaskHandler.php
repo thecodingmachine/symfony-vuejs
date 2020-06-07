@@ -31,7 +31,7 @@ final class SendEmailTaskHandler implements MessageHandlerInterface
         $this->mailFrom   = $parameters->get('app.mail_from');
     }
 
-    public function __invoke(SendEmailTask $task) : void
+    public function __invoke(SendEmailTask $task): void
     {
         $translatedSubject = $this->translator
             ->trans(

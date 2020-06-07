@@ -15,12 +15,12 @@ abstract class NotFound extends RuntimeException implements ClientAware, Busines
         parent::__construct($message, 404);
     }
 
-    public function isClientSafe() : bool
+    public function isClientSafe(): bool
     {
         return true;
     }
 
-    public function getCategory() : string
+    public function getCategory(): string
     {
         return 'Not found';
     }

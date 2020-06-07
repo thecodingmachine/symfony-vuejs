@@ -11,7 +11,7 @@ final class UserNotFoundById extends NotFound
         parent::__construct('"' . $id . '" identifier is not assigned to a user');
     }
 
-    public function isClientSafe() : bool
+    public function isClientSafe(): bool
     {
         return false;
     }

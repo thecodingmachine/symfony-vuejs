@@ -28,12 +28,12 @@ abstract class Storable
         $this->resource              = $resource;
     }
 
-    public function getOriginalFileName() : string
+    public function getOriginalFileName(): string
     {
         return $this->fileInfo->getBasename('.' . $this->fileInfo->getExtension()) . '.' . $this->getExtension();
     }
 
-    public function getGeneratedFileName() : string
+    public function getGeneratedFileName(): string
     {
         return $this->generatedBaseFileName . '.' . $this->getExtension();
     }
@@ -46,5 +46,5 @@ abstract class Storable
         return $this->resource;
     }
 
-    abstract public function getExtension() : string;
+    abstract public function getExtension(): string;
 }

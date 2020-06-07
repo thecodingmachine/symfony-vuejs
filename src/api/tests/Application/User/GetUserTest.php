@@ -9,12 +9,12 @@ use App\Domain\Model\User;
 use App\Domain\Repository\UserRepository;
 use App\Domain\Throwable\NotFound\UserNotFoundById;
 
-beforeEach(function () : void {
+beforeEach(function (): void {
 });
 
 it(
     'gets a user',
-    function () : void {
+    function (): void {
         $userRepository = self::$container->get(UserRepository::class);
         $getUser        = self::$container->get(GetUser::class);
         assert($userRepository instanceof UserRepository);
@@ -36,7 +36,7 @@ it(
 
 it(
     'throws an exception if invalid id.',
-    function () : void {
+    function (): void {
         $userRepository = self::$container->get(UserRepository::class);
         $getUser        = self::$container->get(GetUser::class);
         assert($userRepository instanceof UserRepository);

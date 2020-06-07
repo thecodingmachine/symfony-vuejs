@@ -14,12 +14,12 @@ use TheCodingMachine\FluidSchema\TdbmFluidSchema;
  */
 final class Version20200502143535 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return 'Create reset_password_tokens table.';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $db = new TdbmFluidSchema($schema);
         $db->table('reset_password_tokens')
@@ -29,7 +29,7 @@ final class Version20200502143535 extends AbstractMigration
             ->column('valid_until')->datetimeImmutable()->notNull();
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         throw new RuntimeException('Never rollback a migration!');
     }

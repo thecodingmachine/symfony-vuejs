@@ -14,7 +14,7 @@ final class SortOrderEnum implements StringEnum
     /**
      * @return string[]
      */
-    public static function values() : array
+    public static function values(): array
     {
         return [
             self::ASC,

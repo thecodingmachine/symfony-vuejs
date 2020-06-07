@@ -10,7 +10,7 @@ namespace App\Infrastructure\Dao;
 
 use App\Domain\Model\Company;
 use App\Domain\Repository\CompanyRepository;
-use App\Domain\Throwable\Exist\CompanyWithNameExist;
+use App\Domain\Throwable\Exists\CompanyWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidCompany;
 use App\Infrastructure\Dao\Generated\BaseCompanyDao;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -32,7 +32,7 @@ class CompanyDao extends BaseCompanyDao implements CompanyRepository
     /**
      * @throws InvalidCompany
      */
-    public function save(Company $company) : void
+    public function save(Company $company): void
     {
         $violations = $this->validator->validate($company);
         InvalidCompany::throwException($violations);
@@ -41,9 +41,9 @@ class CompanyDao extends BaseCompanyDao implements CompanyRepository
     }
 
     /**
-     * @throws CompanyWithNameExist
+     * @throws CompanyWithNameExists
      */
-    public function mustNotFindOneByName(string $name) : void
+    public function mustNotFindOneByName(string $name): void
     {
         $company = $this->findOneByName($name);
 
@@ -51,6 +51,6 @@ class CompanyDao extends BaseCompanyDao implements CompanyRepository
             return;
         }
 
-        throw new CompanyWithNameExist($name);
+        throw new CompanyWithNameExists($name);
     }
 }

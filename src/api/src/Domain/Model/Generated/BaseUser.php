@@ -86,11 +86,11 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     /**
      * The setter for the "first_name" column.
      *
-     * @param string $first_name
+     * @param string $firstName
      */
-    public function setFirstName(string $first_name) : void
+    public function setFirstName(string $firstName) : void
     {
-        $this->set('first_name', $first_name, 'users');
+        $this->set('first_name', $firstName, 'users');
     }
 
     /**
@@ -107,11 +107,11 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     /**
      * The setter for the "last_name" column.
      *
-     * @param string $last_name
+     * @param string $lastName
      */
-    public function setLastName(string $last_name) : void
+    public function setLastName(string $lastName) : void
     {
-        $this->set('last_name', $last_name, 'users');
+        $this->set('last_name', $lastName, 'users');
     }
 
     /**

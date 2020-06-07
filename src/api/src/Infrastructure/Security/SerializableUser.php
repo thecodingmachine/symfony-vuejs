@@ -45,7 +45,7 @@ final class SerializableUser implements UserInterface
     /**
      * @Field
      */
-    public function getId() : string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -53,7 +53,7 @@ final class SerializableUser implements UserInterface
     /**
      * @Field
      */
-    public function getFirstName() : string
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
@@ -61,7 +61,7 @@ final class SerializableUser implements UserInterface
     /**
      * @Field
      */
-    public function getLastName() : string
+    public function getLastName(): string
     {
         return $this->lastName;
     }
@@ -69,7 +69,7 @@ final class SerializableUser implements UserInterface
     /**
      * @Field
      */
-    public function getEmail() : string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -77,7 +77,7 @@ final class SerializableUser implements UserInterface
     /**
      * @Field
      */
-    public function getLocale() : string
+    public function getLocale(): string
     {
         return $this->locale;
     }
@@ -85,7 +85,7 @@ final class SerializableUser implements UserInterface
     /**
      * @Field
      */
-    public function getRole() : string
+    public function getRole(): string
     {
         return $this->role;
     }
@@ -95,7 +95,7 @@ final class SerializableUser implements UserInterface
      *
      * @Field
      */
-    public function getCompanies() : array
+    public function getCompanies(): array
     {
         return $this->companies;
     }
@@ -103,7 +103,7 @@ final class SerializableUser implements UserInterface
     /**
      * @return string[]
      */
-    public function getRoles() : array
+    public function getRoles(): array
     {
         return [
             // 'ROLE_' is a required prefix for Symfony.
@@ -111,22 +111,22 @@ final class SerializableUser implements UserInterface
         ];
     }
 
-    public function getPassword() : string
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    public function getSalt() : ?string
+    public function getSalt(): ?string
     {
         return null;
     }
 
-    public function getUsername() : string
+    public function getUsername(): string
     {
         return $this->email;
     }
 
-    public function eraseCredentials() : void
+    public function eraseCredentials(): void
     {
     }
 }

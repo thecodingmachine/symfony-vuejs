@@ -23,7 +23,7 @@ class Company extends BaseCompany
      * @Assert\NotBlank
      * @Assert\Length(max = 255)
      */
-    public function getName() : string
+    public function getName(): string
     {
         return parent::getName();
     }
@@ -31,9 +31,9 @@ class Company extends BaseCompany
     /**
      * @Assert\NotBlank(allowNull = true)
      * @Assert\Length(max = 255)
-     * @@Assert\Url
+     * @Assert\Url
      */
-    public function getWebsite() : ?string
+    public function getWebsite(): ?string
     {
         return parent::getWebsite();
     }
@@ -42,7 +42,7 @@ class Company extends BaseCompany
      * @Assert\NotBlank(allowNull = true)
      * @Assert\Length(max = 255)
      */
-    public function getLogoFilename() : ?string
+    public function getLogoFilename(): ?string
     {
         return parent::getLogoFilename();
     }

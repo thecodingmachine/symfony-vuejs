@@ -8,6 +8,7 @@ use App\Domain\Model\Storable\Storable;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 use SplFileInfo;
+
 use function Safe\fopen;
 
 final class StorableFactory
@@ -15,7 +16,7 @@ final class StorableFactory
     public static function createFromUploadedFile(
         UploadedFileInterface $uploadedFile,
         string $resultClass
-    ) : Storable {
+    ): Storable {
         $fileName = $uploadedFile->getClientFilename();
         $resource = $uploadedFile->getStream()->detach();
 
@@ -37,7 +38,7 @@ final class StorableFactory
     public static function createFromPath(
         string $path,
         string $resultClass
-    ) : Storable {
+    ): Storable {
         $file     = new SplFileInfo($path);
         $resource = fopen($path, 'r');
 

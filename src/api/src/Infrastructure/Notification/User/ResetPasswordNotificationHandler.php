@@ -9,6 +9,7 @@ use App\Infrastructure\Notification\NotificationHandler;
 use App\Infrastructure\Task\SendEmailTask;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+
 use function Safe\sprintf;
 
 final class ResetPasswordNotificationHandler extends NotificationHandler
@@ -23,7 +24,7 @@ final class ResetPasswordNotificationHandler extends NotificationHandler
         parent::__construct($messageBus);
     }
 
-    public function __invoke(ResetPasswordNotification $notification) : void
+    public function __invoke(ResetPasswordNotification $notification): void
     {
         $domain = $notification->isNewUser() ?
             'emails_user_welcome_new_user' :

@@ -9,7 +9,9 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Domain\Model\Generated\BaseResetPasswordToken;
+
 use function Safe\password_hash;
+
 use const PASSWORD_DEFAULT;
 
 /**
@@ -17,7 +19,7 @@ use const PASSWORD_DEFAULT;
  */
 class ResetPasswordToken extends BaseResetPasswordToken
 {
-    public function setToken(string $token) : void
+    public function setToken(string $token): void
     {
         parent::setToken(password_hash($token, PASSWORD_DEFAULT));
     }

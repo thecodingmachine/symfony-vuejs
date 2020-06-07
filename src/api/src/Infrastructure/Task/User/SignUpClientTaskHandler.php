@@ -22,7 +22,7 @@ final class SignUpClientTaskHandler implements MessageHandlerInterface
         $this->logger       = $logger;
     }
 
-    public function __invoke(SignUpClientTask $task) : void
+    public function __invoke(SignUpClientTask $task): void
     {
         try {
             $this->signUpClient->signUp(

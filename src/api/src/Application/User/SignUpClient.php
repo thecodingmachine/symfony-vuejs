@@ -6,7 +6,7 @@ namespace App\Application\User;
 
 use App\Domain\Enum\RoleEnum;
 use App\Domain\Model\User;
-use App\Domain\Throwable\Exist\UserWithEmailExist;
+use App\Domain\Throwable\Exists\UserWithEmailExists;
 use App\Domain\Throwable\Invalid\InvalidUser;
 use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
 
@@ -20,7 +20,7 @@ final class SignUpClient
     }
 
     /**
-     * @throws UserWithEmailExist
+     * @throws UserWithEmailExists
      * @throws InvalidUser
      * @throws UserNotFoundByEmail
      */
@@ -29,7 +29,7 @@ final class SignUpClient
         string $lastName,
         string $email,
         string $locale
-    ) : User {
+    ): User {
         return $this
             ->createUser
             ->create(

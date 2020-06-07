@@ -24,12 +24,12 @@ final class UsersFilters extends Filters
         parent::__construct($sortBy, $sortOrder);
     }
 
-    public function getSearch() : ?string
+    public function getSearch(): ?string
     {
         return $this->search;
     }
 
-    public function getRole() : ?string
+    public function getRole(): ?string
     {
         return $this->role;
     }
@@ -37,12 +37,12 @@ final class UsersFilters extends Filters
     /**
      * @Assert\Choice(callback={"App\Domain\Enum\Filter\UsersSortByEnum", "values"})
      */
-    public function getSortBy() : string
+    public function getSortBy(): string
     {
         return $this->sortBy;
     }
 
-    protected function getDefaultSortBy() : string
+    protected function getDefaultSortBy(): string
     {
         return UsersSortByEnum::FIRST_NAME;
     }

@@ -7,7 +7,7 @@ namespace App\Domain\Repository;
 use App\Domain\Model\Filter\UsersFilters;
 use App\Domain\Model\Proxy\PasswordProxy;
 use App\Domain\Model\User;
-use App\Domain\Throwable\Exist\UserWithEmailExist;
+use App\Domain\Throwable\Exists\UserWithEmailExists;
 use App\Domain\Throwable\Invalid\InvalidPassword;
 use App\Domain\Throwable\Invalid\InvalidUser;
 use App\Domain\Throwable\Invalid\InvalidUsersFilters;
@@ -20,33 +20,33 @@ interface UserRepository
     /**
      * @throws InvalidUser
      */
-    public function save(User $user) : void;
+    public function save(User $user): void;
 
     /**
      * @throws InvalidPassword
      * @throws InvalidUser
      */
-    public function updatePassword(User $user, PasswordProxy $passwordProxy) : void;
+    public function updatePassword(User $user, PasswordProxy $passwordProxy): void;
 
     /**
      * @throws UserNotFoundById
      */
-    public function mustFindOneById(string $id) : User;
+    public function mustFindOneById(string $id): User;
 
     /**
      * @throws UserNotFoundByEmail
      */
-    public function mustFindOneByEmail(string $email) : User;
+    public function mustFindOneByEmail(string $email): User;
 
     /**
-     * @throws UserWithEmailExist
+     * @throws UserWithEmailExists
      */
-    public function mustNotFindOneByEmail(string $email) : void;
+    public function mustNotFindOneByEmail(string $email): void;
 
     /**
      * @return User[]|ResultIterator
      *
      * @throws InvalidUsersFilters
      */
-    public function search(UsersFilters $filters) : ResultIterator;
+    public function search(UsersFilters $filters): ResultIterator;
 }

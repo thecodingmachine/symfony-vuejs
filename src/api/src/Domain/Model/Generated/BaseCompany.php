@@ -120,11 +120,11 @@ abstract class BaseCompany extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
     /**
      * The setter for the "logo_filename" column.
      *
-     * @param string|null $logo_filename
+     * @param string|null $logoFilename
      */
-    public function setLogoFilename(?string $logo_filename) : void
+    public function setLogoFilename(?string $logoFilename) : void
     {
-        $this->set('logo_filename', $logo_filename, 'companies');
+        $this->set('logo_filename', $logoFilename, 'companies');
     }
 
     /**

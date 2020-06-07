@@ -15,7 +15,7 @@ final class ResetPasswordTask implements AsyncTask
         $this->email = $email;
     }
 
-    public function getEmail() : string
+    public function getEmail(): string
     {
         return $this->email;
     }

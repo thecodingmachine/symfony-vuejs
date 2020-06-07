@@ -6,7 +6,7 @@ namespace App\Infrastructure\Controller\GraphQL\User;
 
 use App\Application\User\CreateUser;
 use App\Domain\Model\User;
-use App\Domain\Throwable\Exist\UserWithEmailExist;
+use App\Domain\Throwable\Exists\UserWithEmailExists;
 use App\Domain\Throwable\Invalid\InvalidUser;
 use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +23,7 @@ final class CreateUserController extends AbstractController
     }
 
     /**
-     * @throws UserWithEmailExist
+     * @throws UserWithEmailExists
      * @throws InvalidUser
      * @throws UserNotFoundByEmail
      *
@@ -36,7 +36,7 @@ final class CreateUserController extends AbstractController
         string $email,
         string $locale,
         string $role
-    ) : User {
+    ): User {
         return $this->createUser->create(
             $firstName,
             $lastName,

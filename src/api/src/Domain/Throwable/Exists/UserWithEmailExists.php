@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Throwable\Exist;
+namespace App\Domain\Throwable\Exists;
 
-final class UserWithEmailExist extends Exist
+final class UserWithEmailExists extends Exists
 {
     public function __construct(string $email)
     {
         parent::__construct('"' . $email . '" is already assigned to a user');
     }
 
-    public function isClientSafe() : bool
+    public function isClientSafe(): bool
     {
         return false;
     }

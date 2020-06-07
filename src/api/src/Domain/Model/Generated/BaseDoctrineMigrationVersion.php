@@ -74,11 +74,11 @@ abstract class BaseDoctrineMigrationVersion extends \TheCodingMachine\TDBM\Abstr
     /**
      * The setter for the "executed_at" column.
      *
-     * @param \DateTimeImmutable|null $executed_at
+     * @param \DateTimeImmutable|null $executedAt
      */
-    public function setExecutedAt(?\DateTimeImmutable $executed_at) : void
+    public function setExecutedAt(?\DateTimeImmutable $executedAt) : void
     {
-        $this->set('executed_at', $executed_at, 'doctrine_migration_versions');
+        $this->set('executed_at', $executedAt, 'doctrine_migration_versions');
     }
 
     /**
@@ -94,11 +94,11 @@ abstract class BaseDoctrineMigrationVersion extends \TheCodingMachine\TDBM\Abstr
     /**
      * The setter for the "execution_time" column.
      *
-     * @param int|null $execution_time
+     * @param int|null $executionTime
      */
-    public function setExecutionTime(?int $execution_time) : void
+    public function setExecutionTime(?int $executionTime) : void
     {
-        $this->set('execution_time', $execution_time, 'doctrine_migration_versions');
+        $this->set('execution_time', $executionTime, 'doctrine_migration_versions');
     }
 
     /**

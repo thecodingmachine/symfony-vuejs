@@ -29,7 +29,7 @@ final class SearchUsers
         ?string $role = null,
         ?string $sortBy = null,
         ?string $sortOrder = null
-    ) : ResultIterator {
+    ): ResultIterator {
         $filters = new UsersFilters($search, $role, $sortBy, $sortOrder);
 
         return $this->userRepository->search($filters);

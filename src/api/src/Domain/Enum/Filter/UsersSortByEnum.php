@@ -16,7 +16,7 @@ final class UsersSortByEnum implements StringEnum
     /**
      * @return string[]
      */
-    public static function values() : array
+    public static function values(): array
     {
         return [
             self::FIRST_NAME,

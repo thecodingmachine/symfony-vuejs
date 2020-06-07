@@ -13,7 +13,7 @@ final class InvalidCompany extends Invalid
      *
      * @throws InvalidCompany
      */
-    public static function throwException(ConstraintViolationListInterface $constraintViolationList) : void
+    public static function throwException(ConstraintViolationListInterface $constraintViolationList): void
     {
         if ($constraintViolationList->count() > 0) {
             throw new self($constraintViolationList);

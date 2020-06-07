@@ -11,7 +11,7 @@ use App\Domain\Model\User;
 use App\Domain\Repository\UserRepository;
 use App\Domain\Throwable\Invalid\InvalidUsersFilters;
 
-beforeEach(function () : void {
+beforeEach(function (): void {
     $userRepository = self::$container->get(UserRepository::class);
     assert($userRepository instanceof UserRepository);
 
@@ -45,7 +45,7 @@ beforeEach(function () : void {
 
 it(
     'finds all users',
-    function () : void {
+    function (): void {
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
@@ -56,7 +56,7 @@ it(
 
 it(
     'filters users with a generic search',
-    function (string $search) : void {
+    function (string $search): void {
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
@@ -74,7 +74,7 @@ it(
 
 it(
     'filters users by role',
-    function (string $role) : void {
+    function (string $role): void {
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
@@ -90,7 +90,7 @@ it(
 
 it(
     'sorts users by first name',
-    function (string $sortOrder) : void {
+    function (string $sortOrder): void {
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
@@ -114,7 +114,7 @@ it(
 
 it(
     'sorts users by last name',
-    function (string $sortOrder) : void {
+    function (string $sortOrder): void {
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
@@ -138,7 +138,7 @@ it(
 
 it(
     'sorts users by e-mail',
-    function (string $sortOrder) : void {
+    function (string $sortOrder): void {
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
@@ -162,7 +162,7 @@ it(
 
 it(
     'sorts users by role',
-    function (string $sortOrder) : void {
+    function (string $sortOrder): void {
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 
@@ -186,7 +186,7 @@ it(
 
 it(
     'throws an exception if invalid filters',
-    function (string $role, string $sortBy, string $sortOrder) : void {
+    function (string $role, string $sortBy, string $sortOrder): void {
         $searchUsers = self::$container->get(SearchUsers::class);
         assert($searchUsers instanceof SearchUsers);
 

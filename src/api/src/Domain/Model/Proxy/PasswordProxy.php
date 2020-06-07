@@ -20,7 +20,7 @@ final class PasswordProxy
         $this->plainPassword = $plainPassword;
     }
 
-    public function getPlainPassword() : string
+    public function getPlainPassword(): string
     {
         return $this->plainPassword;
     }

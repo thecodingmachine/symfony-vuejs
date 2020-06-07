@@ -13,7 +13,7 @@ it(
         string $lastName,
         string $email,
         string $locale
-    ) : void {
+    ): void {
         $signUpClient = self::$container->get(SignUpClient::class);
         assert($signUpClient instanceof SignUpClient);
 
