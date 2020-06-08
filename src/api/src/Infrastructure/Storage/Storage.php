@@ -53,7 +53,7 @@ abstract class Storage
 
     protected function put(Storable $storable): string
     {
-        $fileName = $storable->getGeneratedFileName();
+        $fileName = $storable->getFilename();
         $path     = $this->getPath($fileName);
         $result   = $this->storage->putStream(
             $path,

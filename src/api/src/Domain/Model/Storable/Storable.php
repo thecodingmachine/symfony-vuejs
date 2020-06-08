@@ -11,7 +11,7 @@ use SplFileInfo;
 abstract class Storable
 {
     protected SplFileInfo $fileInfo;
-    private string $generatedBaseFileName;
+    private string $filename;
     /**
      * @var resource $resource
      * @DomainAssert\IsResource
@@ -21,21 +21,19 @@ abstract class Storable
     /**
      * @param resource $resource
      */
-    public function __construct(string $fileName, $resource)
+    public function __construct(string $filename, $resource, bool $overrideFilename = true)
     {
-        $this->fileInfo              = new SplFileInfo($fileName);
-        $this->generatedBaseFileName = Uuid::uuid4()->toString();
-        $this->resource              = $resource;
+        $this->fileInfo = new SplFileInfo($filename);
+        $this->filename = $overrideFilename === true ?
+            Uuid::uuid4()->toString() :
+            $filename;
+
+        $this->resource = $resource;
     }
 
-    public function getOriginalFileName(): string
+    public function getFilename(): string
     {
-        return $this->fileInfo->getBasename('.' . $this->fileInfo->getExtension()) . '.' . $this->getExtension();
-    }
-
-    public function getGeneratedFileName(): string
-    {
-        return $this->generatedBaseFileName . '.' . $this->getExtension();
+        return $this->filename . '.' . $this->getExtension();
     }
 
     /**

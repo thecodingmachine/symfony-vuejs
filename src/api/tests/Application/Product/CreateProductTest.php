@@ -153,7 +153,7 @@ it(
 
         foreach ($storables as $storable) {
             assertFalse($productPictureStore->fileExists(
-                $storable->getGeneratedFileName()
+                $storable->getFilename()
             ));
         }
     }
@@ -221,7 +221,7 @@ it(
 
         foreach ($storables as $storable) {
             assertFalse($productPictureStore->fileExists(
-                $storable->getGeneratedFileName()
+                $storable->getFilename()
             ));
         }
     }

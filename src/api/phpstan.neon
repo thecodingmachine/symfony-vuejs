@@ -12,9 +12,6 @@ parameters:
         -
             message: '#PHPDoc tag @throws .* is not compatible with parent#'
             path: %currentWorkingDirectory%/src/Infrastructure/Dao/*.php
-        -
-            message: '#Unused @throws Symfony\\Component\\Console\\Exception\\LogicException annotation#'
-            path: %currentWorkingDirectory%/src/Infrastructure/Command/*.php
     exceptionRules:
         reportUnusedCatchesOfUncheckedExceptions: false
         reportUnusedCheckedThrowsInSubtypes: false
