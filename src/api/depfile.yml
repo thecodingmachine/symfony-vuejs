@@ -3,10 +3,10 @@ paths:
 exclude_files:
   - .*test.*
 layers:
-  - name: Application
+  - name: UseCase
     collectors:
       - type: directory
-        regex: src/Application
+        regex: src/UseCase
   - name: Domain
     collectors:
       - type: directory
@@ -17,8 +17,8 @@ layers:
         regex: src/Infrastructure
 ruleset:
   Domain: ~
-  Application:
+  UseCase:
     - Domain
   Infrastructure:
     - Domain
-    - Application
+    - UseCase

@@ -6,12 +6,12 @@ includes:
 parameters:
     excludes_analyse:
         - %currentWorkingDirectory%/src/Domain/Model/Generated/*.php
-        - %currentWorkingDirectory%/src/Infrastructure/Dao/Generated/*.php
+        - %currentWorkingDirectory%/src/Domain/Dao/Generated/*.php
         - %currentWorkingDirectory%/src/Kernel.php
     ignoreErrors:
         -
             message: '#PHPDoc tag @throws .* is not compatible with parent#'
-            path: %currentWorkingDirectory%/src/Infrastructure/Dao/*.php
+            path: %currentWorkingDirectory%/src/Domain/Dao/*.php
     exceptionRules:
         reportUnusedCatchesOfUncheckedExceptions: false
         reportUnusedCheckedThrowsInSubtypes: false

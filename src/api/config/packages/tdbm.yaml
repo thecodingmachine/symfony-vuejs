@@ -1,7 +1,7 @@
 # Read more about TDBM available options at: https://thecodingmachine.github.io/tdbm/doc/install_symfony.html
 tdbm:
     bean_namespace: App\Domain\Model
-    dao_namespace: App\Infrastructure\Dao
+    dao_namespace: App\Domain\Dao
     naming:
         base_bean_prefix: Base
         base_dao_prefix: Base

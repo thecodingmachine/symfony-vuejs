@@ -2,6 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Tests\Application\ApplicationTestCase;
+use App\Tests\UseCase\UseCaseTestCase;
 
-uses(ApplicationTestCase::class)->in('Application');
+uses(UseCaseTestCase::class)->in('UseCase');

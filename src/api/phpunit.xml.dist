@@ -29,7 +29,7 @@
             <exclude>
                 <directory>src/Kernel.php</directory>
                 <directory>src/Domain/Model/Generated</directory>
-                <directory>src/Infrastructure/Dao/Generated</directory>
+                <directory>src/Domain/Dao/Generated</directory>
             </exclude>
         </whitelist>
     </filter>

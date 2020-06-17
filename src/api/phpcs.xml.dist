@@ -27,6 +27,6 @@
     <!-- Directories NOT to be checked -->
     <exclude-pattern>src/Domain/Model/Generated/**</exclude-pattern>
     <exclude-pattern>src/Domain/Assert/**</exclude-pattern>
-    <exclude-pattern>src/Infrastructure/Dao/Generated/**</exclude-pattern>
+    <exclude-pattern>src/Domain/Dao/Generated/**</exclude-pattern>
     <exclude-pattern>src/Kernel.php</exclude-pattern>
 </ruleset>
