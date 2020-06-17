@@ -486,7 +486,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "5.1",
-            "ref": "37b4ec59eda3eb89705f21a0da7231862495ce0a"
+            "ref": "20148abf61a454d2c045931d20e6418c729a675a"
         },
         "files": [
             "config/packages/cache.yaml",
