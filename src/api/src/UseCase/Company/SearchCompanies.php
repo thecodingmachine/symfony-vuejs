@@ -9,7 +9,6 @@ use App\Domain\Model\Company;
 use App\Domain\Model\Filter\CompaniesFilters;
 use App\Domain\Throwable\Invalid\InvalidCompaniesFilters;
 use TheCodingMachine\GraphQLite\Annotations\Query;
-use TheCodingMachine\GraphQLite\Annotations\Right;
 use TheCodingMachine\TDBM\ResultIterator;
 
 final class SearchCompanies
@@ -27,7 +26,6 @@ final class SearchCompanies
      * @throws InvalidCompaniesFilters
      *
      * @Query
-     * @Right("ROLE_ADMINISTRATOR")
      */
     public function searchCompanies(
         ?string $search = null,

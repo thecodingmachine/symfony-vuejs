@@ -8,7 +8,6 @@ use App\Domain\Dao\CompanyDao;
 use App\Domain\Model\Company;
 use App\Domain\Throwable\NotFound\CompanyNotFoundById;
 use TheCodingMachine\GraphQLite\Annotations\Query;
-use TheCodingMachine\GraphQLite\Annotations\Right;
 
 final class GetCompany
 {
@@ -23,7 +22,6 @@ final class GetCompany
      * @throws CompanyNotFoundById
      *
      * @Query
-     * @Right("ROLE_ADMINISTRATOR")
      */
     public function getCompanyById(string $id): Company
     {
