@@ -32,18 +32,8 @@ it(
 it(
     'throws an exception if invalid id.',
     function (): void {
-        $createUser = self::$container->get(CreateUser::class);
-        $getUser    = self::$container->get(GetUser::class);
-        assert($createUser instanceof CreateUser);
+        $getUser = self::$container->get(GetUser::class);
         assert($getUser instanceof GetUser);
-
-        $createUser->createUser(
-            'Foo',
-            'Bar',
-            'foo.bar@baz.com',
-            LocaleEnum::EN,
-            RoleEnum::ADMINISTRATOR
-        );
 
         $getUser->getUserById('foo');
     }
