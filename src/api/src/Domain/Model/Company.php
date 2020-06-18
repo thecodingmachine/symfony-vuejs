@@ -10,6 +10,7 @@ namespace App\Domain\Model;
 
 use App\Domain\Model\Generated\BaseCompany;
 use Symfony\Component\Validator\Constraints as Assert;
+use TheCodingMachine\GraphQLite\Annotations\Right;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
 /**
@@ -45,5 +46,13 @@ class Company extends BaseCompany
     public function getLogo(): ?string
     {
         return parent::getLogo();
+    }
+
+    /**
+     * @Right("ROLE_ADMINISTRATOR")
+     */
+    public function getUsers(): array
+    {
+        return parent::getUsers();
     }
 }
