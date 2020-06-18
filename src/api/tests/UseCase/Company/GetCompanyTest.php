@@ -24,12 +24,9 @@ it(
 it(
     'throws an exception if invalid id.',
     function (): void {
-        $createCompany = self::$container->get(CreateCompany::class);
-        $getCompany    = self::$container->get(GetCompany::class);
-        assert($createCompany instanceof CreateCompany);
+        $getCompany = self::$container->get(GetCompany::class);
         assert($getCompany instanceof GetCompany);
 
-        $createCompany->create('foo');
         $getCompany->getCompanyById('foo');
     }
 )
