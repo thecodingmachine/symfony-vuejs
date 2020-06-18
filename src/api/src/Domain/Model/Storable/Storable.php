@@ -25,7 +25,7 @@ abstract class Storable
     /**
      * @param resource $resource
      */
-    public function __construct(string $filename, $resource, bool $overrideFilename = true)
+    final public function __construct(string $filename, $resource, bool $overrideFilename = true)
     {
         $this->fileInfo = new SplFileInfo($filename);
         $this->filename = $overrideFilename === true ?
@@ -53,28 +53,24 @@ abstract class Storable
     /**
      * @param UploadedFileInterface[] $uploadedFiles
      *
-     * @return Storable[]
+     * @return static[]
      */
-    public static function createAllFromUploadedFiles(
-        array $uploadedFiles,
-        string $resultClass
-    ): array {
+    public static function createAllFromUploadedFiles(array $uploadedFiles): array
+    {
         $storables = [];
 
         foreach ($uploadedFiles as $uploadedFile) {
-            $storables[] = self::createFromUploadedFile(
-                $uploadedFile,
-                $resultClass
-            );
+            $storables[] = self::createFromUploadedFile($uploadedFile);
         }
 
         return $storables;
     }
 
-    public static function createFromUploadedFile(
-        UploadedFileInterface $uploadedFile,
-        string $resultClass
-    ): Storable {
+    /**
+     * @return static
+     */
+    public static function createFromUploadedFile(UploadedFileInterface $uploadedFile)
+    {
         $fileName = $uploadedFile->getClientFilename();
         $resource = $uploadedFile->getStream()->detach();
 
@@ -90,37 +86,33 @@ abstract class Storable
             );
         }
 
-        return new $resultClass($fileName, $resource);
+        return new static($fileName, $resource);
     }
 
     /**
      * @param string[] $paths
      *
-     * @return Storable[]
+     * @return static[]
      */
-    public static function createAllFromPaths(
-        array $paths,
-        string $resultClass
-    ): array {
+    public static function createAllFromPaths(array $paths): array
+    {
         $storables = [];
 
         foreach ($paths as $path) {
-            $storables[] = self::createFromPath(
-                $path,
-                $resultClass
-            );
+            $storables[] = self::createFromPath($path);
         }
 
         return $storables;
     }
 
-    public static function createFromPath(
-        string $path,
-        string $resultClass
-    ): Storable {
+    /**
+     * @return static
+     */
+    public static function createFromPath(string $path): Storable
+    {
         $file     = new SplFileInfo($path);
         $resource = fopen($path, 'r');
 
-        return new $resultClass($file->getFilename(), $resource);
+        return new static($file->getFilename(), $resource);
     }
 }

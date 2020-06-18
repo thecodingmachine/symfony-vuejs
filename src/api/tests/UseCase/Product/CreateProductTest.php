@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Domain\Model\Storable\ProductPicture;
-use App\Domain\Model\Storable\Storable;
 use App\Domain\Storage\ProductPictureStorage;
 use App\Domain\Throwable\Exists\ProductWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidProduct;
@@ -56,10 +55,9 @@ it(
             dirname(__FILE__) . '/foo.png',
             dirname(__FILE__) . '/foo.jpg',
         ];
-        /** @var ProductPicture[] $storables */
-        $storables = Storable::createAllFromPaths(
-            $pictures,
-            ProductPicture::class
+
+        $storables = ProductPicture::createAllFromPaths(
+            $pictures
         );
 
         $company = $createCompany->create('foo');
@@ -137,10 +135,9 @@ it(
             dirname(__FILE__) . '/foo.png',
             dirname(__FILE__) . '/foo.txt',
         ];
-        /** @var ProductPicture[] $storables */
-        $storables = Storable::createAllFromPaths(
-            $pictures,
-            ProductPicture::class
+
+        $storables = ProductPicture::createAllFromPaths(
+            $pictures
         );
 
         $company = $createCompany->create('foo');
@@ -205,10 +202,9 @@ it(
             dirname(__FILE__) . '/foo.png',
             dirname(__FILE__) . '/foo.jpg',
         ];
-        /** @var ProductPicture[] $storables */
-        $storables = Storable::createAllFromPaths(
-            $pictures,
-            ProductPicture::class
+
+        $storables = ProductPicture::createAllFromPaths(
+            $pictures
         );
 
         $company = $createCompany->create('foo');

@@ -7,7 +7,6 @@ namespace App\UseCase\Company;
 use App\Domain\Dao\CompanyDao;
 use App\Domain\Model\Company;
 use App\Domain\Model\Storable\CompanyLogo;
-use App\Domain\Model\Storable\Storable;
 use App\Domain\Storage\CompanyLogoStorage;
 use App\Domain\Throwable\Exists\CompanyWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidCompany;
@@ -16,8 +15,6 @@ use Psr\Http\Message\UploadedFileInterface;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 use Throwable;
-
-use function assert;
 
 final class CreateCompany
 {
@@ -47,8 +44,7 @@ final class CreateCompany
     ): Company {
         $storable = null;
         if ($logo !== null) {
-            $storable = Storable::createFromUploadedFile($logo, CompanyLogo::class);
-            assert($storable instanceof CompanyLogo);
+            $storable = CompanyLogo::createFromUploadedFile($logo);
         }
 
         return $this->create(

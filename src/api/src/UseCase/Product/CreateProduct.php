@@ -8,7 +8,6 @@ use App\Domain\Dao\CompanyDao;
 use App\Domain\Dao\ProductDao;
 use App\Domain\Model\Product;
 use App\Domain\Model\Storable\ProductPicture;
-use App\Domain\Model\Storable\Storable;
 use App\Domain\Storage\ProductPictureStorage;
 use App\Domain\Throwable\Exists\ProductWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidProduct;
@@ -54,10 +53,8 @@ final class CreateProduct
     ): Product {
         $storables = null;
         if ($pictures !== null) {
-            /** @var ProductPicture[] $storables */
-            $storables = Storable::createAllFromUploadedFiles(
-                $pictures,
-                ProductPicture::class
+            $storables = ProductPicture::createAllFromUploadedFiles(
+                $pictures
             );
         }
 

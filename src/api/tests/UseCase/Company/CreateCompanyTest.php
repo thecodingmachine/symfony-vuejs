@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Domain\Model\Storable\CompanyLogo;
-use App\Domain\Model\Storable\Storable;
 use App\Domain\Storage\CompanyLogoStorage;
 use App\Domain\Throwable\Exists\CompanyWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidCompany;
@@ -47,11 +46,9 @@ it(
         assert($createCompany instanceof CreateCompany);
         assert($companyLogoStorage instanceof CompanyLogoStorage);
 
-        $storable = Storable::createFromPath(
+        $storable = CompanyLogo::createFromPath(
             dirname(__FILE__) . '/' . $logo,
-            CompanyLogo::class
         );
-        assert($storable instanceof CompanyLogo);
 
         $company = $createCompany->create(
             'foo',
@@ -90,11 +87,9 @@ it(
         assert($createCompany instanceof CreateCompany);
         assert($companyLogoStorage instanceof CompanyLogoStorage);
 
-        $storable = Storable::createFromPath(
-            dirname(__FILE__) . '/' . $logo,
-            CompanyLogo::class
+        $storable = CompanyLogo::createFromPath(
+            dirname(__FILE__) . '/' . $logo
         );
-        assert($storable instanceof CompanyLogo);
 
         $createCompany->create(
             'foo',
@@ -148,11 +143,9 @@ it(
         assert($createCompany instanceof CreateCompany);
         assert($companyLogoStorage instanceof CompanyLogoStorage);
 
-        $storable = Storable::createFromPath(
-            dirname(__FILE__) . '/' . $logo,
-            CompanyLogo::class
+        $storable = CompanyLogo::createFromPath(
+            dirname(__FILE__) . '/' . $logo
         );
-        assert($storable instanceof CompanyLogo);
 
         $createCompany->create(
             DummyValues::BLANK,
