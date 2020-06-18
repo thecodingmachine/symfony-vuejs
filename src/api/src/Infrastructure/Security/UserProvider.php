@@ -6,12 +6,13 @@ namespace App\Infrastructure\Security;
 
 use App\Domain\Dao\UserDao;
 use App\Domain\Model\User;
-use RuntimeException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 use function get_class;
+use function is_a;
 use function Safe\sprintf;
 
 final class UserProvider implements UserProviderInterface
@@ -26,16 +27,18 @@ final class UserProvider implements UserProviderInterface
     public function loadUserByUsername(string $username): UserInterface
     {
         $user = $this->userDao->findOneByEmail($username);
-        if ($user === null) {
-            throw new RuntimeException('No user found for email ' . $username);
+        if ($user !== null) {
+            return $user;
         }
 
-        return new SerializableUser($user);
+        throw new UsernameNotFoundException(
+            'No user found for email ' . $username
+        );
     }
 
     public function refreshUser(UserInterface $user): UserInterface
     {
-        if (! $user instanceof SerializableUser) {
+        if (! $user instanceof User) {
             throw new UnsupportedUserException(
                 sprintf('Instances of "%s" are not supported.', get_class($user))
             );
@@ -46,6 +49,6 @@ final class UserProvider implements UserProviderInterface
 
     public function supportsClass(string $class): bool
     {
-        return $class === User::class || $class === SerializableUser::class;
+        return is_a($class, User::class, true);
     }
 }
