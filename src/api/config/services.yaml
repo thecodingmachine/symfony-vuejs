@@ -25,7 +25,7 @@ services:
         resource: '../src/*'
         exclude:
             - '../src/Domain/{Throwable,Model}'
-            - '../src/Infrastructure/Security/SerializableUser.php'
+            - '../src/Infrastructure/S3'
             - '../src/Kernel.php'
 
     # controllers are imported separately to make sure services can be injected

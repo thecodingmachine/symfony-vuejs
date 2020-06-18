@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Command;
 
+use App\Infrastructure\S3\CreateBucket;
+use App\Infrastructure\S3\CreatePublicBucket;
 use Aws\S3\S3MultiRegionClient;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,15 +41,34 @@ final class InitializeMinIOStorage extends Command
             return Command::FAILURE;
         }
 
-        $publicBucketExists  = $this->storageHas($output, $this->publicBucket);
-        $privateBucketExists = $this->storageHas($output, $this->privateBucket);
-
-        if (! $publicBucketExists) {
-            $this->createBucket($output, $this->publicBucket);
+        $createPublicBucket = new CreatePublicBucket($this->client);
+        if (! $createPublicBucket->create($this->publicBucket)) {
+            $output->writeln(
+                'Bucket "' .
+                $this->publicBucket .
+                '" already exists'
+            );
+        } else {
+            $output->writeln(
+                'Bucket "' .
+                $this->publicBucket .
+                '" created'
+            );
         }
 
-        if (! $privateBucketExists) {
-            $this->createBucket($output, $this->privateBucket, false);
+        $createBucket = new CreateBucket($this->client);
+        if (! $createBucket->create($this->privateBucket)) {
+            $output->writeln(
+                'Bucket "' .
+                $this->privateBucket .
+                '" already exists'
+            );
+        } else {
+            $output->writeln(
+                'Bucket "' .
+                $this->privateBucket .
+                '" created'
+            );
         }
 
         return Command::SUCCESS;
@@ -83,83 +104,5 @@ final class InitializeMinIOStorage extends Command
         }
 
         return true;
-    }
-
-    private function storageHas(OutputInterface $output, string $bucketName): bool
-    {
-        $buckets = $this->client->listBuckets();
-        foreach ($buckets['Buckets'] as $bucket) {
-            if ($bucket['Name'] === $bucketName) {
-                $output->writeln(
-                    'Bucket "' .
-                    $bucketName .
-                    '" already exists'
-                );
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function createBucket(OutputInterface $output, string $bucketName, bool $public = true): void
-    {
-        $this->client->createBucket(['Bucket' => $bucketName]);
-
-        if ($public === true) {
-            $policyReadOnly = '{
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Action": [
-                    "s3:GetBucketLocation",
-                    "s3:ListBucket"
-                  ],
-                  "Effect": "Allow",
-                  "Principal": {
-                    "AWS": [
-                      "*"
-                    ]
-                  },
-                  "Resource": [
-                    "arn:aws:s3:::%s"
-                  ],
-                  "Sid": ""
-                },
-                {
-                  "Action": [
-                    "s3:GetObject"
-                  ],
-                  "Effect": "Allow",
-                  "Principal": {
-                    "AWS": [
-                      "*"
-                    ]
-                  },
-                  "Resource": [
-                    "arn:aws:s3:::%s/*"
-                  ],
-                  "Sid": ""
-                }
-              ]
-            }
-            ';
-
-            $this->client->putBucketPolicy([
-                'Bucket' => $bucketName,
-                'Policy' => sprintf(
-                    $policyReadOnly,
-                    $bucketName,
-                    $bucketName
-                ),
-            ]);
-        }
-
-        $output->writeln(
-            'Bucket "' .
-            $bucketName .
-            '" created'
-        );
     }
 }
