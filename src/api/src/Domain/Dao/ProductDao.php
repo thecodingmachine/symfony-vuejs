@@ -9,11 +9,14 @@ declare(strict_types=1);
 namespace App\Domain\Dao;
 
 use App\Domain\Dao\Generated\BaseProductDao;
+use App\Domain\Model\Filter\ProductsFilters;
 use App\Domain\Model\Product;
 use App\Domain\Throwable\Exists\ProductWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidProduct;
+use App\Domain\Throwable\Invalid\InvalidProductsFilters;
 use App\Domain\Throwable\NotFound\ProductNotFoundById;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\TDBMService;
 
 /**
@@ -66,5 +69,30 @@ class ProductDao extends BaseProductDao
         }
 
         throw new ProductWithNameExists($name);
+    }
+
+    /**
+     * @return Product[]|ResultIterator
+     *
+     * @throws InvalidProductsFilters
+     */
+    public function search(ProductsFilters $filters): ResultIterator
+    {
+        $violations = $this->validator->validate($filters);
+        InvalidProductsFilters::throwException($violations);
+
+        return $this->find(
+            [
+                'name LIKE :search',
+                'price >= :lowerPrice',
+                'price <= :upperPrice',
+            ],
+            [
+                'search' => '%' . $filters->getSearch() . '%',
+                'lowerPrice' => $filters->getLowerPrice(),
+                'upperPrice' => $filters->getUpperPrice(),
+            ],
+            $filters->getSortBy() . ' ' . $filters->getSortOrder()
+        );
     }
 }
