@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Domain\Throwable\NotFound\CompanyNotFoundById;
 use App\UseCase\Company\CreateCompany;
 use App\UseCase\Company\GetCompany;
 
@@ -16,18 +15,7 @@ it(
 
         $company = $createCompany->create('foo');
 
-        $foundCompany = $getCompany->getCompanyById($company->getId());
+        $foundCompany = $getCompany->getCompanyById($company);
         assertEquals($company->getId(), $foundCompany->getId());
     }
 );
-
-it(
-    'throws an exception if invalid id.',
-    function (): void {
-        $getCompany = self::$container->get(GetCompany::class);
-        assert($getCompany instanceof GetCompany);
-
-        $getCompany->getCompanyById('foo');
-    }
-)
-    ->throws(CompanyNotFoundById::class);

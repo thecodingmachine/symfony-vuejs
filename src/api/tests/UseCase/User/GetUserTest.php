@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Domain\Enum\LocaleEnum;
 use App\Domain\Enum\RoleEnum;
-use App\Domain\Throwable\NotFound\UserNotFoundById;
 use App\UseCase\User\CreateUser;
 use App\UseCase\User\GetUser;
 
@@ -24,18 +23,7 @@ it(
             RoleEnum::ADMINISTRATOR
         );
 
-        $foundUser = $getUser->getUserById($user->getId());
+        $foundUser = $getUser->getUserById($user);
         assertEquals($user->getId(), $foundUser->getId());
     }
 );
-
-it(
-    'throws an exception if invalid id.',
-    function (): void {
-        $getUser = self::$container->get(GetUser::class);
-        assert($getUser instanceof GetUser);
-
-        $getUser->getUserById('foo');
-    }
-)
-    ->throws(UserNotFoundById::class);

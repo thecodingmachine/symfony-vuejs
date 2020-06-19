@@ -6,7 +6,6 @@ use App\Domain\Dao\ResetPasswordTokenDao;
 use App\Domain\Enum\LocaleEnum;
 use App\Domain\Enum\RoleEnum;
 use App\Domain\Throwable\Invalid\InvalidPassword;
-use App\Domain\Throwable\NotFound\ResetPasswordTokenNotFoundById;
 use App\Tests\UseCase\DummyValues;
 use App\UseCase\User\CreateUser;
 use App\UseCase\User\ResetPassword\ResetPassword;
@@ -14,6 +13,7 @@ use App\UseCase\User\UpdatePassword\ResetPasswordTokenExpired;
 use App\UseCase\User\UpdatePassword\UpdatePassword;
 use App\UseCase\User\UpdatePassword\WrongResetPasswordToken;
 use Safe\DateTimeImmutable;
+use TheCodingMachine\TDBM\TDBMException;
 
 beforeEach(function (): void {
     $createUser = self::$container->get(CreateUser::class);
@@ -38,57 +38,44 @@ it(
         assert($updatePassword instanceof UpdatePassword);
         assert($resetPasswordTokenDao instanceof  ResetPasswordTokenDao);
 
-        $notification = $resetPassword->reset($email);
-        $user         = $updatePassword->update(
-            $notification->getResetPasswordTokenId(),
+        $notification       = $resetPassword->reset($email);
+        $resetPasswordToken = $resetPasswordTokenDao->getById($notification->getResetPasswordTokenId());
+
+        $user = $updatePassword->update(
+            $resetPasswordToken,
             $notification->getPlainToken(),
             $password
         );
 
         assertTrue(password_verify($password, $user->getPassword()));
-        $resetPasswordTokenDao->mustFindOneById($notification->getResetPasswordTokenId());
+        $resetPasswordTokenDao->getById($notification->getResetPasswordTokenId());
     }
 )
-    ->throws(ResetPasswordTokenNotFoundById::class)
-    ->with([['foo.bar@baz.com', 'foobarfoo']]);
-
-it(
-    'throws an exception if the token does not exist',
-    function (string $email, string $password): void {
-        $resetPassword  = self::$container->get(ResetPassword::class);
-        $updatePassword = self::$container->get(UpdatePassword::class);
-        assert($resetPassword instanceof ResetPassword);
-        assert($updatePassword instanceof UpdatePassword);
-
-        $notification = $resetPassword->reset($email);
-        $updatePassword->update(
-            'foo',
-            $notification->getPlainToken(),
-            $password
-        );
-    }
-)
-    ->throws(ResetPasswordTokenNotFoundById::class)
-    ->with([['foo.bar@baz.com', 'foobarfoo']]);
+    ->with([['foo.bar@baz.com', 'foobarfoo']])
+    ->throws(TDBMException::class);
 
 it(
     'throws an exception if wrong token',
     function (string $email, string $password): void {
-        $resetPassword  = self::$container->get(ResetPassword::class);
-        $updatePassword = self::$container->get(UpdatePassword::class);
+        $resetPassword         = self::$container->get(ResetPassword::class);
+        $updatePassword        = self::$container->get(UpdatePassword::class);
+        $resetPasswordTokenDao = self::$container->get(ResetPasswordTokenDao::class);
         assert($resetPassword instanceof ResetPassword);
         assert($updatePassword instanceof UpdatePassword);
+        assert($resetPasswordTokenDao instanceof  ResetPasswordTokenDao);
 
-        $notification = $resetPassword->reset($email);
+        $notification       = $resetPassword->reset($email);
+        $resetPasswordToken = $resetPasswordTokenDao->getById($notification->getResetPasswordTokenId());
+
         $updatePassword->update(
-            $notification->getResetPasswordTokenId(),
+            $resetPasswordToken,
             'foo',
             $password
         );
     }
 )
-    ->throws(WrongResetPasswordToken::class)
-    ->with([['foo.bar@baz.com', 'foobarfoo']]);
+    ->with([['foo.bar@baz.com', 'foobarfoo']])
+    ->throws(WrongResetPasswordToken::class);
 
 it(
     'throws an exception if token expired',
@@ -101,7 +88,7 @@ it(
         assert($resetPasswordTokenDao instanceof  ResetPasswordTokenDao);
 
         $notification       = $resetPassword->reset($email);
-        $resetPasswordToken = $resetPasswordTokenDao->mustFindOneById($notification->getResetPasswordTokenId());
+        $resetPasswordToken = $resetPasswordTokenDao->getById($notification->getResetPasswordTokenId());
 
         $validUntil = new DateTimeImmutable();
         $validUntil = $validUntil->sub(new DateInterval('P1D'));
@@ -109,26 +96,30 @@ it(
         $resetPasswordTokenDao->save($resetPasswordToken);
 
         $updatePassword->update(
-            $notification->getResetPasswordTokenId(),
+            $resetPasswordToken,
             $notification->getPlainToken(),
             $password
         );
     }
 )
-    ->throws(ResetPasswordTokenExpired::class)
-    ->with([['foo.bar@baz.com', 'foobarfoo']]);
+    ->with([['foo.bar@baz.com', 'foobarfoo']])
+    ->throws(ResetPasswordTokenExpired::class);
 
 it(
     'throws an exception if invalid password',
     function (string $email, string $password): void {
-        $resetPassword  = self::$container->get(ResetPassword::class);
-        $updatePassword = self::$container->get(UpdatePassword::class);
+        $resetPassword         = self::$container->get(ResetPassword::class);
+        $updatePassword        = self::$container->get(UpdatePassword::class);
+        $resetPasswordTokenDao = self::$container->get(ResetPasswordTokenDao::class);
         assert($resetPassword instanceof ResetPassword);
         assert($updatePassword instanceof UpdatePassword);
+        assert($resetPasswordTokenDao instanceof  ResetPasswordTokenDao);
 
-        $notification = $resetPassword->reset($email);
+        $notification       = $resetPassword->reset($email);
+        $resetPasswordToken = $resetPasswordTokenDao->getById($notification->getResetPasswordTokenId());
+
         $updatePassword->update(
-            $notification->getResetPasswordTokenId(),
+            $resetPasswordToken,
             $notification->getPlainToken(),
             $password
         );

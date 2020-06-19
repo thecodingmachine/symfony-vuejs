@@ -7,12 +7,12 @@ use App\Domain\Dao\UserDao;
 use App\Domain\Enum\LocaleEnum;
 use App\Domain\Enum\RoleEnum;
 use App\Domain\Model\User;
-use App\Domain\Throwable\NotFound\ResetPasswordTokenNotFoundById;
 use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
 use App\Tests\UseCase\AsyncTransport;
 use App\UseCase\User\ResetPassword\ResetPassword;
 use App\UseCase\User\ResetPassword\ResetPasswordNotification;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
+use TheCodingMachine\TDBM\TDBMException;
 
 beforeEach(function (): void {
     $userDao = self::$container->get(UserDao::class);
@@ -76,7 +76,6 @@ it(
         $firstNotification = $resetPassword->reset($email);
         $resetPassword->reset($email);
 
-        $resetPasswordTokenDao->mustFindOneById($firstNotification->getResetPasswordTokenId());
         assertCount(2, $transport->getSent());
 
         $envelopes = $transport->get();
@@ -84,7 +83,9 @@ it(
             $message = $envelope->getMessage();
             assert($message instanceof ResetPasswordNotification);
         }
+
+        $resetPasswordTokenDao->getById($firstNotification->getResetPasswordTokenId());
     }
 )
     ->with(['foo.bar@baz.com'])
-    ->throws(ResetPasswordTokenNotFoundById::class);
+    ->throws(TDBMException::class);

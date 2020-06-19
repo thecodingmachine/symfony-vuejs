@@ -17,7 +17,6 @@ use App\Domain\Throwable\Invalid\InvalidPassword;
 use App\Domain\Throwable\Invalid\InvalidUser;
 use App\Domain\Throwable\Invalid\InvalidUsersFilters;
 use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
-use App\Domain\Throwable\NotFound\UserNotFoundById;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\TDBMService;
@@ -57,20 +56,6 @@ class UserDao extends BaseUserDao
 
         $user->setPassword($passwordProxy->getPlainPassword());
         $this->save($user);
-    }
-
-    /**
-     * @throws UserNotFoundById
-     */
-    public function mustFindOneById(string $id): User
-    {
-        $user = $this->findOne(['id' => $id]);
-
-        if ($user !== null) {
-            return $user;
-        }
-
-        throw new UserNotFoundById($id);
     }
 
     /**

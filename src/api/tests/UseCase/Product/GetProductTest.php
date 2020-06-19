@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Domain\Throwable\NotFound\ProductNotFoundById;
 use App\UseCase\Company\CreateCompany;
 use App\UseCase\Product\CreateProduct;
 use App\UseCase\Product\GetProduct;
@@ -18,20 +17,9 @@ it(
         assert($getProduct instanceof GetProduct);
 
         $company = $createCompany->createCompany('foo');
-        $product = $createProduct->create('foo', 1, $company->getId());
+        $product = $createProduct->create('foo', 1, $company);
 
-        $foundProduct = $getProduct->getProductById($product->getId());
+        $foundProduct = $getProduct->getProductById($product);
         assertEquals($product->getId(), $foundProduct->getId());
     }
 );
-
-it(
-    'throws an exception if invalid id.',
-    function (): void {
-        $getProduct = self::$container->get(GetProduct::class);
-        assert($getProduct instanceof GetProduct);
-
-        $getProduct->getProductById('foo');
-    }
-)
-    ->throws(ProductNotFoundById::class);

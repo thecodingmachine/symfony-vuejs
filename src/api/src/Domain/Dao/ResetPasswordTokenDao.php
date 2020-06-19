@@ -9,25 +9,10 @@ declare(strict_types=1);
 namespace App\Domain\Dao;
 
 use App\Domain\Dao\Generated\BaseResetPasswordTokenDao;
-use App\Domain\Model\ResetPasswordToken;
-use App\Domain\Throwable\NotFound\ResetPasswordTokenNotFoundById;
 
 /**
  * The ResetPasswordTokenDao class will maintain the persistence of ResetPasswordToken class into the reset_password_tokens table.
  */
 class ResetPasswordTokenDao extends BaseResetPasswordTokenDao
 {
-    /**
-     * @throws ResetPasswordTokenNotFoundById
-     */
-    public function mustFindOneById(string $id): ResetPasswordToken
-    {
-        $resetPasswordToken = $this->findOne(['id' => $id]);
-
-        if ($resetPasswordToken !== null) {
-            return $resetPasswordToken;
-        }
-
-        throw new ResetPasswordTokenNotFoundById($id);
-    }
 }

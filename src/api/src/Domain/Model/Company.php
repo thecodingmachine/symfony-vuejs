@@ -10,7 +10,7 @@ namespace App\Domain\Model;
 
 use App\Domain\Model\Generated\BaseCompany;
 use Symfony\Component\Validator\Constraints as Assert;
-use TheCodingMachine\GraphQLite\Annotations\Right;
+use TheCodingMachine\GraphQLite\Annotations\Security;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
 /**
@@ -49,7 +49,9 @@ class Company extends BaseCompany
     }
 
     /**
-     * @Right("ROLE_ADMINISTRATOR")
+     * @return User[]
+     *
+     * @Security("is_granted('CAN_VIEW_USERS', this)")
      */
     public function getUsers(): array
     {

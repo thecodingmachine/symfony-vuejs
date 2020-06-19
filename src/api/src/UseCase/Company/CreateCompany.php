@@ -35,7 +35,7 @@ final class CreateCompany
      * @throws InvalidCompany
      *
      * @Mutation
-     * @Right("ROLE_ADMINISTRATOR")
+     * @Right("ROLE_COMPANY")
      */
     public function createCompany(
         string $name,

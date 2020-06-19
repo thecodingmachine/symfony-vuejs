@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\UseCase\Product;
 
-use App\Domain\Dao\CompanyDao;
 use App\Domain\Dao\ProductDao;
+use App\Domain\Model\Company;
 use App\Domain\Model\Product;
 use App\Domain\Model\Storable\ProductPicture;
 use App\Domain\Storage\ProductPictureStorage;
 use App\Domain\Throwable\Exists\ProductWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidProduct;
 use App\Domain\Throwable\Invalid\InvalidProductPicture;
-use App\Domain\Throwable\NotFound\CompanyNotFoundById;
 use Psr\Http\Message\UploadedFileInterface;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Right;
@@ -21,16 +20,13 @@ use Throwable;
 final class CreateProduct
 {
     private ProductDao $productDao;
-    private CompanyDao $companyDao;
     private ProductPictureStorage $productPictureStorage;
 
     public function __construct(
         ProductDao $productDao,
-        CompanyDao $companyDao,
         ProductPictureStorage $productPictureStorage
     ) {
         $this->productDao            = $productDao;
-        $this->companyDao            = $companyDao;
         $this->productPictureStorage = $productPictureStorage;
     }
 
@@ -38,7 +34,6 @@ final class CreateProduct
      * @param UploadedFileInterface[]|null $pictures
      *
      * @throws ProductWithNameExists
-     * @throws CompanyNotFoundById
      * @throws InvalidProductPicture
      * @throws InvalidProduct
      *
@@ -48,7 +43,7 @@ final class CreateProduct
     public function createProduct(
         string $name,
         float $price,
-        string $companyId,
+        Company $company,
         ?array $pictures = null
     ): Product {
         $storables = null;
@@ -61,7 +56,7 @@ final class CreateProduct
         return $this->create(
             $name,
             $price,
-            $companyId,
+            $company,
             $storables
         );
     }
@@ -70,18 +65,16 @@ final class CreateProduct
      * @param ProductPicture[]|null $pictures
      *
      * @throws ProductWithNameExists
-     * @throws CompanyNotFoundById
      * @throws InvalidProductPicture
      * @throws InvalidProduct
      */
     public function create(
         string $name,
         float $price,
-        string $companyId,
+        Company $company,
         ?array $pictures = null
     ): Product {
         $this->productDao->mustNotFindOneByName($name);
-        $company = $this->companyDao->mustFindOneById($companyId);
 
         $fileNames = $pictures !== null ?
             $this->productPictureStorage->writeAll($pictures) :

@@ -14,7 +14,6 @@ use App\Domain\Model\Filter\CompaniesFilters;
 use App\Domain\Throwable\Exists\CompanyWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidCompaniesFilters;
 use App\Domain\Throwable\Invalid\InvalidCompany;
-use App\Domain\Throwable\NotFound\CompanyNotFoundById;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\TDBMService;
@@ -41,20 +40,6 @@ class CompanyDao extends BaseCompanyDao
         InvalidCompany::throwException($violations);
 
         parent::save($company);
-    }
-
-    /**
-     * @throws CompanyNotFoundById
-     */
-    public function mustFindOneById(string $id): Company
-    {
-        $company = $this->findOne(['id' => $id]);
-
-        if ($company !== null) {
-            return $company;
-        }
-
-        throw new CompanyNotFoundById($id);
     }
 
     /**

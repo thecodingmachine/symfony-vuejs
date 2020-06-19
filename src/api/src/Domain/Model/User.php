@@ -118,7 +118,9 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
      */
     public function getRoles(): array
     {
-        return [$this->getRole()];
+        return [
+            'ROLE_' . $this->getRole(),
+        ];
     }
 
     public function serialize(): string

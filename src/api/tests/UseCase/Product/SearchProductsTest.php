@@ -24,19 +24,19 @@ beforeEach(function (): void {
     $createProduct->create(
         'a',
         10,
-        $company->getId()
+        $company
     );
 
     $createProduct->create(
         'b',
         200,
-        $company->getId()
+        $company
     );
 
     $createProduct->create(
         'c',
         3000,
-        $company->getId()
+        $company
     );
 });
 

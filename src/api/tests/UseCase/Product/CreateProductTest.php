@@ -7,7 +7,6 @@ use App\Domain\Storage\ProductPictureStorage;
 use App\Domain\Throwable\Exists\ProductWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidProduct;
 use App\Domain\Throwable\Invalid\InvalidProductPicture;
-use App\Domain\Throwable\NotFound\CompanyNotFoundById;
 use App\Tests\UseCase\DummyValues;
 use App\UseCase\Company\CreateCompany;
 use App\UseCase\Product\CreateProduct;
@@ -27,7 +26,7 @@ it(
         $product = $createProduct->create(
             $name,
             $price,
-            $company->getId()
+            $company
         );
 
         assertEquals($name, $product->getName());
@@ -64,7 +63,7 @@ it(
         $product = $createProduct->create(
             'foo',
             1,
-            $company->getId(),
+            $company,
             $storables
         );
 
@@ -91,13 +90,13 @@ it(
         $createProduct->create(
             $name,
             $price,
-            $company->getId()
+            $company
         );
 
         $createProduct->create(
             $name,
             $price,
-            $company->getId()
+            $company
         );
     }
 )
@@ -105,21 +104,6 @@ it(
         ['foo', 1],
     ])
     ->throws(ProductWithNameExists::class);
-
-it(
-    'throws an exception if company does not exist',
-    function (): void {
-        $createProduct = self::$container->get(CreateProduct::class);
-        assert($createProduct instanceof CreateProduct);
-
-        $createProduct->create(
-            'foo',
-            1,
-            'foo'
-        );
-    }
-)
-    ->throws(CompanyNotFoundById::class);
 
 it(
     'throws an exception if invalid product picture',
@@ -144,7 +128,7 @@ it(
         $createProduct->create(
             'foo',
             1,
-            $company->getId(),
+            $company,
             $storables
         );
 
@@ -172,7 +156,7 @@ it(
         $createProduct->create(
             $name,
             $price,
-            $company->getId()
+            $company
         );
     }
 )
@@ -211,7 +195,7 @@ it(
         $createProduct->create(
             DummyValues::BLANK,
             1,
-            $company->getId(),
+            $company,
             $storables
         );
 

@@ -14,7 +14,6 @@ use App\Domain\Model\Product;
 use App\Domain\Throwable\Exists\ProductWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidProduct;
 use App\Domain\Throwable\Invalid\InvalidProductsFilters;
-use App\Domain\Throwable\NotFound\ProductNotFoundById;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\TDBMService;
@@ -41,20 +40,6 @@ class ProductDao extends BaseProductDao
         InvalidProduct::throwException($violations);
 
         parent::save($product);
-    }
-
-    /**
-     * @throws ProductNotFoundById
-     */
-    public function mustFindOneById(string $id): Product
-    {
-        $product = $this->findOne(['id' => $id]);
-
-        if ($product !== null) {
-            return $product;
-        }
-
-        throw new ProductNotFoundById($id);
     }
 
     /**

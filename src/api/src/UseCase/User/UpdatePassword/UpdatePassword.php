@@ -7,10 +7,10 @@ namespace App\UseCase\User\UpdatePassword;
 use App\Domain\Dao\ResetPasswordTokenDao;
 use App\Domain\Dao\UserDao;
 use App\Domain\Model\Proxy\PasswordProxy;
+use App\Domain\Model\ResetPasswordToken;
 use App\Domain\Model\User;
 use App\Domain\Throwable\Invalid\InvalidPassword;
 use App\Domain\Throwable\Invalid\InvalidUser;
-use App\Domain\Throwable\NotFound\ResetPasswordTokenNotFoundById;
 use Safe\DateTimeImmutable;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 
@@ -30,7 +30,6 @@ final class UpdatePassword
     }
 
     /**
-     * @throws ResetPasswordTokenNotFoundById
      * @throws WrongResetPasswordToken
      * @throws ResetPasswordTokenExpired
      * @throws InvalidPassword
@@ -39,12 +38,12 @@ final class UpdatePassword
      * @Mutation
      */
     public function updatePassword(
-        string $resetPasswordTokenId,
+        ResetPasswordToken $resetPasswordToken,
         string $plainToken,
         string $newPassword
     ): bool {
         $this->update(
-            $resetPasswordTokenId,
+            $resetPasswordToken,
             $plainToken,
             $newPassword
         );
@@ -55,19 +54,16 @@ final class UpdatePassword
     }
 
     /**
-     * @throws ResetPasswordTokenNotFoundById
      * @throws WrongResetPasswordToken
      * @throws ResetPasswordTokenExpired
      * @throws InvalidPassword
      * @throws InvalidUser
      */
     public function update(
-        string $resetPasswordTokenId,
+        ResetPasswordToken $resetPasswordToken,
         string $plainToken,
         string $newPassword
     ): User {
-        $resetPasswordToken = $this->resetPasswordTokenDao->mustFindOneById($resetPasswordTokenId);
-
         $token = $resetPasswordToken->getToken();
         if (! password_verify($plainToken, $token)) {
             throw new WrongResetPasswordToken();
