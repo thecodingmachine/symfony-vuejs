@@ -50,7 +50,7 @@ services:
       # Docker image.
       APACHE_DOCUMENT_ROOT: "public/"
       PHP_EXTENSION_XDEBUG: "1"
-      PHP_EXTENSION_AMQP: "1"
+      PHP_EXTENSION_REDIS: "1"
       PHP_EXTENSION_INTL: "1"
       PHP_INI_MEMORY_LIMIT: "1G"
       STARTUP_COMMAND_1: "composer install || composer install --pref-source"
@@ -67,7 +67,7 @@ services:
       DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql:3306/$MYSQL_DATABASE?server_version=8.0"
       TESTS_DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql_tests:3306/$MYSQL_DATABASE?server_version=8.0"
       # Messenger.
-      MESSENGER_TRANSPORT_DSN: "amqp://$RABBITMQ_DEFAULT_USER:$RABBITMQ_DEFAULT_PASS@rabbitmq:5672/%2f/messages"
+      MESSENGER_TRANSPORT_DSN: "redis://$REDIS_PASSWORD@redis:6379/messages"
       # Mailer.
       MAILER_URL: "smtp://mailhog:1025?encryption=&auth_mode="
       MAIL_FROM: "no-reply@$DOMAIN"
@@ -124,18 +124,12 @@ services:
       PMA_PASSWORD: "$MYSQL_PASSWORD"
 
   # For asynchronous tasks and notifications.
-  rabbitmq:
-    image: rabbitmq:3.8-management-alpine
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.rabbitmq_router.rule=Host(`rabbitmq.$DOMAIN`)
-      - traefik.http.routers.rabbitmq_router.service=rabbitmq_service
-      - traefik.http.services.rabbitmq_service.loadbalancer.server.port=15672
+  redis:
+    image: bitnami/redis:6.0
     environment:
-      RABBITMQ_DEFAULT_USER: "$RABBITMQ_DEFAULT_USER"
-      RABBITMQ_DEFAULT_PASS: "$RABBITMQ_DEFAULT_PASS"
+      REDIS_PASSWORD: "$REDIS_PASSWORD"
     tmpfs:
-      - /var/lib/rabbitmq
+      - /bitnami/redis/data
 
   # For catching and displaying e-mails.
   mailhog:
