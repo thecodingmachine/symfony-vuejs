@@ -218,8 +218,8 @@ abstract class BaseResetPasswordTokenDao
     public function findOneByToken(string $token, array $additionalTablesFetch = []) : ?\App\Domain\Model\ResetPasswordToken
     {
         $filter = [
-            'token' => $token,
-        ];
+                    'token' => $token,
+                ];
         return $this->findOne($filter, [], $additionalTablesFetch);
     }
 }

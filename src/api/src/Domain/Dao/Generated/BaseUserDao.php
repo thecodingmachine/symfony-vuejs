@@ -220,8 +220,8 @@ abstract class BaseUserDao
     public function findOneByEmail(string $email, array $additionalTablesFetch = []) : ?\App\Domain\Model\User
     {
         $filter = [
-            'email' => $email,
-        ];
+                    'email' => $email,
+                ];
         return $this->findOne($filter, [], $additionalTablesFetch);
     }
 }

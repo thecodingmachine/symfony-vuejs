@@ -20,27 +20,27 @@ class DaoFactory
     private $container = null;
 
     /**
-     * @var \App\Infrastructure\Dao\CompanyDao|null
+     * @var \App\Domain\Dao\CompanyDao|null
      */
     private $companyDao = null;
 
     /**
-     * @var \App\Infrastructure\Dao\DoctrineMigrationVersionDao|null
+     * @var \App\Domain\Dao\DoctrineMigrationVersionDao|null
      */
     private $doctrineMigrationVersionDao = null;
 
     /**
-     * @var \App\Infrastructure\Dao\ProductDao|null
+     * @var \App\Domain\Dao\ProductDao|null
      */
     private $productDao = null;
 
     /**
-     * @var \App\Infrastructure\Dao\ResetPasswordTokenDao|null
+     * @var \App\Domain\Dao\ResetPasswordTokenDao|null
      */
     private $resetPasswordTokenDao = null;
 
     /**
-     * @var \App\Infrastructure\Dao\UserDao|null
+     * @var \App\Domain\Dao\UserDao|null
      */
     private $userDao = null;
 
@@ -49,72 +49,72 @@ class DaoFactory
         $this->container = $container;
     }
 
-    public function getCompanyDao() : \App\Infrastructure\Dao\CompanyDao
+    public function getCompanyDao() : \App\Domain\Dao\CompanyDao
     {
         if (!$this->companyDao) {
-            $this->companyDao = $this->container->get('App\\Infrastructure\\Dao\\CompanyDao');
+            $this->companyDao = $this->container->get('App\\Domain\\Dao\\CompanyDao');
         }
 
         return $this->companyDao;
     }
 
-    public function setCompanyDao(\App\Infrastructure\Dao\CompanyDao $companyDao) : void
+    public function setCompanyDao(\App\Domain\Dao\CompanyDao $companyDao) : void
     {
         $this->companyDao = $companyDao;
     }
 
-    public function getDoctrineMigrationVersionDao() : \App\Infrastructure\Dao\DoctrineMigrationVersionDao
+    public function getDoctrineMigrationVersionDao() : \App\Domain\Dao\DoctrineMigrationVersionDao
     {
         if (!$this->doctrineMigrationVersionDao) {
-            $this->doctrineMigrationVersionDao = $this->container->get('App\\Infrastructure\\Dao\\DoctrineMigrationVersionDao');
+            $this->doctrineMigrationVersionDao = $this->container->get('App\\Domain\\Dao\\DoctrineMigrationVersionDao');
         }
 
         return $this->doctrineMigrationVersionDao;
     }
 
-    public function setDoctrineMigrationVersionDao(\App\Infrastructure\Dao\DoctrineMigrationVersionDao $doctrineMigrationVersionDao) : void
+    public function setDoctrineMigrationVersionDao(\App\Domain\Dao\DoctrineMigrationVersionDao $doctrineMigrationVersionDao) : void
     {
         $this->doctrineMigrationVersionDao = $doctrineMigrationVersionDao;
     }
 
-    public function getProductDao() : \App\Infrastructure\Dao\ProductDao
+    public function getProductDao() : \App\Domain\Dao\ProductDao
     {
         if (!$this->productDao) {
-            $this->productDao = $this->container->get('App\\Infrastructure\\Dao\\ProductDao');
+            $this->productDao = $this->container->get('App\\Domain\\Dao\\ProductDao');
         }
 
         return $this->productDao;
     }
 
-    public function setProductDao(\App\Infrastructure\Dao\ProductDao $productDao) : void
+    public function setProductDao(\App\Domain\Dao\ProductDao $productDao) : void
     {
         $this->productDao = $productDao;
     }
 
-    public function getResetPasswordTokenDao() : \App\Infrastructure\Dao\ResetPasswordTokenDao
+    public function getResetPasswordTokenDao() : \App\Domain\Dao\ResetPasswordTokenDao
     {
         if (!$this->resetPasswordTokenDao) {
-            $this->resetPasswordTokenDao = $this->container->get('App\\Infrastructure\\Dao\\ResetPasswordTokenDao');
+            $this->resetPasswordTokenDao = $this->container->get('App\\Domain\\Dao\\ResetPasswordTokenDao');
         }
 
         return $this->resetPasswordTokenDao;
     }
 
-    public function setResetPasswordTokenDao(\App\Infrastructure\Dao\ResetPasswordTokenDao $resetPasswordTokenDao) : void
+    public function setResetPasswordTokenDao(\App\Domain\Dao\ResetPasswordTokenDao $resetPasswordTokenDao) : void
     {
         $this->resetPasswordTokenDao = $resetPasswordTokenDao;
     }
 
-    public function getUserDao() : \App\Infrastructure\Dao\UserDao
+    public function getUserDao() : \App\Domain\Dao\UserDao
     {
         if (!$this->userDao) {
-            $this->userDao = $this->container->get('App\\Infrastructure\\Dao\\UserDao');
+            $this->userDao = $this->container->get('App\\Domain\\Dao\\UserDao');
         }
 
         return $this->userDao;
     }
 
-    public function setUserDao(\App\Infrastructure\Dao\UserDao $userDao) : void
+    public function setUserDao(\App\Domain\Dao\UserDao $userDao) : void
     {
         $this->userDao = $userDao;
     }

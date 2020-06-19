@@ -220,8 +220,8 @@ abstract class BaseProductDao
     public function findOneByName(string $name, array $additionalTablesFetch = []) : ?\App\Domain\Model\Product
     {
         $filter = [
-            'name' => $name,
-        ];
+                    'name' => $name,
+                ];
         return $this->findOne($filter, [], $additionalTablesFetch);
     }
 }
