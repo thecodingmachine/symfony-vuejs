@@ -1,6 +1,4 @@
-# companies-and-products-webapp
-
-> Nuxt.js webapp
+# companies-and-products
 
 ## Build Setup
 

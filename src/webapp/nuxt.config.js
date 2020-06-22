@@ -1,7 +1,17 @@
 export default {
+  /*
+   ** Nuxt rendering mode
+   ** See https://nuxtjs.org/api/configuration-mode
+   */
   mode: 'universal',
   /*
+   ** Nuxt target
+   ** See https://nuxtjs.org/api/configuration-target
+   */
+  target: 'server',
+  /*
    ** Headers of the page
+   ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
     title: process.env.npm_package_name || '',
@@ -11,23 +21,25 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
-      }
+        content: process.env.npm_package_description || '',
+      },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
-  /*
-   ** Customize the progress-bar color
-   */
-  loading: { color: '#fff' },
   /*
    ** Global CSS
    */
   css: [],
   /*
    ** Plugins to load before mounting the App
+   ** https://nuxtjs.org/guide/plugins
    */
   plugins: [],
+  /*
+   ** Auto import components
+   ** See https://nuxtjs.org/api/configuration-components
+   */
+  components: true,
   /*
    ** Nuxt.js dev-modules
    */
@@ -37,19 +49,38 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
   ],
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: ['@nuxtjs/apollo'],
+  // See https://github.com/nuxt-community/apollo-module.
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: process.env.VUE_APP_GRAPHQL_HTTP,
+      },
+    },
+  },
   /*
    ** Build configuration
+   ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    /*
-     ** You can extend webpack config here
-     */
-    extend(config, ctx) {}
-  }
+    babel: {
+      presets({ isServer }) {
+        return [
+          [
+            require.resolve('@nuxt/babel-preset-app'),
+            // require.resolve('@nuxt/babel-preset-app-edge'), // For nuxt-edge users
+            {
+              buildTarget: isServer ? 'server' : 'client',
+              corejs: { version: 3 },
+            },
+          ],
+        ]
+      },
+    },
+  },
 }
