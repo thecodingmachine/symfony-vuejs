@@ -48,20 +48,27 @@ export default {
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
-    // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
-    '@nuxtjs/tailwindcss',
   ],
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/apollo'],
+  modules: ['@nuxtjs/apollo', 'bootstrap-vue/nuxt'],
   // See https://github.com/nuxt-community/apollo-module.
   apollo: {
     clientConfigs: {
       default: {
         httpEndpoint: process.env.VUE_APP_GRAPHQL_HTTP,
+        browserHttpEndpoint: process.env.VUE_APP_GRAPHQL_BROWSER_HTTP,
       },
     },
+    defaultOptions: {
+      $query: {
+        fetchPolicy: 'network-only',
+      },
+    },
+  },
+  bootstrapVue: {
+    icons: true,
   },
   /*
    ** Build configuration

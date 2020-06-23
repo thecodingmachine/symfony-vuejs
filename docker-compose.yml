@@ -34,10 +34,13 @@ services:
       # Docker image.
       STARTUP_COMMAND_1: "yarn install"
       # Nuxt.js
+      CHOKIDAR_USEPOLLING: "1"
+      CHOKIDAR_INTERVAL: "1000"
       # Host 0.0.0.0 is designated to tell Nuxt.js to resolve a host address, which is accessible to connections outside
       # of the host machine.
       HOST: "0.0.0.0"
-      VUE_APP_GRAPHQL_HTTP: "http://$API_SUBDOMAIN.$DOMAIN/graphql"
+      VUE_APP_GRAPHQL_HTTP: "http://api/graphql"
+      VUE_APP_GRAPHQL_BROWSER_HTTP: "http://$API_SUBDOMAIN.$DOMAIN/graphql"
     volumes:
       - ./src/webapp:/usr/src/app
 
@@ -57,6 +60,7 @@ services:
       STARTUP_COMMAND_2: "composer install || composer install --pref-source" # --pref-source might be required for Vagrant user.
       STARTUP_COMMAND_3: "php bin/console doctrine:migrations:migrate -n --allow-no-migration" #FIXME: if no flag --allow-no-migration, the command fails. Why?
       STARTUP_COMMAND_4: "php bin/console app:init-storage:minio"
+      STARTUP_COMMAND_5: "php bin/console app:load-data:dev"
       # Symfony.
       APP_ENV: "dev"
       APP_SECRET: "$APP_SECRET"
