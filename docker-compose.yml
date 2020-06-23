@@ -34,8 +34,10 @@ services:
       # Docker image.
       STARTUP_COMMAND_1: "yarn install"
       # Nuxt.js
+      # Either Vagrant or Docker requires the usage of polling, otherwise Nuxt.js does not recompile our code
+      # as fast as we would like.
       CHOKIDAR_USEPOLLING: "1"
-      CHOKIDAR_INTERVAL: "1000"
+      CHOKIDAR_INTERVAL: "1000" # Lower values might increase CPU usage.
       # Host 0.0.0.0 is designated to tell Nuxt.js to resolve a host address, which is accessible to connections outside
       # of the host machine.
       HOST: "0.0.0.0"
