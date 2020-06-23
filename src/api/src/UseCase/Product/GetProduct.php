@@ -12,7 +12,7 @@ final class GetProduct
     /**
      * @Query
      */
-    public function getProductById(Product $product): Product
+    public function product(Product $product): Product
     {
         return $product;
     }

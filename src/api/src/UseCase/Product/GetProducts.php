@@ -11,7 +11,7 @@ use App\Domain\Throwable\Invalid\InvalidProductsFilters;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\TDBM\ResultIterator;
 
-final class SearchProducts
+final class GetProducts
 {
     private ProductDao $productDao;
 
@@ -27,7 +27,7 @@ final class SearchProducts
      *
      * @Query
      */
-    public function searchProducts(
+    public function products(
         ?string $search = null,
         ?float $lowerPrice = null,
         ?float $upperPrice = null,

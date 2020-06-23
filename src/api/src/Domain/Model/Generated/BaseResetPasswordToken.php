@@ -51,6 +51,7 @@ abstract class BaseResetPasswordToken extends \TheCodingMachine\TDBM\AbstractTDB
      * The getter for the "id" column.
      *
      * @return string
+     * @GraphqlField (outputType = "ID")
      */
     public function getId() : string
     {

@@ -33,7 +33,7 @@ final class Version20200424154558 extends AbstractMigration
             ->column('role')->string(255)->notNull()->graphqlField();
 
         $db->table('reset_password_tokens')
-            ->column('id')->guid()->primaryKey()->comment('@UUID')
+            ->column('id')->guid()->primaryKey()->comment('@UUID')->graphqlField()
             ->column('user_id')->references('users')->notNull()->unique()
             ->column('token')->string(255)->notNull()->unique()
             ->column('valid_until')->datetimeImmutable()->notNull();

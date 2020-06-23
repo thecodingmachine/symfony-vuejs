@@ -4,4 +4,5 @@ graphqlite:
     controllers: App\UseCase\
     types:
       - App\Domain\Model\
+      - App\Domain\Dao\
       - App\Infrastructure\Security\

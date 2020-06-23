@@ -10,6 +10,7 @@ namespace App\Domain\Model;
 
 use App\Domain\Model\Generated\BaseProduct;
 use Symfony\Component\Validator\Constraints as Assert;
+use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
 /**
@@ -22,6 +23,7 @@ class Product extends BaseProduct
     /**
      * @Assert\NotBlank
      * @Assert\Length(max = 255)
+     * @Field
      */
     public function getName(): string
     {
@@ -30,6 +32,7 @@ class Product extends BaseProduct
 
     /**
      * @Assert\Positive
+     * @Field
      */
     public function getPrice(): float
     {
@@ -40,6 +43,7 @@ class Product extends BaseProduct
      * @return string[]|null
      *
      * @Assert\All({@Assert\NotBlank, @Assert\Length(max = 255)})
+     * @Field
      */
     public function getPictures(): ?array
     {

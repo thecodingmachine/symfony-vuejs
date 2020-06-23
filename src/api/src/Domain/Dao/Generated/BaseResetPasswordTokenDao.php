@@ -82,6 +82,8 @@ abstract class BaseResetPasswordTokenDao
      * @param bool $lazyLoading If set to true, the object will not be loaded right away. Instead, it will be loaded when you first try to access a method of the object.
      * @return \App\Domain\Model\ResetPasswordToken
      * @throws \TheCodingMachine\TDBM\TDBMException
+     * @TheCodingMachine\GraphQLite\Annotations\Factory
+     * @TheCodingMachine\GraphQLite\Annotations\HideParameter (for="$lazyLoading")
      */
     public function getById(string $id, bool $lazyLoading = false) : \App\Domain\Model\ResetPasswordToken
     {

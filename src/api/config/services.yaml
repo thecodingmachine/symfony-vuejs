@@ -40,6 +40,6 @@ services:
         arguments:
             - '%env(DATABASE_URL)%'
 
-    App\Infrastructure\Command\InitializeMinIOStorage:
+    App\Infrastructure\Command\InitializeMinIOStorageCommand:
         arguments:
             - '@minio.client'

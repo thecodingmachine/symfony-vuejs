@@ -19,7 +19,7 @@ it(
         $company = $createCompany->createCompany('foo');
         $product = $createProduct->create('foo', 1, $company);
 
-        $foundProduct = $getProduct->getProductById($product);
+        $foundProduct = $getProduct->product($product);
         assertEquals($product->getId(), $foundProduct->getId());
     }
 );

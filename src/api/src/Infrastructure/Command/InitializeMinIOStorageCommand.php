@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use function Safe\sprintf;
 
-final class InitializeMinIOStorage extends Command
+final class InitializeMinIOStorageCommand extends Command
 {
     private S3MultiRegionClient $client;
     private string $publicBucket;

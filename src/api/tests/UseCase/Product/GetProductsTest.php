@@ -8,7 +8,7 @@ use App\Domain\Model\Product;
 use App\Domain\Throwable\Invalid\InvalidProductsFilters;
 use App\UseCase\Company\CreateCompany;
 use App\UseCase\Product\CreateProduct;
-use App\UseCase\Product\SearchProducts;
+use App\UseCase\Product\GetProducts;
 
 beforeEach(function (): void {
     $createCompany = self::$container->get(CreateCompany::class);
@@ -43,10 +43,10 @@ beforeEach(function (): void {
 it(
     'finds all products',
     function (): void {
-        $searchProducts = self::$container->get(SearchProducts::class);
-        assert($searchProducts instanceof SearchProducts);
+        $getProducts = self::$container->get(GetProducts::class);
+        assert($getProducts instanceof GetProducts);
 
-        $result = $searchProducts->searchProducts();
+        $result = $getProducts->products();
         assertCount(3, $result);
     }
 );
@@ -54,10 +54,10 @@ it(
 it(
     'filters products with a generic search',
     function (string $search): void {
-        $searchProducts = self::$container->get(SearchProducts::class);
-        assert($searchProducts instanceof SearchProducts);
+        $getProducts = self::$container->get(GetProducts::class);
+        assert($getProducts instanceof GetProducts);
 
-        $result = $searchProducts->searchProducts($search);
+        $result = $getProducts->products($search);
         assertCount(1, $result);
 
         $product = $result->first();
@@ -70,10 +70,10 @@ it(
 it(
     'filters products by price range',
     function (?float $lowerPrice, ?float $upperPrice): void {
-        $searchProducts = self::$container->get(SearchProducts::class);
-        assert($searchProducts instanceof SearchProducts);
+        $getProducts = self::$container->get(GetProducts::class);
+        assert($getProducts instanceof GetProducts);
 
-        $result = $searchProducts->searchProducts(null, $lowerPrice, $upperPrice);
+        $result = $getProducts->products(null, $lowerPrice, $upperPrice);
 
         if ($lowerPrice === null && $upperPrice === null) {
             assertCount(3, $result);
@@ -115,10 +115,10 @@ it(
 it(
     'sorts products by name',
     function (string $sortOrder): void {
-        $searchProducts = self::$container->get(SearchProducts::class);
-        assert($searchProducts instanceof SearchProducts);
+        $getProducts = self::$container->get(GetProducts::class);
+        assert($getProducts instanceof GetProducts);
 
-        $result = $searchProducts->searchProducts(
+        $result = $getProducts->products(
             null,
             null,
             null,
@@ -145,10 +145,10 @@ it(
 it(
     'sorts products by price',
     function (string $sortOrder): void {
-        $searchProducts = self::$container->get(SearchProducts::class);
-        assert($searchProducts instanceof SearchProducts);
+        $getProducts = self::$container->get(GetProducts::class);
+        assert($getProducts instanceof GetProducts);
 
-        $result = $searchProducts->searchProducts(
+        $result = $getProducts->products(
             null,
             null,
             null,
@@ -181,10 +181,10 @@ it(
 it(
     'throws an exception if invalid filters',
     function (string $sortBy, string $sortOrder): void {
-        $searchProducts = self::$container->get(SearchProducts::class);
-        assert($searchProducts instanceof SearchProducts);
+        $getProducts = self::$container->get(GetProducts::class);
+        assert($getProducts instanceof GetProducts);
 
-        $searchProducts->searchProducts(
+        $getProducts->products(
             null,
             null,
             null,

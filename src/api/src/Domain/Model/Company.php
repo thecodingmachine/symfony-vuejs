@@ -10,6 +10,7 @@ namespace App\Domain\Model;
 
 use App\Domain\Model\Generated\BaseCompany;
 use Symfony\Component\Validator\Constraints as Assert;
+use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Security;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
@@ -23,6 +24,7 @@ class Company extends BaseCompany
     /**
      * @Assert\NotBlank
      * @Assert\Length(max = 255)
+     * @Field
      */
     public function getName(): string
     {
@@ -33,6 +35,7 @@ class Company extends BaseCompany
      * @Assert\NotBlank(allowNull = true)
      * @Assert\Length(max = 255)
      * @Assert\Url
+     * @Field
      */
     public function getWebsite(): ?string
     {
@@ -42,6 +45,7 @@ class Company extends BaseCompany
     /**
      * @Assert\NotBlank(allowNull = true)
      * @Assert\Length(max = 255)
+     * @Field
      */
     public function getLogo(): ?string
     {
@@ -52,6 +56,7 @@ class Company extends BaseCompany
      * @return User[]
      *
      * @Security("is_granted('CAN_VIEW_USERS', this)")
+     * @Field
      */
     public function getUsers(): array
     {

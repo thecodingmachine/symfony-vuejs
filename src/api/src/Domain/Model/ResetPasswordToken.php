@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Domain\Model\Generated\BaseResetPasswordToken;
+use TheCodingMachine\GraphQLite\Annotations\Type;
 
 use function Safe\password_hash;
 
@@ -16,6 +17,8 @@ use const PASSWORD_DEFAULT;
 
 /**
  * The ResetPasswordToken class maps the 'reset_password_tokens' table in database.
+ *
+ * @Type
  */
 class ResetPasswordToken extends BaseResetPasswordToken
 {
