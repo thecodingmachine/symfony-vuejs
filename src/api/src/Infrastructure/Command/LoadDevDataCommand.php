@@ -69,6 +69,7 @@ final class LoadDevDataCommand extends Command
 
     private function purge(): void
     {
+        // TODO purge uploaded files.
         $this->dbal->executeQuery('DELETE FROM products');
         $this->dbal->executeQuery('DELETE FROM companies');
     }
@@ -83,7 +84,7 @@ final class LoadDevDataCommand extends Command
      */
     private function load(): void
     {
-        // TODO improve (upload files in storage etc.).
+        // TODO improve (uploaded files in storage etc.).
         $company = $this->createCompany->createCompany('Foo');
 
         for ($i = 0; $i < 20; $i++) {

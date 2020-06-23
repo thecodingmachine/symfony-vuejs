@@ -33,6 +33,7 @@ final class DeleteCompany
      */
     public function deleteCompany(Company $company): bool
     {
+        // TODO async delete of logo and product pictures.
         $products = $company->getProducts();
         $logo     = $company->getLogo();
 

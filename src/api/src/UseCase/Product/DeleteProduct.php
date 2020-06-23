@@ -29,6 +29,7 @@ final class DeleteProduct
      */
     public function deleteProduct(Product $product): bool
     {
+        // TODO async delete of pictures.
         $pictures = $product->getPictures();
 
         $this->productDao->delete($product);
