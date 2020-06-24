@@ -1,20 +1,16 @@
-# companies-and-products
+**Caution:** this is still work in progress.
 
-## Build Setup
+---
 
-```bash
-# install dependencies
-$ yarn install
+# WebApp
 
-# serve with hot reload at localhost:3000
-$ yarn dev
+A Nuxt.js frontend which is rendered from server-side and acts as an SPA (Single Page Application) once loaded.
 
-# build for production and launch server
-$ yarn build
-$ yarn start
+**All commands have to be run in the `webapp` service (`make webapp`).**
 
-# generate static project
-$ yarn generate
-```
+## Hot Reloading
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+The `webapp` service run the command `yarn dev`. This command watch for file changes, recompile those files and 
+automatically refresh your browser.
+
+This command may also show ESLint errors and warnings; you can fix them using `yarn lint:fix`.
