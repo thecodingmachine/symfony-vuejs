@@ -4,22 +4,26 @@
       <b-input
         v-model="search"
         type="search"
-        :autofocus="true"
         debounce="300"
         placeholder="Search a product"
+        autofocus
       ></b-input>
     </b-row>
-    <b-row>
-      <ProductCardGroup :products="products.items"></ProductCardGroup>
-    </b-row>
-    <b-row align-h="center">
-      <b-pagination
-        v-model="currentPage"
-        :per-page="productsPerPage"
-        :total-rows="products.count"
-        :pills="true"
-      ></b-pagination>
-    </b-row>
+    <b-overlay :show="$apollo.queries.products.loading">
+      <div v-if="!$apollo.queries.products.loading">
+        <b-row>
+          <ProductCardGroup :products="products.items"></ProductCardGroup>
+        </b-row>
+        <b-row align-h="center">
+          <b-pagination
+            v-model="currentPage"
+            :per-page="productsPerPage"
+            :total-rows="products.count"
+            pills
+          ></b-pagination>
+        </b-row>
+      </div>
+    </b-overlay>
   </b-container>
 </template>
 

@@ -8,9 +8,9 @@
     img-width="200"
     img-height="134"
   >
-    <b-link :to="'/products/' + product.id" class="card-link"
-      >View product details</b-link
-    >
+    <b-card-text>
+      A wonderful product!
+    </b-card-text>
     <template v-slot:footer>
       <small class="text-muted">From {{ product.company.name }}</small>
     </template>
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'ProductCard',
+  name: 'ProductCardDetails',
   props: {
     product: {
       type: Object,
