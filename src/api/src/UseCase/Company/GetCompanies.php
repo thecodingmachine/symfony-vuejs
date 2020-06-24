@@ -11,7 +11,7 @@ use App\Domain\Throwable\Invalid\InvalidCompaniesFilters;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\TDBM\ResultIterator;
 
-final class SearchCompanies
+final class GetCompanies
 {
     private CompanyDao $companyDao;
 
@@ -27,7 +27,7 @@ final class SearchCompanies
      *
      * @Query
      */
-    public function searchCompanies(
+    public function companies(
         ?string $search = null,
         ?string $sortBy = null,
         ?string $sortOrder = null

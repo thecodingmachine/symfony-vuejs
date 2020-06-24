@@ -14,7 +14,6 @@ use App\Domain\Throwable\Invalid\InvalidProduct;
 use App\Domain\Throwable\Invalid\InvalidProductPicture;
 use Psr\Http\Message\UploadedFileInterface;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
-use TheCodingMachine\GraphQLite\Annotations\Right;
 use Throwable;
 
 final class CreateProduct
@@ -38,7 +37,6 @@ final class CreateProduct
      * @throws InvalidProduct
      *
      * @Mutation
-     * @Right("ROLE_COMPANY")
      */
     public function createProduct(
         string $name,
@@ -46,6 +44,7 @@ final class CreateProduct
         Company $company,
         ?array $pictures = null
     ): Product {
+        // TODO add @Right("ROLE_COMPANY")
         $storables = null;
         if ($pictures !== null) {
             $storables = ProductPicture::createAllFromUploadedFiles(

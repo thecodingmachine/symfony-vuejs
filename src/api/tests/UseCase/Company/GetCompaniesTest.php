@@ -7,7 +7,7 @@ use App\Domain\Enum\Filter\SortOrderEnum;
 use App\Domain\Model\Company;
 use App\Domain\Throwable\Invalid\InvalidCompaniesFilters;
 use App\UseCase\Company\CreateCompany;
-use App\UseCase\Company\SearchCompanies;
+use App\UseCase\Company\GetCompanies;
 
 beforeEach(function (): void {
     $createCompany = self::$container->get(CreateCompany::class);
@@ -32,10 +32,10 @@ beforeEach(function (): void {
 it(
     'finds all companies',
     function (): void {
-        $searchCompanies = self::$container->get(SearchCompanies::class);
-        assert($searchCompanies instanceof SearchCompanies);
+        $searchCompanies = self::$container->get(GetCompanies::class);
+        assert($searchCompanies instanceof GetCompanies);
 
-        $result = $searchCompanies->searchCompanies();
+        $result = $searchCompanies->companies();
         assertCount(3, $result);
     }
 );
@@ -43,10 +43,10 @@ it(
 it(
     'filters companies with a generic search',
     function (string $search): void {
-        $searchCompanies = self::$container->get(SearchCompanies::class);
-        assert($searchCompanies instanceof SearchCompanies);
+        $searchCompanies = self::$container->get(GetCompanies::class);
+        assert($searchCompanies instanceof GetCompanies);
 
-        $result = $searchCompanies->searchCompanies($search);
+        $result = $searchCompanies->companies($search);
         assertCount(1, $result);
 
         $company = $result->first();
@@ -60,10 +60,10 @@ it(
 it(
     'sorts companies by name',
     function (string $sortOrder): void {
-        $searchCompanies = self::$container->get(SearchCompanies::class);
-        assert($searchCompanies instanceof SearchCompanies);
+        $searchCompanies = self::$container->get(GetCompanies::class);
+        assert($searchCompanies instanceof GetCompanies);
 
-        $result = $searchCompanies->searchCompanies(null, CompaniesSortByEnum::NAME, $sortOrder);
+        $result = $searchCompanies->companies(null, CompaniesSortByEnum::NAME, $sortOrder);
         assertCount(3, $result);
 
         /** @var Company[] $companies */
@@ -84,10 +84,10 @@ it(
 it(
     'sorts companies by website',
     function (string $sortOrder): void {
-        $searchCompanies = self::$container->get(SearchCompanies::class);
-        assert($searchCompanies instanceof SearchCompanies);
+        $searchCompanies = self::$container->get(GetCompanies::class);
+        assert($searchCompanies instanceof GetCompanies);
 
-        $result = $searchCompanies->searchCompanies(null, CompaniesSortByEnum::WEBSITE, $sortOrder);
+        $result = $searchCompanies->companies(null, CompaniesSortByEnum::WEBSITE, $sortOrder);
         assertCount(3, $result);
 
         /** @var Company[] $companies */
@@ -108,10 +108,10 @@ it(
 it(
     'throws an exception if invalid filters',
     function (string $sortBy, string $sortOrder): void {
-        $searchCompanies = self::$container->get(SearchCompanies::class);
-        assert($searchCompanies instanceof SearchCompanies);
+        $searchCompanies = self::$container->get(GetCompanies::class);
+        assert($searchCompanies instanceof GetCompanies);
 
-        $searchCompanies->searchCompanies(null, $sortBy, $sortOrder);
+        $searchCompanies->companies(null, $sortBy, $sortOrder);
     }
 )
     ->with([

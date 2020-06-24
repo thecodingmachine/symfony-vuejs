@@ -12,7 +12,7 @@ final class GetCompany
     /**
      * @Query
      */
-    public function getCompanyById(Company $company): Company
+    public function company(Company $company): Company
     {
         return $company;
     }

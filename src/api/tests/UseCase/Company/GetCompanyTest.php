@@ -15,7 +15,7 @@ it(
 
         $company = $createCompany->create('foo');
 
-        $foundCompany = $getCompany->getCompanyById($company);
+        $foundCompany = $getCompany->company($company);
         assertEquals($company->getId(), $foundCompany->getId());
     }
 );
