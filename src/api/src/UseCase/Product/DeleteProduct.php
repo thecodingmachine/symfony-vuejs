@@ -6,21 +6,22 @@ namespace App\UseCase\Product;
 
 use App\Domain\Dao\ProductDao;
 use App\Domain\Model\Product;
-use App\Domain\Storage\ProductPictureStorage;
+use App\UseCase\Product\DeleteProductPictures\DeleteProductPicturesTask;
+use Symfony\Component\Messenger\MessageBusInterface;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Security;
 
 final class DeleteProduct
 {
     private ProductDao $productDao;
-    private ProductPictureStorage $productPictureStorage;
+    private MessageBusInterface $messageBus;
 
     public function __construct(
         ProductDao $productDao,
-        ProductPictureStorage $productPictureStorage
+        MessageBusInterface $messageBus
     ) {
-        $this->productDao            = $productDao;
-        $this->productPictureStorage = $productPictureStorage;
+        $this->productDao = $productDao;
+        $this->messageBus = $messageBus;
     }
 
     /**
@@ -29,15 +30,15 @@ final class DeleteProduct
      */
     public function deleteProduct(Product $product): bool
     {
-        // TODO async delete of pictures.
         $pictures = $product->getPictures();
+        $this->productDao->delete($product, true);
 
-        $this->productDao->delete($product);
         if ($pictures === null) {
             return true;
         }
 
-        $this->productPictureStorage->deleteAll($pictures);
+        $task = new DeleteProductPicturesTask($pictures);
+        $this->messageBus->dispatch($task);
 
         return true;
     }

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 use App\Domain\Dao\ProductDao;
 use App\Domain\Model\Storable\ProductPicture;
-use App\Domain\Storage\ProductPictureStorage;
+use App\Tests\UseCase\AsyncTransport;
 use App\UseCase\Company\CreateCompany;
 use App\UseCase\Product\CreateProduct;
 use App\UseCase\Product\DeleteProduct;
+use App\UseCase\Product\DeleteProductPictures\DeleteProductPicturesTask;
+use Symfony\Component\Messenger\Transport\InMemoryTransport;
 use TheCodingMachine\TDBM\TDBMException;
 
 it(
@@ -39,16 +41,16 @@ it(
 it(
     'deletes the pictures',
     function (): void {
-        $createCompany         = self::$container->get(CreateCompany::class);
-        $createProduct         = self::$container->get(CreateProduct::class);
-        $productPictureStorage = self::$container->get(ProductPictureStorage::class);
-        $deleteProduct         = self::$container->get(DeleteProduct::class);
-        $productDao            = self::$container->get(ProductDao::class);
+        $createCompany = self::$container->get(CreateCompany::class);
+        $createProduct = self::$container->get(CreateProduct::class);
+        $deleteProduct = self::$container->get(DeleteProduct::class);
+        $productDao    = self::$container->get(ProductDao::class);
+        $transport     = self::$container->get(AsyncTransport::KEY);
         assert($createCompany instanceof CreateCompany);
         assert($createProduct instanceof CreateProduct);
-        assert($productPictureStorage instanceof  ProductPictureStorage);
         assert($deleteProduct instanceof DeleteProduct);
         assert($productDao instanceof ProductDao);
+        assert($transport instanceof InMemoryTransport);
 
         $pictures = [
             dirname(__FILE__) . '/foo.png',
@@ -68,9 +70,11 @@ it(
         );
 
         $deleteProduct->deleteProduct($product);
-        foreach ($storables as $storable) {
-            assertFalse($productPictureStorage->fileExists($storable->getFilename()));
-        }
+        assertCount(1, $transport->getSent());
+
+        $envelope = $transport->get()[0];
+        $message  = $envelope->getMessage();
+        assert($message instanceof DeleteProductPicturesTask);
 
         $productDao->getById($product->getId());
     }
