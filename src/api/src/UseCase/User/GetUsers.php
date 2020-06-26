@@ -12,7 +12,7 @@ use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 use TheCodingMachine\TDBM\ResultIterator;
 
-final class SearchUsers
+final class GetUsers
 {
     private UserDao $userDao;
 
@@ -29,7 +29,7 @@ final class SearchUsers
      * @Query
      * @Right("ROLE_ADMINISTRATOR")
      */
-    public function searchUsers(
+    public function users(
         ?string $search = null,
         ?string $role = null,
         ?string $sortBy = null,

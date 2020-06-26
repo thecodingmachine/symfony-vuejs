@@ -9,7 +9,7 @@ use App\Domain\Enum\RoleEnum;
 use App\Domain\Model\User;
 use App\Domain\Throwable\Invalid\InvalidUsersFilters;
 use App\UseCase\User\CreateUser;
-use App\UseCase\User\SearchUsers;
+use App\UseCase\User\GetUsers;
 
 beforeEach(function (): void {
     $createUser = self::$container->get(CreateUser::class);
@@ -43,10 +43,10 @@ beforeEach(function (): void {
 it(
     'finds all users',
     function (): void {
-        $searchUsers = self::$container->get(SearchUsers::class);
-        assert($searchUsers instanceof SearchUsers);
+        $getUsers = self::$container->get(GetUsers::class);
+        assert($getUsers instanceof GetUsers);
 
-        $result = $searchUsers->searchUsers();
+        $result = $getUsers->users();
         assertCount(3, $result);
     }
 );
@@ -54,10 +54,10 @@ it(
 it(
     'filters users with a generic search',
     function (string $search): void {
-        $searchUsers = self::$container->get(SearchUsers::class);
-        assert($searchUsers instanceof SearchUsers);
+        $getUsers = self::$container->get(GetUsers::class);
+        assert($getUsers instanceof GetUsers);
 
-        $result = $searchUsers->searchUsers($search);
+        $result = $getUsers->users($search);
         assertCount(1, $result);
 
         $user = $result->first();
@@ -72,10 +72,10 @@ it(
 it(
     'filters users by role',
     function (string $role): void {
-        $searchUsers = self::$container->get(SearchUsers::class);
-        assert($searchUsers instanceof SearchUsers);
+        $getUsers = self::$container->get(GetUsers::class);
+        assert($getUsers instanceof GetUsers);
 
-        $result = $searchUsers->searchUsers(null, $role);
+        $result = $getUsers->users(null, $role);
         assertCount(1, $result);
 
         $user = $result->first();
@@ -88,10 +88,10 @@ it(
 it(
     'sorts users by first name',
     function (string $sortOrder): void {
-        $searchUsers = self::$container->get(SearchUsers::class);
-        assert($searchUsers instanceof SearchUsers);
+        $getUsers = self::$container->get(GetUsers::class);
+        assert($getUsers instanceof GetUsers);
 
-        $result = $searchUsers->searchUsers(null, null, UsersSortByEnum::FIRST_NAME, $sortOrder);
+        $result = $getUsers->users(null, null, UsersSortByEnum::FIRST_NAME, $sortOrder);
         assertCount(3, $result);
 
         /** @var User[] $users */
@@ -112,10 +112,10 @@ it(
 it(
     'sorts users by last name',
     function (string $sortOrder): void {
-        $searchUsers = self::$container->get(SearchUsers::class);
-        assert($searchUsers instanceof SearchUsers);
+        $getUsers = self::$container->get(GetUsers::class);
+        assert($getUsers instanceof GetUsers);
 
-        $result = $searchUsers->searchUsers(null, null, UsersSortByEnum::LAST_NAME, $sortOrder);
+        $result = $getUsers->users(null, null, UsersSortByEnum::LAST_NAME, $sortOrder);
         assertCount(3, $result);
 
         /** @var User[] $users */
@@ -136,10 +136,10 @@ it(
 it(
     'sorts users by e-mail',
     function (string $sortOrder): void {
-        $searchUsers = self::$container->get(SearchUsers::class);
-        assert($searchUsers instanceof SearchUsers);
+        $getUsers = self::$container->get(GetUsers::class);
+        assert($getUsers instanceof GetUsers);
 
-        $result = $searchUsers->searchUsers(null, null, UsersSortByEnum::EMAIL, $sortOrder);
+        $result = $getUsers->users(null, null, UsersSortByEnum::EMAIL, $sortOrder);
         assertCount(3, $result);
 
         /** @var User[] $users */
@@ -160,10 +160,10 @@ it(
 it(
     'sorts users by role',
     function (string $sortOrder): void {
-        $searchUsers = self::$container->get(SearchUsers::class);
-        assert($searchUsers instanceof SearchUsers);
+        $getUsers = self::$container->get(GetUsers::class);
+        assert($getUsers instanceof GetUsers);
 
-        $result = $searchUsers->searchUsers(null, null, UsersSortByEnum::ROLE, $sortOrder);
+        $result = $getUsers->users(null, null, UsersSortByEnum::ROLE, $sortOrder);
         assertCount(3, $result);
 
         /** @var User[] $users */
@@ -184,10 +184,10 @@ it(
 it(
     'throws an exception if invalid filters',
     function (string $role, string $sortBy, string $sortOrder): void {
-        $searchUsers = self::$container->get(SearchUsers::class);
-        assert($searchUsers instanceof SearchUsers);
+        $getUsers = self::$container->get(GetUsers::class);
+        assert($getUsers instanceof GetUsers);
 
-        $searchUsers->searchUsers(null, $role, $sortBy, $sortOrder);
+        $getUsers->users(null, $role, $sortBy, $sortOrder);
     }
 )
     ->with([

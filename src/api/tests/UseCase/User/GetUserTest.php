@@ -23,7 +23,7 @@ it(
             RoleEnum::ADMINISTRATOR
         );
 
-        $foundUser = $getUser->getUserById($user);
+        $foundUser = $getUser->user($user);
         assertEquals($user->getId(), $foundUser->getId());
     }
 );

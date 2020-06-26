@@ -14,7 +14,7 @@ final class GetUser
      * @Query
      * @Right("ROLE_ADMINISTRATOR")
      */
-    public function getUserById(User $user): User
+    public function user(User $user): User
     {
         return $user;
     }
