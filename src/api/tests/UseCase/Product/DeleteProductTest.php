@@ -39,18 +39,18 @@ it(
     ->throws(TDBMException::class);
 
 it(
-    'deletes the pictures',
+    'sends a task for deleting the pictures',
     function (): void {
         $createCompany = self::$container->get(CreateCompany::class);
         $createProduct = self::$container->get(CreateProduct::class);
         $deleteProduct = self::$container->get(DeleteProduct::class);
-        $productDao    = self::$container->get(ProductDao::class);
         $transport     = self::$container->get(AsyncTransport::KEY);
+        $productDao    = self::$container->get(ProductDao::class);
         assert($createCompany instanceof CreateCompany);
         assert($createProduct instanceof CreateProduct);
         assert($deleteProduct instanceof DeleteProduct);
-        assert($productDao instanceof ProductDao);
         assert($transport instanceof InMemoryTransport);
+        assert($productDao instanceof ProductDao);
 
         $pictures = [
             dirname(__FILE__) . '/foo.png',

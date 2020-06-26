@@ -7,8 +7,11 @@ use App\Domain\Storage\CompanyLogoStorage;
 use App\Domain\Throwable\Exists\CompanyWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidCompany;
 use App\Domain\Throwable\Invalid\InvalidCompanyLogo;
+use App\Tests\UseCase\AsyncTransport;
 use App\Tests\UseCase\DummyValues;
 use App\UseCase\Company\CreateCompany;
+use App\UseCase\Company\DeleteCompanyLogo\DeleteCompanyLogoTask;
+use Symfony\Component\Messenger\Transport\InMemoryTransport;
 
 it(
     'creates a company',
@@ -134,14 +137,14 @@ it(
     ->throws(InvalidCompany::class);
 
 it(
-    'deletes the logo if exception',
+    'sends a task for deleting the logo if exception',
     function (
         string $logo
     ): void {
-        $createCompany      = self::$container->get(CreateCompany::class);
-        $companyLogoStorage = self::$container->get(CompanyLogoStorage::class);
+        $createCompany = self::$container->get(CreateCompany::class);
+        $transport     = self::$container->get(AsyncTransport::KEY);
         assert($createCompany instanceof CreateCompany);
-        assert($companyLogoStorage instanceof CompanyLogoStorage);
+        assert($transport instanceof InMemoryTransport);
 
         $storable = CompanyLogo::createFromPath(
             dirname(__FILE__) . '/' . $logo
@@ -153,7 +156,10 @@ it(
             $storable
         );
 
-        assertFalse($companyLogoStorage->fileExists($logo));
+        assertCount(1, $transport->getSent());
+        $envelope = $transport->get()[0];
+        $message  = $envelope->getMessage();
+        assert($message instanceof DeleteCompanyLogoTask);
     }
 )
     ->with(['foo.jpg'])

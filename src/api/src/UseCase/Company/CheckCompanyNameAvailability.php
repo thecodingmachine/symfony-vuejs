@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\UseCase\Product;
+namespace App\UseCase\Company;
 
 use App\Domain\Dao\CompanyDao;
 use App\Domain\Throwable\Exists\CompanyWithNameExists;

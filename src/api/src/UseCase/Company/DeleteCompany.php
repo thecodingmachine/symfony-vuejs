@@ -6,25 +6,21 @@ namespace App\UseCase\Company;
 
 use App\Domain\Dao\CompanyDao;
 use App\Domain\Model\Company;
-use App\Domain\Storage\CompanyLogoStorage;
-use App\UseCase\Product\DeleteProduct;
+use App\UseCase\Company\DeleteCompanyLogo\DeleteCompanyLogoTask;
+use App\UseCase\Product\DeleteProductPictures\DeleteProductPicturesTask;
+use Symfony\Component\Messenger\MessageBusInterface;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Security;
 
 final class DeleteCompany
 {
     private CompanyDao $companyDao;
-    private CompanyLogoStorage $companyLogoStorage;
-    private DeleteProduct $deleteProduct;
+    private MessageBusInterface $messageBus;
 
-    public function __construct(
-        CompanyDao $companyDao,
-        CompanyLogoStorage $companyLogoStorage,
-        DeleteProduct $deleteProduct
-    ) {
-        $this->companyDao         = $companyDao;
-        $this->companyLogoStorage = $companyLogoStorage;
-        $this->deleteProduct      = $deleteProduct;
+    public function __construct(CompanyDao $companyDao, MessageBusInterface $messageBus)
+    {
+        $this->companyDao = $companyDao;
+        $this->messageBus = $messageBus;
     }
 
     /**
@@ -33,21 +29,20 @@ final class DeleteCompany
      */
     public function deleteCompany(Company $company): bool
     {
-        // TODO async delete of logo and product pictures.
-        $products = $company->getProducts();
         $logo     = $company->getLogo();
+        $pictures = $company->getProductsPictures();
 
-        foreach ($products as $product) {
-            $this->deleteProduct->deleteProduct($product);
+        $this->companyDao->delete($company, true);
+
+        if ($logo !== null) {
+            $task = new DeleteCompanyLogoTask($logo);
+            $this->messageBus->dispatch($task);
         }
 
-        $this->companyDao->delete($company);
-
-        if ($logo === null) {
-            return true;
+        if (! empty($pictures)) {
+            $task = new DeleteProductPicturesTask($pictures);
+            $this->messageBus->dispatch($task);
         }
-
-        $this->companyLogoStorage->delete($logo);
 
         return true;
     }

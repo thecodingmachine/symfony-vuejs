@@ -14,6 +14,8 @@ use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Security;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
+use function array_merge;
+
 /**
  * The Company class maps the 'companies' table in database.
  *
@@ -61,5 +63,26 @@ class Company extends BaseCompany
     public function getUsers(): array
     {
         return parent::getUsers();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getProductsPictures(): array
+    {
+        $products    = $this->getProducts();
+        $allPictures = [];
+
+        foreach ($products as $product) {
+            $pictures = $product->getPictures();
+
+            if (empty($pictures)) {
+                continue;
+            }
+
+            $allPictures = array_merge($allPictures, $pictures);
+        }
+
+        return $allPictures;
     }
 }

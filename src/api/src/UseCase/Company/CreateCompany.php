@@ -11,7 +11,9 @@ use App\Domain\Storage\CompanyLogoStorage;
 use App\Domain\Throwable\Exists\CompanyWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidCompany;
 use App\Domain\Throwable\Invalid\InvalidCompanyLogo;
+use App\UseCase\Company\DeleteCompanyLogo\DeleteCompanyLogoTask;
 use Psr\Http\Message\UploadedFileInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 use Throwable;
@@ -20,13 +22,16 @@ final class CreateCompany
 {
     private CompanyDao $companyDao;
     private CompanyLogoStorage $companyLogoStorage;
+    private MessageBusInterface $messageBus;
 
     public function __construct(
         CompanyDao $companyDao,
-        CompanyLogoStorage $companyLogoStorage
+        CompanyLogoStorage $companyLogoStorage,
+        MessageBusInterface $messageBus
     ) {
         $this->companyDao         = $companyDao;
         $this->companyLogoStorage = $companyLogoStorage;
+        $this->messageBus         = $messageBus;
     }
 
     /**
@@ -66,9 +71,10 @@ final class CreateCompany
     ): Company {
         $this->companyDao->mustNotFindOneByName($name);
 
-        $fileName = $logo !== null ?
-            $this->companyLogoStorage->write($logo) :
-            null;
+        $fileName = null;
+        if ($logo !== null) {
+            $fileName = $this->companyLogoStorage->write($logo);
+        }
 
         $company = new Company($name);
         $company->setWebsite($website);
@@ -99,6 +105,7 @@ final class CreateCompany
             return;
         }
 
-        $this->companyLogoStorage->delete($fileName);
+        $task = new DeleteCompanyLogoTask($fileName);
+        $this->messageBus->dispatch($task);
     }
 }

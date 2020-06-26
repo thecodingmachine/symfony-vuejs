@@ -7,9 +7,12 @@ use App\Domain\Storage\ProductPictureStorage;
 use App\Domain\Throwable\Exists\ProductWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidProduct;
 use App\Domain\Throwable\Invalid\InvalidProductPicture;
+use App\Tests\UseCase\AsyncTransport;
 use App\Tests\UseCase\DummyValues;
 use App\UseCase\Company\CreateCompany;
 use App\UseCase\Product\CreateProduct;
+use App\UseCase\Product\DeleteProductPictures\DeleteProductPicturesTask;
+use Symfony\Component\Messenger\Transport\InMemoryTransport;
 
 it(
     'creates a product',
@@ -173,14 +176,14 @@ it(
     ->throws(InvalidProduct::class);
 
 it(
-    'deletes the pictures if exception',
+    'sends a task for deleting the pictures if exception',
     function (): void {
-        $createCompany         = self::$container->get(CreateCompany::class);
-        $createProduct         = self::$container->get(CreateProduct::class);
-        $productPictureStorage = self::$container->get(ProductPictureStorage::class);
+        $createCompany = self::$container->get(CreateCompany::class);
+        $createProduct = self::$container->get(CreateProduct::class);
+        $transport     = self::$container->get(AsyncTransport::KEY);
         assert($createCompany instanceof CreateCompany);
         assert($createProduct instanceof CreateProduct);
-        assert($productPictureStorage instanceof  ProductPictureStorage);
+        assert($transport instanceof InMemoryTransport);
 
         $pictures = [
             dirname(__FILE__) . '/foo.png',
@@ -199,11 +202,10 @@ it(
             $storables
         );
 
-        foreach ($storables as $storable) {
-            assertFalse($productPictureStorage->fileExists(
-                $storable->getFilename()
-            ));
-        }
+        assertCount(1, $transport->getSent());
+        $envelope = $transport->get()[0];
+        $message  = $envelope->getMessage();
+        assert($message instanceof DeleteProductPicturesTask);
     }
 )
     ->throws(InvalidProduct::class);

@@ -33,7 +33,7 @@ final class DeleteProduct
         $pictures = $product->getPictures();
         $this->productDao->delete($product, true);
 
-        if ($pictures === null) {
+        if (empty($pictures)) {
             return true;
         }
 

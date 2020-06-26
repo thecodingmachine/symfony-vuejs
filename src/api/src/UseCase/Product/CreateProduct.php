@@ -12,7 +12,9 @@ use App\Domain\Storage\ProductPictureStorage;
 use App\Domain\Throwable\Exists\ProductWithNameExists;
 use App\Domain\Throwable\Invalid\InvalidProduct;
 use App\Domain\Throwable\Invalid\InvalidProductPicture;
+use App\UseCase\Product\DeleteProductPictures\DeleteProductPicturesTask;
 use Psr\Http\Message\UploadedFileInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use Throwable;
 
@@ -20,13 +22,16 @@ final class CreateProduct
 {
     private ProductDao $productDao;
     private ProductPictureStorage $productPictureStorage;
+    private MessageBusInterface $messageBus;
 
     public function __construct(
         ProductDao $productDao,
-        ProductPictureStorage $productPictureStorage
+        ProductPictureStorage $productPictureStorage,
+        MessageBusInterface $messageBus
     ) {
         $this->productDao            = $productDao;
         $this->productPictureStorage = $productPictureStorage;
+        $this->messageBus            = $messageBus;
     }
 
     /**
@@ -75,9 +80,10 @@ final class CreateProduct
     ): Product {
         $this->productDao->mustNotFindOneByName($name);
 
-        $fileNames = $pictures !== null ?
-            $this->productPictureStorage->writeAll($pictures) :
-            null;
+        $fileNames = null;
+        if (! empty($pictures)) {
+            $fileNames = $this->productPictureStorage->writeAll($pictures);
+        }
 
         $product = new Product(
             $company,
@@ -114,6 +120,7 @@ final class CreateProduct
             return;
         }
 
-        $this->productPictureStorage->deleteAll($fileNames);
+        $task = new DeleteProductPicturesTask($fileNames);
+        $this->messageBus->dispatch($task);
     }
 }
