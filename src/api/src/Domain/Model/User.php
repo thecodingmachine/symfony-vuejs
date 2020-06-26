@@ -13,6 +13,7 @@ use Serializable;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
 use function Safe\password_hash;
@@ -31,6 +32,7 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
     /**
      * @Assert\NotBlank
      * @Assert\Length(max = 255)
+     * @Field
      */
     public function getFirstName(): string
     {
@@ -40,6 +42,7 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
     /**
      * @Assert\NotBlank
      * @Assert\Length(max = 255)
+     * @Field
      */
     public function getLastName(): string
     {
@@ -50,6 +53,7 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
      * @Assert\NotBlank
      * @Assert\Length(max = 255)
      * @Assert\Email
+     * @Field
      */
     public function getEmail(): string
     {
@@ -69,6 +73,7 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
 
     /**
      * @Assert\Choice(callback={"App\Domain\Enum\LocaleEnum", "values"})
+     * @Field
      */
     public function getLocale(): string
     {
@@ -77,6 +82,7 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
 
     /**
      * @Assert\Choice(callback={"App\Domain\Enum\RoleEnum", "values"})
+     * @Field
      */
     public function getRole(): string
     {
