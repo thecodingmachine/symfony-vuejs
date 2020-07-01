@@ -75,8 +75,8 @@
 
 <script>
 import CompaniesQuery from '@/pages/products/companies.query.gql'
-import CheckProductNameAvailabilityQuery from '@/pages/products/check.product.name.availability.query.gql'
-import CreateProductMutation from '@/pages/products/create.product.mutation.gql'
+import CheckProductNameAvailabilityQuery from '@/pages/products/check_product_name_availability.query.gql'
+import CreateProductMutation from '@/pages/products/create_product.mutation.gql'
 
 export default {
   data() {
