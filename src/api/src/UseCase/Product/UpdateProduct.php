@@ -104,7 +104,7 @@ final class UpdateProduct
             throw $e;
         } catch (Throwable $e) {
             // If any exception occurs, delete
-            // the pictures from the store.
+            // the new pictures from the store.
             $this->beforeThrowDeleteNewPicturesIfExist($newFilenames);
 
             throw $e;
