@@ -25,7 +25,7 @@ final class DeleteCompany
 
     /**
      * @Mutation
-     * @Security("is_granted('CAN_DELETE', company)")
+     * @Security("is_granted('NA', company)")
      */
     public function deleteCompany(Company $company): bool
     {

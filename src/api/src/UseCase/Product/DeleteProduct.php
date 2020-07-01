@@ -26,7 +26,7 @@ final class DeleteProduct
 
     /**
      * @Mutation
-     * @Security("is_granted('CAN_DELETE', product)")
+     * @Security("is_granted('NA', product)")
      */
     public function deleteProduct(Product $product): bool
     {

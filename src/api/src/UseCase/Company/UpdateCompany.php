@@ -18,7 +18,7 @@ use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 use Throwable;
 
-final class CreateCompany
+final class UpdateCompany
 {
     private CompanyDao $companyDao;
     private CompanyLogoStorage $companyLogoStorage;
@@ -42,17 +42,19 @@ final class CreateCompany
      * @Mutation
      * @Right("ROLE_COMPANY")
      */
-    public function createCompany(
+    public function updateCompany(
+        Company $company,
         string $name,
-        ?string $website = null,
-        ?UploadedFileInterface $logo = null
+        ?string $website,
+        ?UploadedFileInterface $newLogo = null
     ): Company {
         $storable = null;
-        if ($logo !== null) {
-            $storable = CompanyLogo::createFromUploadedFile($logo);
+        if ($newLogo !== null) {
+            $storable = CompanyLogo::createFromUploadedFile($newLogo);
         }
 
-        return $this->create(
+        return $this->update(
+            $company,
             $name,
             $website,
             $storable
@@ -64,48 +66,58 @@ final class CreateCompany
      * @throws InvalidCompanyLogo
      * @throws InvalidCompany
      */
-    public function create(
+    public function update(
+        Company $company,
         string $name,
-        ?string $website = null,
-        ?CompanyLogo $logo = null
+        ?string $website,
+        ?CompanyLogo $newLogo = null
     ): Company {
-        $this->companyDao->mustNotFindOneByName($name);
+        $this->companyDao->mustNotFindOneByName($name, $company->getId());
 
-        $fileName = null;
-        if ($logo !== null) {
-            $fileName = $this->companyLogoStorage->write($logo);
-        }
-
-        $company = new Company($name);
+        $company->setName($name);
         $company->setWebsite($website);
-        $company->setLogo($fileName);
+
+        $oldFilename = $company->getLogo();
+        $newFilename = null;
+
+        if ($newLogo !== null) {
+            $newFilename = $this->companyLogoStorage->write($newLogo);
+            $company->setLogo($newFilename);
+        }
 
         try {
             $this->companyDao->save($company);
         } catch (InvalidCompany $e) {
             // pepakriz/phpstan-exception-rules limitation: "Catch statement does not know about runtime subtypes".
             // See https://github.com/pepakriz/phpstan-exception-rules#catch-statement-does-not-know-about-runtime-subtypes.
-            $this->beforeThrowDeleteLogoIfExists($fileName);
+            $this->beforeThrowDeleteNewLogoIfExists($newFilename);
 
             throw $e;
         } catch (Throwable $e) {
             // If any exception occurs, delete
-            // the logo from the storage.
-            $this->beforeThrowDeleteLogoIfExists($fileName);
+            // the new logo from the storage.
+            $this->beforeThrowDeleteNewLogoIfExists($newFilename);
 
             throw $e;
+        }
+
+        // If a new logo has been provided and
+        // there is an old logo, delete the later.
+        if ($newFilename !== null && $oldFilename !== null) {
+            $task = new DeleteCompanyLogoTask($oldFilename);
+            $this->messageBus->dispatch($task);
         }
 
         return $company;
     }
 
-    private function beforeThrowDeleteLogoIfExists(?string $fileName): void
+    private function beforeThrowDeleteNewLogoIfExists(?string $newFilename): void
     {
-        if ($fileName === null) {
+        if ($newFilename === null) {
             return;
         }
 
-        $task = new DeleteCompanyLogoTask($fileName);
+        $task = new DeleteCompanyLogoTask($newFilename);
         $this->messageBus->dispatch($task);
     }
 }

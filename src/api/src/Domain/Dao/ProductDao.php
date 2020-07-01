@@ -45,11 +45,15 @@ class ProductDao extends BaseProductDao
     /**
      * @throws ProductWithNameExists
      */
-    public function mustNotFindOneByName(string $name): void
+    public function mustNotFindOneByName(string $name, ?string $id = null): void
     {
         $product = $this->findOneByName($name);
 
         if ($product === null) {
+            return;
+        }
+
+        if ($id !== null && $product->getId() === $id) {
             return;
         }
 

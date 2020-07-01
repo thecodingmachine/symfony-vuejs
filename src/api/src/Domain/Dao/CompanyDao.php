@@ -45,11 +45,15 @@ class CompanyDao extends BaseCompanyDao
     /**
      * @throws CompanyWithNameExists
      */
-    public function mustNotFindOneByName(string $name): void
+    public function mustNotFindOneByName(string $name, ?string $id = null): void
     {
         $company = $this->findOneByName($name);
 
         if ($company === null) {
+            return;
+        }
+
+        if ($id !== null && $company->getId() === $id) {
             return;
         }
 

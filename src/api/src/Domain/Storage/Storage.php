@@ -23,9 +23,9 @@ abstract class Storage
 
     abstract protected function getDirectoryName(): string;
 
-    private function getPath(string $fileName): string
+    private function getPath(string $filename): string
     {
-        return $this->getDirectoryName() . '/' . $fileName;
+        return $this->getDirectoryName() . '/' . $filename;
     }
 
     /**
@@ -35,33 +35,33 @@ abstract class Storage
      */
     protected function putAll(array $storables): array
     {
-        $fileNames = [];
+        $filenames = [];
         foreach ($storables as $storable) {
             try {
-                $fileNames[] = $this->put($storable);
+                $filenames[] = $this->put($storable);
             } catch (Throwable $e) {
                 // If any exception occurs, delete
                 // already stored pictures.
-                $this->deleteAll($fileNames);
+                $this->deleteAll($filenames);
 
                 throw $e;
             }
         }
 
-        return $fileNames;
+        return $filenames;
     }
 
     protected function put(Storable $storable): string
     {
-        $fileName = $storable->getFilename();
-        $path     = $this->getPath($fileName);
+        $filename = $storable->getFilename();
+        $path     = $this->getPath($filename);
         $result   = $this->storage->putStream(
             $path,
             $storable->getResource()
         );
 
         if ($result === true) {
-            return $fileName;
+            return $filename;
         }
 
         throw new RuntimeException(
@@ -72,18 +72,18 @@ abstract class Storage
     }
 
     /**
-     * @param string[] $fileNames
+     * @param string[] $filenames
      */
-    public function deleteAll(array $fileNames): void
+    public function deleteAll(array $filenames): void
     {
-        foreach ($fileNames as $fileName) {
-            $this->delete($fileName);
+        foreach ($filenames as $filename) {
+            $this->delete($filename);
         }
     }
 
-    public function delete(string $fileName): void
+    public function delete(string $filename): void
     {
-        $path   = $this->getPath($fileName);
+        $path   = $this->getPath($filename);
         $result = $this->storage->delete($path);
 
         if ($result !== false) {
@@ -97,9 +97,9 @@ abstract class Storage
         );
     }
 
-    public function fileExists(string $fileName): bool
+    public function fileExists(string $filename): bool
     {
-        $path = $this->getPath($fileName);
+        $path = $this->getPath($filename);
 
         return $this->storage->has($path);
     }

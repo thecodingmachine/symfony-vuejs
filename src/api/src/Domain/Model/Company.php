@@ -57,7 +57,7 @@ class Company extends BaseCompany
     /**
      * @return User[]
      *
-     * @Security("is_granted('CAN_VIEW_USERS', this)")
+     * @Security("is_granted('NA', this)")
      * @Field
      */
     public function getUsers(): array
