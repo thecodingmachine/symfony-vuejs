@@ -9,37 +9,27 @@ use App\Domain\Model\Company;
 use App\Domain\Model\Product;
 use App\Domain\Model\Storable\ProductPicture;
 use App\Domain\Storage\ProductPictureStorage;
-use App\Domain\Throwable\Exists\ProductWithNameExists;
-use App\Domain\Throwable\Invalid\InvalidProduct;
-use App\Domain\Throwable\Invalid\InvalidProductPicture;
-use App\UseCase\Product\DeleteProductPictures\DeleteProductPicturesTask;
+use App\Domain\Throwable\InvalidModel;
 use Psr\Http\Message\UploadedFileInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
-use Throwable;
 
 final class CreateProduct
 {
     private ProductDao $productDao;
     private ProductPictureStorage $productPictureStorage;
-    private MessageBusInterface $messageBus;
 
     public function __construct(
         ProductDao $productDao,
-        ProductPictureStorage $productPictureStorage,
-        MessageBusInterface $messageBus
+        ProductPictureStorage $productPictureStorage
     ) {
         $this->productDao            = $productDao;
         $this->productPictureStorage = $productPictureStorage;
-        $this->messageBus            = $messageBus;
     }
 
     /**
      * @param UploadedFileInterface[]|null $pictures
      *
-     * @throws ProductWithNameExists
-     * @throws InvalidProductPicture
-     * @throws InvalidProduct
+     * @throws InvalidModel
      *
      * @Mutation
      */
@@ -49,7 +39,6 @@ final class CreateProduct
         Company $company,
         ?array $pictures = null
     ): Product {
-        // TODO use product voter
         $storables = null;
         if ($pictures !== null) {
             $storables = ProductPicture::createAllFromUploadedFiles(
@@ -68,9 +57,7 @@ final class CreateProduct
     /**
      * @param ProductPicture[]|null $pictures
      *
-     * @throws ProductWithNameExists
-     * @throws InvalidProductPicture
-     * @throws InvalidProduct
+     * @throws InvalidModel
      */
     public function create(
         string $name,
@@ -78,49 +65,26 @@ final class CreateProduct
         Company $company,
         ?array $pictures = null
     ): Product {
-        $this->productDao->mustNotFindOneByName($name);
-
-        $fileNames = null;
-        if (! empty($pictures)) {
-            $fileNames = $this->productPictureStorage->writeAll($pictures);
-        }
-
         $product = new Product(
             $company,
             $name,
             $price
         );
-        $product->setPictures($fileNames);
 
-        try {
-            $this->productDao->save($product);
-        } catch (InvalidProduct $e) {
-            // pepakriz/phpstan-exception-rules limitation: "Catch statement does not know about runtime subtypes".
-            // See https://github.com/pepakriz/phpstan-exception-rules#catch-statement-does-not-know-about-runtime-subtypes.
-            $this->beforeThrowDeletePicturesIfExist($fileNames);
+        // Validate the product before uploading
+        // its pictures.
+        $this->productDao->validate($product);
 
-            throw $e;
-        } catch (Throwable $e) {
-            // If any exception occurs, delete
-            // the pictures from the store.
-            $this->beforeThrowDeletePicturesIfExist($fileNames);
-
-            throw $e;
+        // Upload the pictures (if any).
+        // Note: the validation of those pictures
+        // is done directly in the writeAll function.
+        if (! empty($pictures)) {
+            $filenames = $this->productPictureStorage->writeAll($pictures);
+            $product->setPictures($filenames);
         }
+
+        $this->productDao->save($product);
 
         return $product;
-    }
-
-    /**
-     * @param string[]|null $fileNames
-     */
-    private function beforeThrowDeletePicturesIfExist(?array $fileNames): void
-    {
-        if ($fileNames === null) {
-            return;
-        }
-
-        $task = new DeleteProductPicturesTask($fileNames);
-        $this->messageBus->dispatch($task);
     }
 }

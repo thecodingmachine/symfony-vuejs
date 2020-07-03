@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Model\Generated;
 
-use App\Domain\Model\Product;
 use App\Domain\Model\User;
+use App\Domain\Model\Product;
 use TheCodingMachine\TDBM\AbstractTDBMObject;
 use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\AlterableResultIterator;
@@ -34,11 +34,13 @@ abstract class BaseCompany extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
     /**
      * The constructor takes all compulsory arguments.
      *
+     * @param \App\Domain\Model\User $user
      * @param string $name
      */
-    public function __construct(string $name)
+    public function __construct(\App\Domain\Model\User $user, string $name)
     {
         parent::__construct();
+        $this->setUser($user);
         $this->setName($name);
         $this->setId(Uuid::uuid1()->toString());
     }
@@ -62,6 +64,24 @@ abstract class BaseCompany extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
     public function setId(string $id) : void
     {
         $this->set('id', $id, 'companies');
+    }
+
+    /**
+     * Returns the User object bound to this object via the user_id column.
+     *
+     * @GraphqlField
+     */
+    public function getUser() : \App\Domain\Model\User
+    {
+        return $this->getRef('from__user_id__to__table__users__columns__id', 'companies');
+    }
+
+    /**
+     * The setter for the User object bound to this object via the user_id column.
+     */
+    public function setUser(\App\Domain\Model\User $object) : void
+    {
+        $this->setRef('from__user_id__to__table__users__columns__id', $object, 'companies');
     }
 
     /**
@@ -107,27 +127,6 @@ abstract class BaseCompany extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
     }
 
     /**
-     * The getter for the "logo" column.
-     *
-     * @return string|null
-     * @GraphqlField
-     */
-    public function getLogo() : ?string
-    {
-        return $this->get('logo', 'companies');
-    }
-
-    /**
-     * The setter for the "logo" column.
-     *
-     * @param string|null $logo
-     */
-    public function setLogo(?string $logo) : void
-    {
-        $this->set('logo', $logo, 'companies');
-    }
-
-    /**
      * Returns the list of Product pointing to this bean via the company_id column.
      *
      * @return Product[]|\TheCodingMachine\TDBM\AlterableResultIterator
@@ -139,86 +138,6 @@ abstract class BaseCompany extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
     }
 
     /**
-     * Returns the list of User associated to this bean via the users_companies pivot table.
-     *
-     * @return \App\Domain\Model\User[]
-     * @GraphqlField
-     */
-    public function getUsers() : array
-    {
-        return $this->_getRelationships('users_companies.company_id');
-    }
-
-    /**
-     * Adds a relationship with User associated to this bean via the users_companies pivot table.
-     *
-     * @param \App\Domain\Model\User $user
-     */
-    public function addUser(\App\Domain\Model\User $user) : void
-    {
-        $this->addRelationship('users_companies', $user);
-    }
-
-    /**
-     * Deletes the relationship with User associated to this bean via the users_companies pivot table.
-     *
-     * @param \App\Domain\Model\User $user
-     */
-    public function removeUser(\App\Domain\Model\User $user) : void
-    {
-        $this->_removeRelationship('users_companies', $user);
-    }
-
-    /**
-     * Returns whether this bean is associated with User via the users_companies pivot table.
-     *
-     * @param \App\Domain\Model\User $user
-     * @return bool
-     */
-    public function hasUser(\App\Domain\Model\User $user) : bool
-    {
-        return $this->hasRelationship('users_companies.company_id', $user);
-    }
-
-    /**
-     * Sets all relationships with User associated to this bean via the users_companies pivot table.
-     * Exiting relationships will be removed and replaced by the provided relationships.
-     *
-     * @param \App\Domain\Model\User[] $users
-     * @return void
-     */
-    public function setUsers(array $users) : void
-    {
-        $this->setRelationships('users_companies.company_id', $users);
-    }
-
-    /**
-     * Get the paths used for many to many relationships methods.
-     *
-     * @internal
-     */
-    public function _getManyToManyRelationshipDescriptor(string $pathKey) : \TheCodingMachine\TDBM\Utils\ManyToManyRelationshipPathDescriptor
-    {
-        switch ($pathKey) {
-            case 'users_companies.company_id':
-                return new \TheCodingMachine\TDBM\Utils\ManyToManyRelationshipPathDescriptor('users', 'users_companies', ['id'], ['user_id'], ['company_id']);
-            default:
-                return parent::_getManyToManyRelationshipDescriptor($pathKey);
-        }
-    }
-
-    /**
-     * Returns the list of keys supported for many to many relationships
-     *
-     * @internal
-     * @return string[]
-     */
-    public function _getManyToManyRelationshipDescriptorKeys() : array
-    {
-        return array_merge(parent::_getManyToManyRelationshipDescriptorKeys(), ['users_companies.company_id']);
-    }
-
-    /**
      * Internal method used to retrieve the list of foreign keys attached to this bean.
      */
     protected static function getForeignKeys(string $tableName) : \TheCodingMachine\TDBM\Schema\ForeignKeys
@@ -226,7 +145,15 @@ abstract class BaseCompany extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
         if ($tableName === 'companies') {
             if (self::$foreignKeys === null) {
                 self::$foreignKeys = new ForeignKeys([
-
+                    'from__user_id__to__table__users__columns__id' => [
+                        'foreignTable' => 'users',
+                        'localColumns' => [
+                            'user_id'
+                        ],
+                        'foreignColumns' => [
+                            'id'
+                        ]
+                    ]
                 ]);
             }
             return self::$foreignKeys;
@@ -245,14 +172,13 @@ abstract class BaseCompany extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
     {
         $array = [];
         $array['id'] = $this->getId();
+        if ($stopRecursion) {
+            $array['user'] = ['id' => $this->getUser()->getId()];
+        } else {
+            $array['user'] = $this->getUser()->jsonSerialize(true);
+        }
         $array['name'] = $this->getName();
         $array['website'] = $this->getWebsite();
-        $array['logo'] = $this->getLogo();
-        if (!$stopRecursion) {
-            $array['users'] = array_map(function (User $object) {
-                return $object->jsonSerialize(true);
-            }, $this->getUsers());
-        };
         return $array;
     }
 
@@ -267,10 +193,17 @@ abstract class BaseCompany extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
         return [ 'companies' ];
     }
 
+    /**
+     * Method called when the bean is removed from database.
+     */
+    public function onDelete() : void
+    {
+        parent::onDelete();
+        $this->setRef('from__user_id__to__table__users__columns__id', null, 'companies');
+    }
+
     public function __clone()
     {
-        $this->getUsers();
-
         parent::__clone();
         $this->setId(Uuid::uuid1()->toString());
     }

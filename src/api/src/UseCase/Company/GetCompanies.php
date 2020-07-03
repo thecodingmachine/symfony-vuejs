@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\UseCase\Company;
 
 use App\Domain\Dao\CompanyDao;
+use App\Domain\Enum\Filter\CompaniesSortBy;
+use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Model\Company;
-use App\Domain\Model\Filter\CompaniesFilters;
-use App\Domain\Throwable\Invalid\InvalidCompaniesFilters;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\TDBM\ResultIterator;
 
@@ -23,17 +23,17 @@ final class GetCompanies
     /**
      * @return Company[]|ResultIterator
      *
-     * @throws InvalidCompaniesFilters
-     *
      * @Query
      */
     public function companies(
         ?string $search = null,
-        ?string $sortBy = null,
-        ?string $sortOrder = null
+        ?CompaniesSortBy $sortBy = null,
+        ?SortOrder $sortOrder = null
     ): ResultIterator {
-        $filters = new CompaniesFilters($search, $sortBy, $sortOrder);
-
-        return $this->companyDao->search($filters);
+        return $this->companyDao->search(
+            $search,
+            $sortBy,
+            $sortOrder
+        );
     }
 }

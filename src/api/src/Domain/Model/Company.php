@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Constraint as DomainAssert;
 use App\Domain\Model\Generated\BaseCompany;
 use Symfony\Component\Validator\Constraints as Assert;
 use TheCodingMachine\GraphQLite\Annotations\Field;
-use TheCodingMachine\GraphQLite\Annotations\Security;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
 use function array_merge;
@@ -20,13 +20,14 @@ use function array_merge;
  * The Company class maps the 'companies' table in database.
  *
  * @Type
+ * @DomainAssert\Unicity(table="companies", column="name", message="assert.company.name_not_unique")
  */
 class Company extends BaseCompany
 {
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max = 255)
      * @Field
+     * @Assert\NotBlank(message="assert.not_blank")
+     * @Assert\Length(max=255, maxMessage="assert.max_length_255")
      */
     public function getName(): string
     {
@@ -34,35 +35,14 @@ class Company extends BaseCompany
     }
 
     /**
-     * @Assert\NotBlank(allowNull = true)
-     * @Assert\Length(max = 255)
-     * @Assert\Url
      * @Field
+     * @Assert\NotBlank(allowNull=true, message="assert.not_blank")
+     * @Assert\Length(max=255, maxMessage="assert.max_length_255")
+     * @Assert\Url(message="assert.invalid_url")
      */
     public function getWebsite(): ?string
     {
         return parent::getWebsite();
-    }
-
-    /**
-     * @Assert\NotBlank(allowNull = true)
-     * @Assert\Length(max = 255)
-     * @Field
-     */
-    public function getLogo(): ?string
-    {
-        return parent::getLogo();
-    }
-
-    /**
-     * @return User[]
-     *
-     * @Security("is_granted('NA', this)")
-     * @Field
-     */
-    public function getUsers(): array
-    {
-        return parent::getUsers();
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Storage;
 
 use App\Domain\Model\Storable\Storable;
+use App\Domain\Throwable\InvalidModel;
 use League\Flysystem\FilesystemInterface;
 use RuntimeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -31,14 +32,45 @@ abstract class Storage
     /**
      * @param Storable[] $storables
      *
-     * @return string[]
+     * @throws InvalidModel
      */
-    protected function putAll(array $storables): array
+    protected function validateAll(array $storables): void
     {
+        foreach ($storables as $storable) {
+            $this->validate($storable);
+        }
+    }
+
+    /**
+     * @throws InvalidModel
+     */
+    protected function validate(Storable $storable): void
+    {
+        $violations = $this->validator->validate($storable);
+        InvalidModel::throwException($violations);
+    }
+
+    /**
+     * @param Storable[] $storables
+     *
+     * @return string[]
+     *
+     * @throws InvalidModel
+     */
+    public function writeAll(array $storables): array
+    {
+        $this->validateAll($storables);
+
         $filenames = [];
         foreach ($storables as $storable) {
             try {
-                $filenames[] = $this->put($storable);
+                $filenames[] = $this->write($storable);
+            } catch (InvalidModel $e) {
+                // pepakriz/phpstan-exception-rules limitation: "Catch statement does not know about runtime subtypes".
+                // See https://github.com/pepakriz/phpstan-exception-rules#catch-statement-does-not-know-about-runtime-subtypes.
+                $this->deleteAll($filenames);
+
+                throw $e;
             } catch (Throwable $e) {
                 // If any exception occurs, delete
                 // already stored pictures.
@@ -51,8 +83,13 @@ abstract class Storage
         return $filenames;
     }
 
-    protected function put(Storable $storable): string
+    /**
+     * @throws InvalidModel
+     */
+    public function write(Storable $storable): string
     {
+        $this->validate($storable);
+
         $filename = $storable->getFilename();
         $path     = $this->getPath($filename);
         $result   = $this->storage->putStream(

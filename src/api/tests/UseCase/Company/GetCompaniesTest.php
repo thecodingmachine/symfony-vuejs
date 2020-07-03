@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Domain\Enum\Filter\CompaniesSortByEnum;
-use App\Domain\Enum\Filter\SortOrderEnum;
+use App\Domain\Enum\Filter\CompaniesSortBy;
+use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Model\Company;
 use App\Domain\Throwable\Invalid\InvalidCompaniesFilters;
 use App\UseCase\Company\CreateCompany;
@@ -63,12 +63,12 @@ it(
         $searchCompanies = self::$container->get(GetCompanies::class);
         assert($searchCompanies instanceof GetCompanies);
 
-        $result = $searchCompanies->companies(null, CompaniesSortByEnum::NAME, $sortOrder);
+        $result = $searchCompanies->companies(null, CompaniesSortBy::NAME, $sortOrder);
         assertCount(3, $result);
 
         /** @var Company[] $companies */
         $companies = $result->toArray();
-        if ($sortOrder === SortOrderEnum::ASC) {
+        if ($sortOrder === SortOrder::ASC) {
             assertStringContainsStringIgnoringCase('a', $companies[0]->getName());
             assertStringContainsStringIgnoringCase('b', $companies[1]->getName());
             assertStringContainsStringIgnoringCase('c', $companies[2]->getName());
@@ -79,7 +79,7 @@ it(
         }
     }
 )
-    ->with([SortOrderEnum::ASC, SortOrderEnum::DESC]);
+    ->with([SortOrder::ASC, SortOrder::DESC]);
 
 it(
     'sorts companies by website',
@@ -87,12 +87,12 @@ it(
         $searchCompanies = self::$container->get(GetCompanies::class);
         assert($searchCompanies instanceof GetCompanies);
 
-        $result = $searchCompanies->companies(null, CompaniesSortByEnum::WEBSITE, $sortOrder);
+        $result = $searchCompanies->companies(null, CompaniesSortBy::WEBSITE, $sortOrder);
         assertCount(3, $result);
 
         /** @var Company[] $companies */
         $companies = $result->toArray();
-        if ($sortOrder === SortOrderEnum::ASC) {
+        if ($sortOrder === SortOrder::ASC) {
             assertStringContainsStringIgnoringCase('a', $companies[0]->getWebsite());
             assertStringContainsStringIgnoringCase('b', $companies[1]->getWebsite());
             assertStringContainsStringIgnoringCase('c', $companies[2]->getWebsite());
@@ -103,7 +103,7 @@ it(
         }
     }
 )
-    ->with([SortOrderEnum::ASC, SortOrderEnum::DESC]);
+    ->with([SortOrder::ASC, SortOrder::DESC]);
 
 it(
     'throws an exception if invalid filters',
@@ -116,8 +116,8 @@ it(
 )
     ->with([
         // Invalid sort by.
-        ['foo', SortOrderEnum::ASC],
+        ['foo', SortOrder::ASC],
         // Invalid sort order.
-        [CompaniesSortByEnum::NAME, 'foo'],
+        [CompaniesSortBy::NAME, 'foo'],
     ])
     ->throws(InvalidCompaniesFilters::class);

@@ -19,6 +19,11 @@
         <exclude-pattern>tests/**</exclude-pattern>
     </rule>
 
+    <!-- Remove this specific rule for Enum as it is the expected behaviour of MyCLabs\Enum\Enum -->
+    <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedConstant">
+        <exclude-pattern>src/Domain/Enum/**</exclude-pattern>
+    </rule>
+
     <!-- Directories to be checked -->
     <file>migrations/</file>
     <file>src/</file>

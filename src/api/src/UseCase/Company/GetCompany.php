@@ -14,6 +14,7 @@ final class GetCompany
      */
     public function company(Company $company): Company
     {
+        // GraphQLite black magic.
         return $company;
     }
 }

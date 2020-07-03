@@ -105,6 +105,9 @@
     "filp/whoops": {
         "version": "2.7.2"
     },
+    "fzaninotto/faker": {
+        "version": "v1.9.1"
+    },
     "graphp/algorithms": {
         "version": "v0.8.2"
     },
@@ -180,6 +183,9 @@
     },
     "myclabs/deep-copy": {
         "version": "1.9.5"
+    },
+    "myclabs/php-enum": {
+        "version": "1.7.6"
     },
     "nelmio/cors-bundle": {
         "version": "1.5",

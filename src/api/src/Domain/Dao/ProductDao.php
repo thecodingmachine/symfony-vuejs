@@ -9,11 +9,10 @@ declare(strict_types=1);
 namespace App\Domain\Dao;
 
 use App\Domain\Dao\Generated\BaseProductDao;
-use App\Domain\Model\Filter\ProductsFilters;
+use App\Domain\Enum\Filter\ProductsSortBy;
+use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Model\Product;
-use App\Domain\Throwable\Exists\ProductWithNameExists;
-use App\Domain\Throwable\Invalid\InvalidProduct;
-use App\Domain\Throwable\Invalid\InvalidProductsFilters;
+use App\Domain\Throwable\InvalidModel;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\TDBMService;
@@ -32,43 +31,35 @@ class ProductDao extends BaseProductDao
     }
 
     /**
-     * @throws InvalidProduct
+     * @throws InvalidModel
+     */
+    public function validate(Product $product): void
+    {
+        $violations = $this->validator->validate($product);
+        InvalidModel::throwException($violations);
+    }
+
+    /**
+     * @throws InvalidModel
      */
     public function save(Product $product): void
     {
-        $violations = $this->validator->validate($product);
-        InvalidProduct::throwException($violations);
-
+        $this->validate($product);
         parent::save($product);
     }
 
     /**
-     * @throws ProductWithNameExists
-     */
-    public function mustNotFindOneByName(string $name, ?string $id = null): void
-    {
-        $product = $this->findOneByName($name);
-
-        if ($product === null) {
-            return;
-        }
-
-        if ($id !== null && $product->getId() === $id) {
-            return;
-        }
-
-        throw new ProductWithNameExists($name);
-    }
-
-    /**
      * @return Product[]|ResultIterator
-     *
-     * @throws InvalidProductsFilters
      */
-    public function search(ProductsFilters $filters): ResultIterator
-    {
-        $violations = $this->validator->validate($filters);
-        InvalidProductsFilters::throwException($violations);
+    public function search(
+        ?string $search = null,
+        ?float $lowerPrice = null,
+        ?float $upperPrice = null,
+        ?ProductsSortBy $sortBy = null,
+        ?SortOrder $sortOrder = null
+    ): ResultIterator {
+        $sortBy    = $sortBy ?: ProductsSortBy::PRICE();
+        $sortOrder = $sortOrder ?: SortOrder::ASC();
 
         return $this->find(
             [
@@ -77,11 +68,11 @@ class ProductDao extends BaseProductDao
                 'price <= :upperPrice',
             ],
             [
-                'search' => '%' . $filters->getSearch() . '%',
-                'lowerPrice' => $filters->getLowerPrice(),
-                'upperPrice' => $filters->getUpperPrice(),
+                'search' => '%' . $search . '%',
+                'lowerPrice' => $lowerPrice,
+                'upperPrice' => $upperPrice,
             ],
-            $filters->getSortBy() . ' ' . $filters->getSortOrder()
+            $sortBy . ' ' . $sortOrder
         );
     }
 }

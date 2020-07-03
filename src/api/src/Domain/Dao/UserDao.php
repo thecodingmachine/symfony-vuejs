@@ -9,14 +9,13 @@ declare(strict_types=1);
 namespace App\Domain\Dao;
 
 use App\Domain\Dao\Generated\BaseUserDao;
-use App\Domain\Model\Filter\UsersFilters;
+use App\Domain\Enum\Filter\SortOrder;
+use App\Domain\Enum\Filter\UsersSortBy;
+use App\Domain\Enum\Role;
 use App\Domain\Model\Proxy\PasswordProxy;
 use App\Domain\Model\User;
-use App\Domain\Throwable\Exists\UserWithEmailExists;
-use App\Domain\Throwable\Invalid\InvalidPassword;
-use App\Domain\Throwable\Invalid\InvalidUser;
-use App\Domain\Throwable\Invalid\InvalidUsersFilters;
-use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
+use App\Domain\Throwable\InvalidModel;
+use App\Domain\Throwable\NotFound;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\TDBMService;
@@ -35,31 +34,37 @@ class UserDao extends BaseUserDao
     }
 
     /**
-     * @throws InvalidUser
+     * @throws InvalidModel
+     */
+    public function validate(User $user): void
+    {
+        $violations = $this->validator->validate($user);
+        InvalidModel::throwException($violations);
+    }
+
+    /**
+     * @throws InvalidModel
      */
     public function save(User $user): void
     {
-        $violations = $this->validator->validate($user);
-        InvalidUser::throwException($violations);
-
+        $this->validate($user);
         parent::save($user);
     }
 
     /**
-     * @throws InvalidPassword
-     * @throws InvalidUser
+     * @throws InvalidModel
      */
     public function updatePassword(User $user, PasswordProxy $passwordProxy): void
     {
         $violations = $this->validator->validate($passwordProxy);
-        InvalidPassword::throwException($violations);
+        InvalidModel::throwException($violations);
 
         $user->setPassword($passwordProxy->getPlainPassword());
         $this->save($user);
     }
 
     /**
-     * @throws UserNotFoundByEmail
+     * @throws NotFound
      */
     public function mustFindOneByEmail(string $email): User
     {
@@ -69,32 +74,20 @@ class UserDao extends BaseUserDao
             return $user;
         }
 
-        throw new UserNotFoundByEmail($email);
-    }
-
-    /**
-     * @throws UserWithEmailExists
-     */
-    public function mustNotFindOneByEmail(string $email): void
-    {
-        $user = $this->findOneByEmail($email);
-
-        if ($user === null) {
-            return;
-        }
-
-        throw new UserWithEmailExists($email);
+        throw new NotFound('User not found with "' . $email . '"');
     }
 
     /**
      * @return User[]|ResultIterator
-     *
-     * @throws InvalidUsersFilters
      */
-    public function search(UsersFilters $filters): ResultIterator
-    {
-        $violations = $this->validator->validate($filters);
-        InvalidUsersFilters::throwException($violations);
+    public function search(
+        ?string $search = null,
+        ?Role $role = null,
+        ?UsersSortBy $sortBy = null,
+        ?SortOrder $sortOrder = null
+    ): ResultIterator {
+        $sortBy    = $sortBy ?: UsersSortBy::FIRST_NAME();
+        $sortOrder = $sortOrder ?: SortOrder::ASC();
 
         return $this->find(
             [
@@ -102,10 +95,10 @@ class UserDao extends BaseUserDao
                 'role = :role',
             ],
             [
-                'search' => '%' . $filters->getSearch() . '%',
-                'role' => $filters->getRole(),
+                'search' => '%' . $search . '%',
+                'role' => $role,
             ],
-            $filters->getSortBy() . ' ' . $filters->getSortOrder()
+            $sortBy . ' ' . $sortOrder
         );
     }
 }

@@ -44,14 +44,12 @@ final class CompanyVoter extends Voter
         assert($user instanceof User);
         assert($subject instanceof Company);
 
-        if ($this->security->isGranted('ROLE_ADMINISTRATOR')) {
-            return true;
-        }
-
-        if (! $this->security->isGranted('ROLE_COMPANY')) {
+        // Remember: thanks to role hierarchy, an administrator has
+        // all roles.
+        if (! $this->security->isGranted('ROLE_MERCHANT')) {
             return false;
         }
 
-        return $subject->hasUser($user);
+        return $subject->getUser()->getId() === $user->getId();
     }
 }

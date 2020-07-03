@@ -92,7 +92,15 @@ Once everything is ready, the following endpoints should be available:
 
 > Update the domain with the one used in your project.
 
-**You may finally start the message consumer with:**
+You may now enter the `api` service and load the development data:
+
+```
+make api
+php bin/console app:fixtures:dev
+exit
+```
+
+**Last but not least, start the message consumer with:**
  
 ```
 make consume

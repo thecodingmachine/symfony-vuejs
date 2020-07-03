@@ -4,6 +4,7 @@ includes:
     - vendor/pepakriz/phpstan-exception-rules/extension.neon
 
 parameters:
+    checkGenericClassInNonGenericObjectType: false # This rule is causing issues with MyCLabs\Enum\Enum.
     excludes_analyse:
         - %currentWorkingDirectory%/src/Domain/Model/Generated/*.php
         - %currentWorkingDirectory%/src/Domain/Dao/Generated/*.php

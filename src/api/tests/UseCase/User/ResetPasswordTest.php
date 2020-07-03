@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use App\Domain\Dao\ResetPasswordTokenDao;
 use App\Domain\Dao\UserDao;
-use App\Domain\Enum\LocaleEnum;
-use App\Domain\Enum\RoleEnum;
+use App\Domain\Enum\Locale;
+use App\Domain\Enum\Role;
 use App\Domain\Model\User;
 use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
 use App\Tests\UseCase\AsyncTransport;
@@ -24,8 +24,8 @@ beforeEach(function (): void {
         'Foo',
         'Bar',
         'foo.bar@baz.com',
-        LocaleEnum::EN,
-        RoleEnum::ADMINISTRATOR
+        Locale::EN,
+        Role::ADMINISTRATOR
     );
     $userDao->save($user);
 });

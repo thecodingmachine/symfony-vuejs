@@ -16,7 +16,7 @@ final class Version20200619151658 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Create companies, users_companies and products tables.';
+        return 'Create companies and products tables.';
     }
 
     public function up(Schema $schema): void
@@ -25,11 +25,9 @@ final class Version20200619151658 extends AbstractMigration
 
         $db->table('companies')
             ->column('id')->guid()->primaryKey()->comment('@UUID')->graphqlField()
+            ->column('user_id')->references('users')->notNull()->graphqlField()
             ->column('name')->string(255)->notNull()->unique()->graphqlField()
-            ->column('website')->string(255)->null()->default(null)->graphqlField()
-            ->column('logo')->string(255)->null()->default(null)->graphqlField();
-
-        $db->junctionTable('users', 'companies')->graphqlField();
+            ->column('website')->string(255)->null()->default(null)->graphqlField();
 
         $db->table('products')
             ->column('id')->guid()->primaryKey()->comment('@UUID')->graphqlField()

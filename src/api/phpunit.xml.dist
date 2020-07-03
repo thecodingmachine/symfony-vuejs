@@ -2,7 +2,7 @@
 
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="bin/.phpunit/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          backupGlobals="false"
          colors="true"
          bootstrap="tests/bootstrap.php"
@@ -30,6 +30,9 @@
                 <directory>src/Kernel.php</directory>
                 <directory>src/Domain/Model/Generated</directory>
                 <directory>src/Domain/Dao/Generated</directory>
+                <directory>src/Infrastructure/Command</directory>
+                <directory>src/Infrastructure/Fixture</directory>
+                <directory>src/Infrastructure/S3</directory>
             </exclude>
         </whitelist>
     </filter>

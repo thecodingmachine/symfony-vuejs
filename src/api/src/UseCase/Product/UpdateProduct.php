@@ -8,15 +8,14 @@ use App\Domain\Dao\ProductDao;
 use App\Domain\Model\Product;
 use App\Domain\Model\Storable\ProductPicture;
 use App\Domain\Storage\ProductPictureStorage;
-use App\Domain\Throwable\Exists\ProductWithNameExists;
-use App\Domain\Throwable\Invalid\InvalidProduct;
-use App\Domain\Throwable\Invalid\InvalidProductPicture;
-use App\UseCase\Product\DeleteProductPictures\DeleteProductPicturesTask;
+use App\Domain\Throwable\InvalidModel;
+use App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTask;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
-use TheCodingMachine\GraphQLite\Annotations\Security;
-use Throwable;
+
+use function array_diff;
+use function array_merge;
 
 final class UpdateProduct
 {
@@ -38,12 +37,9 @@ final class UpdateProduct
      * @param UploadedFileInterface[]|null $newPictures
      * @param string[]|null                $picturesToDelete
      *
-     * @throws ProductWithNameExists
-     * @throws InvalidProductPicture
-     * @throws InvalidProduct
+     * @throws InvalidModel
      *
      * @Mutation
-     * @Security("is_granted('NA', product)")
      */
     public function updateProduct(
         Product $product,
@@ -72,9 +68,7 @@ final class UpdateProduct
      * @param ProductPicture[]|null $newPictures
      * @param string[]|null         $picturesToDelete
      *
-     * @throws ProductWithNameExists
-     * @throws InvalidProductPicture
-     * @throws InvalidProduct
+     * @throws InvalidModel
      */
     public function update(
         Product $product,
@@ -83,51 +77,40 @@ final class UpdateProduct
         ?array $newPictures = null,
         ?array $picturesToDelete = null
     ): Product {
-        $this->productDao->mustNotFindOneByName($name, $product->getId());
-
-        $newFilenames = null;
-        if (! empty($newPictures)) {
-            $newFilenames = $this->productPictureStorage->writeAll($newPictures);
-        }
-
         $product->setName($name);
         $product->setPrice($price);
-        $product->setPictures($newFilenames);
 
-        try {
-            $this->productDao->save($product);
-        } catch (InvalidProduct $e) {
-            // pepakriz/phpstan-exception-rules limitation: "Catch statement does not know about runtime subtypes".
-            // See https://github.com/pepakriz/phpstan-exception-rules#catch-statement-does-not-know-about-runtime-subtypes.
-            $this->beforeThrowDeleteNewPicturesIfExist($newFilenames);
+        // Validate the product before uploading
+        // its new pictures.
+        $this->productDao->validate($product);
 
-            throw $e;
-        } catch (Throwable $e) {
-            // If any exception occurs, delete
-            // the new pictures from the store.
-            $this->beforeThrowDeleteNewPicturesIfExist($newFilenames);
+        $pictures = $product->getPictures() ?: []; // If null pictures, create an empty array.
 
-            throw $e;
+        // Upload the new pictures (if any).
+        // Note: the validation of those pictures
+        // is done directly in the writeAll function.
+        if (! empty($newPictures)) {
+            $newFilenames = $this->productPictureStorage->writeAll($newPictures);
+            $pictures     = array_merge($pictures, $newFilenames);
         }
 
+        // Delete some pictures (if any).
         if (! empty($picturesToDelete)) {
-            $task = new DeleteProductPicturesTask($picturesToDelete);
+            // As the deletion of all the pictures might
+            // take some time, we do it asynchronously.
+            $task = new DeleteProductsPicturesTask($picturesToDelete);
             $this->messageBus->dispatch($task);
+
+            // Remove from the current list of pictures
+            // the pictures we are going to delete.
+            $pictures = array_diff($pictures, $picturesToDelete);
         }
+
+        $pictures = empty($pictures) ? null : $pictures; // If empty pictures, set it as null.
+        $product->setPictures($pictures);
+
+        $this->productDao->save($product);
 
         return $product;
-    }
-
-    /**
-     * @param string[]|null $newFilenames
-     */
-    private function beforeThrowDeleteNewPicturesIfExist(?array $newFilenames): void
-    {
-        if ($newFilenames === null) {
-            return;
-        }
-
-        $task = new DeleteProductPicturesTask($newFilenames);
-        $this->messageBus->dispatch($task);
     }
 }

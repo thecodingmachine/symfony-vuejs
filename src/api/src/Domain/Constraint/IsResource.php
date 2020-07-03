@@ -11,5 +11,6 @@ use Symfony\Component\Validator\Constraint;
  */
 final class IsResource extends Constraint
 {
-    public string $message = 'Not a resource';
+    /** @var mixed $message */
+    public $message;
 }

@@ -14,6 +14,7 @@ final class GetProduct
      */
     public function product(Product $product): Product
     {
+        // GraphQLite black magic.
         return $product;
     }
 }

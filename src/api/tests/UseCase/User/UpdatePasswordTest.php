@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use App\Domain\Dao\ResetPasswordTokenDao;
-use App\Domain\Enum\LocaleEnum;
-use App\Domain\Enum\RoleEnum;
+use App\Domain\Enum\Locale;
+use App\Domain\Enum\Role;
 use App\Domain\Throwable\Invalid\InvalidPassword;
 use App\Tests\UseCase\DummyValues;
 use App\UseCase\User\CreateUser;
@@ -23,8 +23,8 @@ beforeEach(function (): void {
         'Foo',
         'Bar',
         'foo.bar@baz.com',
-        LocaleEnum::EN,
-        RoleEnum::ADMINISTRATOR
+        Locale::EN,
+        Role::ADMINISTRATOR
     );
 });
 

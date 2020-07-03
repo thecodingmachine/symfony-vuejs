@@ -9,7 +9,7 @@ use App\Domain\Model\Storable\ProductPicture;
 use App\Tests\UseCase\AsyncTransport;
 use App\UseCase\Company\CreateCompany;
 use App\UseCase\Company\DeleteCompany;
-use App\UseCase\Company\DeleteCompanyLogo\DeleteCompanyLogoTask;
+use App\UseCase\Company\DeleteCompanyLogo\DeleteCompaniesLogosTask;
 use App\UseCase\Product\CreateProduct;
 use App\UseCase\Product\DeleteProductPictures\DeleteProductPicturesTask;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
@@ -86,7 +86,7 @@ it(
 
         $envelope = $transport->get()[0];
         $message  = $envelope->getMessage();
-        assert($message instanceof DeleteCompanyLogoTask);
+        assert($message instanceof DeleteCompaniesLogosTask);
 
         $companyDao->getById($company->getId());
     }

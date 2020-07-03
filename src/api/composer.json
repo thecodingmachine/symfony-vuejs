@@ -14,6 +14,7 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "league/flysystem-bundle": "^1.5",
         "league/flysystem-memory": "^1.0",
+        "myclabs/php-enum": "^1.7",
         "nelmio/cors-bundle": "^2.0",
         "symfony/apache-pack": "^1.0",
         "symfony/console": "*",
@@ -36,6 +37,7 @@
     },
     "require-dev": {
         "doctrine/coding-standard": "^8.0",
+        "fzaninotto/faker": "^1.9",
         "pepakriz/phpstan-exception-rules": "^0.10.1",
         "pestphp/pest": "^0.1.5",
         "phpstan/phpstan": "^0.12.19",

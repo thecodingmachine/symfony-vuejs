@@ -9,11 +9,10 @@ declare(strict_types=1);
 namespace App\Domain\Dao;
 
 use App\Domain\Dao\Generated\BaseCompanyDao;
+use App\Domain\Enum\Filter\CompaniesSortBy;
+use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Model\Company;
-use App\Domain\Model\Filter\CompaniesFilters;
-use App\Domain\Throwable\Exists\CompanyWithNameExists;
-use App\Domain\Throwable\Invalid\InvalidCompaniesFilters;
-use App\Domain\Throwable\Invalid\InvalidCompany;
+use App\Domain\Throwable\InvalidModel;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\TDBMService;
@@ -32,50 +31,40 @@ class CompanyDao extends BaseCompanyDao
     }
 
     /**
-     * @throws InvalidCompany
+     * @throws InvalidModel
+     */
+    public function validate(Company $company): void
+    {
+        $violations = $this->validator->validate($company);
+        InvalidModel::throwException($violations);
+    }
+
+    /**
+     * @throws InvalidModel
      */
     public function save(Company $company): void
     {
-        $violations = $this->validator->validate($company);
-        InvalidCompany::throwException($violations);
-
+        $this->validate($company);
         parent::save($company);
     }
 
     /**
-     * @throws CompanyWithNameExists
-     */
-    public function mustNotFindOneByName(string $name, ?string $id = null): void
-    {
-        $company = $this->findOneByName($name);
-
-        if ($company === null) {
-            return;
-        }
-
-        if ($id !== null && $company->getId() === $id) {
-            return;
-        }
-
-        throw new CompanyWithNameExists($name);
-    }
-
-    /**
      * @return Company[]|ResultIterator
-     *
-     * @throws InvalidCompaniesFilters
      */
-    public function search(CompaniesFilters $filters): ResultIterator
-    {
-        $violations = $this->validator->validate($filters);
-        InvalidCompaniesFilters::throwException($violations);
+    public function search(
+        ?string $search = null,
+        ?CompaniesSortBy $sortBy = null,
+        ?SortOrder $sortOrder = null
+    ): ResultIterator {
+        $sortBy    = $sortBy ?: CompaniesSortBy::NAME();
+        $sortOrder = $sortOrder ?: SortOrder::ASC();
 
         return $this->find(
             ['name LIKE :search OR website LIKE :search'],
             [
-                'search' => '%' . $filters->getSearch() . '%',
+                'search' => '%' . $search . '%',
             ],
-            $filters->getSortBy() . ' ' . $filters->getSortOrder()
+            $sortBy . ' ' . $sortOrder
         );
     }
 }

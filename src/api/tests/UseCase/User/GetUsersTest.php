@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Domain\Enum\Filter\SortOrderEnum;
-use App\Domain\Enum\Filter\UsersSortByEnum;
-use App\Domain\Enum\LocaleEnum;
-use App\Domain\Enum\RoleEnum;
+use App\Domain\Enum\Filter\SortOrder;
+use App\Domain\Enum\Filter\UsersSortBy;
+use App\Domain\Enum\Locale;
+use App\Domain\Enum\Role;
 use App\Domain\Model\User;
 use App\Domain\Throwable\Invalid\InvalidUsersFilters;
 use App\UseCase\User\CreateUser;
@@ -19,24 +19,24 @@ beforeEach(function (): void {
         'A',
         'A',
         'a.a@a.a',
-        LocaleEnum::EN,
-        RoleEnum::ADMINISTRATOR
+        Locale::EN,
+        Role::ADMINISTRATOR
     );
 
     $createUser->createUser(
         'B',
         'B',
         'b.b@b.b',
-        LocaleEnum::EN,
-        RoleEnum::COMPANY
+        Locale::EN,
+        Role::COMPANY
     );
 
     $createUser->createUser(
         'c',
         'c',
         'c.c@c.c',
-        LocaleEnum::EN,
-        RoleEnum::CLIENT
+        Locale::EN,
+        Role::CLIENT
     );
 });
 
@@ -83,7 +83,7 @@ it(
         assertEquals($role, $user->getRole());
     }
 )
-    ->with([RoleEnum::ADMINISTRATOR, RoleEnum::COMPANY, RoleEnum::CLIENT]);
+    ->with([Role::ADMINISTRATOR, Role::COMPANY, Role::CLIENT]);
 
 it(
     'sorts users by first name',
@@ -91,12 +91,12 @@ it(
         $getUsers = self::$container->get(GetUsers::class);
         assert($getUsers instanceof GetUsers);
 
-        $result = $getUsers->users(null, null, UsersSortByEnum::FIRST_NAME, $sortOrder);
+        $result = $getUsers->users(null, null, UsersSortBy::FIRST_NAME, $sortOrder);
         assertCount(3, $result);
 
         /** @var User[] $users */
         $users = $result->toArray();
-        if ($sortOrder === SortOrderEnum::ASC) {
+        if ($sortOrder === SortOrder::ASC) {
             assertStringContainsStringIgnoringCase('a', $users[0]->getFirstName());
             assertStringContainsStringIgnoringCase('b', $users[1]->getFirstName());
             assertStringContainsStringIgnoringCase('c', $users[2]->getFirstName());
@@ -107,7 +107,7 @@ it(
         }
     }
 )
-    ->with([SortOrderEnum::ASC, SortOrderEnum::DESC]);
+    ->with([SortOrder::ASC, SortOrder::DESC]);
 
 it(
     'sorts users by last name',
@@ -115,12 +115,12 @@ it(
         $getUsers = self::$container->get(GetUsers::class);
         assert($getUsers instanceof GetUsers);
 
-        $result = $getUsers->users(null, null, UsersSortByEnum::LAST_NAME, $sortOrder);
+        $result = $getUsers->users(null, null, UsersSortBy::LAST_NAME, $sortOrder);
         assertCount(3, $result);
 
         /** @var User[] $users */
         $users = $result->toArray();
-        if ($sortOrder === SortOrderEnum::ASC) {
+        if ($sortOrder === SortOrder::ASC) {
             assertStringContainsStringIgnoringCase('a', $users[0]->getLastName());
             assertStringContainsStringIgnoringCase('b', $users[1]->getLastName());
             assertStringContainsStringIgnoringCase('c', $users[2]->getLastName());
@@ -131,7 +131,7 @@ it(
         }
     }
 )
-    ->with([SortOrderEnum::ASC, SortOrderEnum::DESC]);
+    ->with([SortOrder::ASC, SortOrder::DESC]);
 
 it(
     'sorts users by e-mail',
@@ -139,12 +139,12 @@ it(
         $getUsers = self::$container->get(GetUsers::class);
         assert($getUsers instanceof GetUsers);
 
-        $result = $getUsers->users(null, null, UsersSortByEnum::EMAIL, $sortOrder);
+        $result = $getUsers->users(null, null, UsersSortBy::EMAIL, $sortOrder);
         assertCount(3, $result);
 
         /** @var User[] $users */
         $users = $result->toArray();
-        if ($sortOrder === SortOrderEnum::ASC) {
+        if ($sortOrder === SortOrder::ASC) {
             assertStringContainsStringIgnoringCase('a', $users[0]->getEmail());
             assertStringContainsStringIgnoringCase('b', $users[1]->getEmail());
             assertStringContainsStringIgnoringCase('c', $users[2]->getEmail());
@@ -155,7 +155,7 @@ it(
         }
     }
 )
-    ->with([SortOrderEnum::ASC, SortOrderEnum::DESC]);
+    ->with([SortOrder::ASC, SortOrder::DESC]);
 
 it(
     'sorts users by role',
@@ -163,23 +163,23 @@ it(
         $getUsers = self::$container->get(GetUsers::class);
         assert($getUsers instanceof GetUsers);
 
-        $result = $getUsers->users(null, null, UsersSortByEnum::ROLE, $sortOrder);
+        $result = $getUsers->users(null, null, UsersSortBy::ROLE, $sortOrder);
         assertCount(3, $result);
 
         /** @var User[] $users */
         $users = $result->toArray();
-        if ($sortOrder === SortOrderEnum::ASC) {
-            assertEquals(RoleEnum::ADMINISTRATOR, $users[0]->getRole());
-            assertEquals(RoleEnum::CLIENT, $users[1]->getRole());
-            assertEquals(RoleEnum::COMPANY, $users[2]->getRole());
+        if ($sortOrder === SortOrder::ASC) {
+            assertEquals(Role::ADMINISTRATOR, $users[0]->getRole());
+            assertEquals(Role::CLIENT, $users[1]->getRole());
+            assertEquals(Role::COMPANY, $users[2]->getRole());
         } else {
-            assertEquals(RoleEnum::ADMINISTRATOR, $users[2]->getRole());
-            assertEquals(RoleEnum::CLIENT, $users[1]->getRole());
-            assertEquals(RoleEnum::COMPANY, $users[0]->getRole());
+            assertEquals(Role::ADMINISTRATOR, $users[2]->getRole());
+            assertEquals(Role::CLIENT, $users[1]->getRole());
+            assertEquals(Role::COMPANY, $users[0]->getRole());
         }
     }
 )
-    ->with([SortOrderEnum::ASC, SortOrderEnum::DESC]);
+    ->with([SortOrder::ASC, SortOrder::DESC]);
 
 it(
     'throws an exception if invalid filters',
@@ -192,10 +192,10 @@ it(
 )
     ->with([
         // Invalid role.
-        ['foo', UsersSortByEnum::FIRST_NAME, SortOrderEnum::ASC],
+        ['foo', UsersSortBy::FIRST_NAME, SortOrder::ASC],
         // Invalid sort by.
-        [RoleEnum::ADMINISTRATOR, 'foo', SortOrderEnum::ASC],
+        [Role::ADMINISTRATOR, 'foo', SortOrder::ASC],
         // Invalid sort order.
-        [RoleEnum::ADMINISTRATOR, UsersSortByEnum::FIRST_NAME, 'foo'],
+        [Role::ADMINISTRATOR, UsersSortBy::FIRST_NAME, 'foo'],
     ])
     ->throws(InvalidUsersFilters::class);

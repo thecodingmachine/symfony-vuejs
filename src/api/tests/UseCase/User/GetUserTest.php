@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Domain\Enum\LocaleEnum;
-use App\Domain\Enum\RoleEnum;
+use App\Domain\Enum\Locale;
+use App\Domain\Enum\Role;
 use App\UseCase\User\CreateUser;
 use App\UseCase\User\GetUser;
 
@@ -19,8 +19,8 @@ it(
             'Foo',
             'Bar',
             'foo.bar@baz.com',
-            LocaleEnum::EN,
-            RoleEnum::ADMINISTRATOR
+            Locale::EN,
+            Role::ADMINISTRATOR
         );
 
         $foundUser = $getUser->user($user);

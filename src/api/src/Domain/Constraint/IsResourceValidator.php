@@ -21,12 +21,6 @@ final class IsResourceValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, IsResource::class);
         }
 
-        // custom constraints should ignore null and empty values to allow
-        // other constraints (NotBlank, NotNull, etc.) take care of that
-        if ($value === null || $value === '') {
-            return;
-        }
-
         if (is_resource($value) !== false) {
             return;
         }

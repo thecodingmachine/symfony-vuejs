@@ -9,9 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class PasswordProxy
 {
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(min = 8)
-     * @Assert\NotCompromisedPassword
+     * @Assert\NotBlank(message="assert.not_blank")
+     * @Assert\Length(min=8, minMessage="assert.min_length_8")
+     * @Assert\NotCompromisedPassword(message="assert.not_compromised_password")
      */
     private string $plainPassword;
 

@@ -8,9 +8,7 @@ use App\Domain\Dao\ResetPasswordTokenDao;
 use App\Domain\Dao\UserDao;
 use App\Domain\Model\Proxy\PasswordProxy;
 use App\Domain\Model\ResetPasswordToken;
-use App\Domain\Model\User;
-use App\Domain\Throwable\Invalid\InvalidPassword;
-use App\Domain\Throwable\Invalid\InvalidUser;
+use App\Domain\Throwable\InvalidModel;
 use Safe\DateTimeImmutable;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 
@@ -32,8 +30,7 @@ final class UpdatePassword
     /**
      * @throws WrongResetPasswordToken
      * @throws ResetPasswordTokenExpired
-     * @throws InvalidPassword
-     * @throws InvalidUser
+     * @throws InvalidModel
      *
      * @Mutation
      */
@@ -42,28 +39,6 @@ final class UpdatePassword
         string $plainToken,
         string $newPassword
     ): bool {
-        $this->update(
-            $resetPasswordToken,
-            $plainToken,
-            $newPassword
-        );
-
-        // Do not return any relevant information
-        // of the user as this is not a secure endpoint.
-        return true;
-    }
-
-    /**
-     * @throws WrongResetPasswordToken
-     * @throws ResetPasswordTokenExpired
-     * @throws InvalidPassword
-     * @throws InvalidUser
-     */
-    public function update(
-        ResetPasswordToken $resetPasswordToken,
-        string $plainToken,
-        string $newPassword
-    ): User {
         $token = $resetPasswordToken->getToken();
         if (! password_verify($plainToken, $token)) {
             throw new WrongResetPasswordToken();
@@ -80,6 +55,8 @@ final class UpdatePassword
         $this->userDao->updatePassword($user, $passwordProxy);
         $this->resetPasswordTokenDao->delete($resetPasswordToken);
 
-        return $user;
+        // Do not return any relevant information
+        // of the user as this is not a secure endpoint.
+        return true;
     }
 }

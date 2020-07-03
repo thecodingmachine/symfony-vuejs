@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Constraint as DomainAssert;
 use App\Domain\Model\Generated\BaseProduct;
 use Symfony\Component\Validator\Constraints as Assert;
 use TheCodingMachine\GraphQLite\Annotations\Field;
@@ -17,13 +18,14 @@ use TheCodingMachine\GraphQLite\Annotations\Type;
  * The Product class maps the 'products' table in database.
  *
  * @Type
+ * @DomainAssert\Unicity(table="products", column="name", message="assert.product.name_not_unique")
  */
 class Product extends BaseProduct
 {
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max = 255)
      * @Field
+     * @Assert\NotBlank(message="assert.not_blank")
+     * @Assert\Length(max=255, maxMessage="assert.max_length_255")
      */
     public function getName(): string
     {
@@ -31,8 +33,8 @@ class Product extends BaseProduct
     }
 
     /**
-     * @Assert\Positive
      * @Field
+     * @Assert\Positive(message="assert.positive")
      */
     public function getPrice(): float
     {
@@ -42,8 +44,8 @@ class Product extends BaseProduct
     /**
      * @return string[]|null
      *
-     * @Assert\All({@Assert\NotBlank, @Assert\Length(max = 255)})
      * @Field
+     * @Assert\All({@Assert\NotBlank(message="assert.not_blank"), @Assert\Length(max=255, maxMessage="assert.max_length_255")})
      */
     public function getPictures(): ?array
     {

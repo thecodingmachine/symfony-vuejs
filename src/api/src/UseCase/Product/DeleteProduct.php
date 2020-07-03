@@ -6,10 +6,9 @@ namespace App\UseCase\Product;
 
 use App\Domain\Dao\ProductDao;
 use App\Domain\Model\Product;
-use App\UseCase\Product\DeleteProductPictures\DeleteProductPicturesTask;
+use App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTask;
 use Symfony\Component\Messenger\MessageBusInterface;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
-use TheCodingMachine\GraphQLite\Annotations\Security;
 
 final class DeleteProduct
 {
@@ -26,7 +25,6 @@ final class DeleteProduct
 
     /**
      * @Mutation
-     * @Security("is_granted('NA', product)")
      */
     public function deleteProduct(Product $product): bool
     {
@@ -37,7 +35,9 @@ final class DeleteProduct
             return true;
         }
 
-        $task = new DeleteProductPicturesTask($pictures);
+        // As the deletion of all the pictures might
+        // take some time, we do it asynchronously.
+        $task = new DeleteProductsPicturesTask($pictures);
         $this->messageBus->dispatch($task);
 
         return true;

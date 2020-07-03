@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\UseCase\User;
 
 use App\Domain\Dao\UserDao;
-use App\Domain\Model\Filter\UsersFilters;
+use App\Domain\Enum\Filter\SortOrder;
+use App\Domain\Enum\Filter\UsersSortBy;
+use App\Domain\Enum\Role;
 use App\Domain\Model\User;
-use App\Domain\Throwable\Invalid\InvalidUsersFilters;
 use TheCodingMachine\GraphQLite\Annotations\Query;
-use TheCodingMachine\GraphQLite\Annotations\Right;
 use TheCodingMachine\TDBM\ResultIterator;
 
 final class GetUsers
@@ -24,19 +24,19 @@ final class GetUsers
     /**
      * @return User[]|ResultIterator
      *
-     * @throws InvalidUsersFilters
-     *
      * @Query
-     * @Right("ROLE_ADMINISTRATOR")
      */
     public function users(
         ?string $search = null,
-        ?string $role = null,
-        ?string $sortBy = null,
-        ?string $sortOrder = null
+        ?Role $role = null,
+        ?UsersSortBy $sortBy = null,
+        ?SortOrder $sortOrder = null
     ): ResultIterator {
-        $filters = new UsersFilters($search, $role, $sortBy, $sortOrder);
-
-        return $this->userDao->search($filters);
+        return $this->userDao->search(
+            $search,
+            $role,
+            $sortBy,
+            $sortOrder
+        );
     }
 }

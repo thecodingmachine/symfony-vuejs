@@ -76,13 +76,13 @@ abstract class Storable
 
         if ($fileName === null) {
             throw new RuntimeException(
-                'File name from uploaded file should not be null'
+                'Filename from uploaded file isnull'
             );
         }
 
         if ($resource === null) {
             throw new RuntimeException(
-                'Resource from uploaded file should not be null'
+                'Resource from uploaded file is null'
             );
         }
 

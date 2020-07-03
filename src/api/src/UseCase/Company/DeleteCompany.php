@@ -6,11 +6,9 @@ namespace App\UseCase\Company;
 
 use App\Domain\Dao\CompanyDao;
 use App\Domain\Model\Company;
-use App\UseCase\Company\DeleteCompanyLogo\DeleteCompanyLogoTask;
-use App\UseCase\Product\DeleteProductPictures\DeleteProductPicturesTask;
+use App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTask;
 use Symfony\Component\Messenger\MessageBusInterface;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
-use TheCodingMachine\GraphQLite\Annotations\Security;
 
 final class DeleteCompany
 {
@@ -25,24 +23,22 @@ final class DeleteCompany
 
     /**
      * @Mutation
-     * @Security("is_granted('NA', company)")
      */
     public function deleteCompany(Company $company): bool
     {
-        $logo     = $company->getLogo();
+        // As cascade deletion also delete the company
+        // products, we have to delete their pictures (if any).
         $pictures = $company->getProductsPictures();
-
         $this->companyDao->delete($company, true);
 
-        if ($logo !== null) {
-            $task = new DeleteCompanyLogoTask($logo);
-            $this->messageBus->dispatch($task);
+        if (empty($pictures)) {
+            return true;
         }
 
-        if (! empty($pictures)) {
-            $task = new DeleteProductPicturesTask($pictures);
-            $this->messageBus->dispatch($task);
-        }
+        // As the deletion of all the pictures might
+        // take some time, we do it asynchronously.
+        $task = new DeleteProductsPicturesTask($pictures);
+        $this->messageBus->dispatch($task);
 
         return true;
     }

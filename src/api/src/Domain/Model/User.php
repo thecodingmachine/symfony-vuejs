@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Model;
 
+use App\Domain\Constraint as DomainAssert;
 use App\Domain\Model\Generated\BaseUser;
 use Serializable;
 use Symfony\Component\Security\Core\User\EquatableInterface;
@@ -15,7 +16,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
+use TheCodingMachine\TDBM\AlterableResultIterator;
 
+use function array_merge;
 use function Safe\password_hash;
 use function serialize;
 use function unserialize;
@@ -26,12 +29,14 @@ use const PASSWORD_DEFAULT;
  * The User class maps the 'users' table in database.
  *
  * @Type
+ * @DomainAssert\Unicity(table="users", column="email", message="assert.user.email_not_unique")
  */
 class User extends BaseUser implements UserInterface, Serializable, EquatableInterface
 {
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max = 255)
+     * @Field
+     * @Assert\NotBlank(message="assert.not_blank")
+     * @Assert\Length(max=255, maxMessage="assert.max_length_255")
      * @Field
      */
     public function getFirstName(): string
@@ -40,9 +45,9 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
     }
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max = 255)
      * @Field
+     * @Assert\NotBlank(message="assert.not_blank")
+     * @Assert\Length(max=255, maxMessage="assert.max_length_255")
      */
     public function getLastName(): string
     {
@@ -50,10 +55,10 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
     }
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(max = 255)
-     * @Assert\Email
      * @Field
+     * @Assert\NotBlank(message="assert.not_blank")
+     * @Assert\Length(max=255, maxMessage="assert.max_length_255")
+     * @Assert\Email(message="assert.invalid_email")
      */
     public function getEmail(): string
     {
@@ -72,8 +77,8 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
     }
 
     /**
-     * @Assert\Choice(callback={"App\Domain\Enum\LocaleEnum", "values"})
      * @Field
+     * @Assert\Choice(callback={"App\Domain\Enum\Locale", "valuesAsArray"}, message="assert.invalid_locale")
      */
     public function getLocale(): string
     {
@@ -81,12 +86,51 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
     }
 
     /**
-     * @Assert\Choice(callback={"App\Domain\Enum\RoleEnum", "values"})
      * @Field
+     * @Assert\Choice(callback={"App\Domain\Enum\Role", "valuesAsArray"}, message="assert.invalid_role")
      */
     public function getRole(): string
     {
         return parent::getRole();
+    }
+
+    /**
+     * @return Company[]|AlterableResultIterator
+     *
+     * @Field
+     */
+    public function getCompanies(): AlterableResultIterator
+    {
+        return parent::getCompanies();
+    }
+
+    /**
+     * @Field
+     */
+    public function isActivated(): bool
+    {
+        return $this->getPassword() !== null;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getProductsPictures(): array
+    {
+        $companies   = $this->getCompanies();
+        $allPictures = [];
+
+        foreach ($companies as $company) {
+            $pictures = $company->getProductsPictures();
+
+            if (empty($pictures)) {
+                continue;
+            }
+
+            $allPictures = array_merge($allPictures, $pictures);
+        }
+
+        return $allPictures;
     }
 
     /*

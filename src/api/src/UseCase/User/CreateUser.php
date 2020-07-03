@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\UseCase\User;
 
 use App\Domain\Dao\UserDao;
+use App\Domain\Enum\Locale;
+use App\Domain\Enum\Role;
 use App\Domain\Model\User;
-use App\Domain\Throwable\Exists\UserWithEmailExists;
-use App\Domain\Throwable\Invalid\InvalidUser;
-use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
+use App\Domain\Throwable\InvalidModel;
 use App\UseCase\User\ResetPassword\ResetPassword;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
-use TheCodingMachine\GraphQLite\Annotations\Right;
+
+use function strval;
 
 final class CreateUser
 {
@@ -27,32 +28,27 @@ final class CreateUser
     }
 
     /**
-     * @throws UserWithEmailExists
-     * @throws InvalidUser
-     * @throws UserNotFoundByEmail
+     * @throws InvalidModel
      *
      * @Mutation
-     * @Right("ROLE_ADMINISTRATOR")
      */
     public function createUser(
         string $firstName,
         string $lastName,
         string $email,
-        string $locale,
-        string $role
+        Locale $locale,
+        Role $role
     ): User {
-        $this->userDao->mustNotFindOneByEmail($email);
-
         $user = new User(
             $firstName,
             $lastName,
             $email,
-            $locale,
-            $role
+            strval($locale),
+            strval($role)
         );
 
         $this->userDao->save($user);
-        $this->resetPassword->reset($email);
+        $this->resetPassword->resetPassword($email);
 
         return $user;
     }

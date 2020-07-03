@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Domain\Enum\LocaleEnum;
-use App\Domain\Enum\RoleEnum;
+use App\Domain\Enum\Locale;
+use App\Domain\Enum\Role;
 use App\Domain\Throwable\Exists\UserWithEmailExists;
 use App\Domain\Throwable\Invalid\InvalidUser;
 use App\Tests\UseCase\DummyValues;
@@ -38,9 +38,9 @@ it(
     }
 )
     ->with([
-        ['Foo', 'Bar', 'foo.bar@baz.com', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
-        ['Foo', 'Bar', 'foo.bar@baz.com', LocaleEnum::EN, RoleEnum::COMPANY],
-        ['Foo', 'Bar', 'foo.bar@baz.com', LocaleEnum::FR, RoleEnum::CLIENT],
+        ['Foo', 'Bar', 'foo.bar@baz.com', Locale::EN, Role::ADMINISTRATOR],
+        ['Foo', 'Bar', 'foo.bar@baz.com', Locale::EN, Role::COMPANY],
+        ['Foo', 'Bar', 'foo.bar@baz.com', Locale::FR, Role::CLIENT],
     ]);
 
 it(
@@ -73,7 +73,7 @@ it(
     }
 )
     ->with([
-        ['Foo', 'Bar', 'foo.bar@baz.com', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
+        ['Foo', 'Bar', 'foo.bar@baz.com', Locale::EN, Role::ADMINISTRATOR],
     ])
     ->throws(UserWithEmailExists::class);
 
@@ -100,18 +100,18 @@ it(
 )
     ->with([
         // Blank first name.
-        [DummyValues::BLANK, 'Bar', 'foo', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
+        [DummyValues::BLANK, 'Bar', 'foo', Locale::EN, Role::ADMINISTRATOR],
         // First name > 255.
-        [DummyValues::CHAR256, 'Bar', 'foo', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
+        [DummyValues::CHAR256, 'Bar', 'foo', Locale::EN, Role::ADMINISTRATOR],
         // Blank last name.
-        ['Foo', DummyValues::BLANK, 'foo', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
+        ['Foo', DummyValues::BLANK, 'foo', Locale::EN, Role::ADMINISTRATOR],
         // Last name > 255.
-        ['Foo', DummyValues::CHAR256, 'foo', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
+        ['Foo', DummyValues::CHAR256, 'foo', Locale::EN, Role::ADMINISTRATOR],
         // Invalid e-mail.
-        ['Foo', 'Bar', 'foo', LocaleEnum::EN, RoleEnum::ADMINISTRATOR],
+        ['Foo', 'Bar', 'foo', Locale::EN, Role::ADMINISTRATOR],
         // Invalid locale.
-        ['Foo', 'Bar', 'foo.bar@baz.com', 'foo', RoleEnum::ADMINISTRATOR],
+        ['Foo', 'Bar', 'foo.bar@baz.com', 'foo', Role::ADMINISTRATOR],
         // Invalid role.
-        ['Foo', 'Bar', 'foo.bar@baz.com', LocaleEnum::EN, 'foo'],
+        ['Foo', 'Bar', 'foo.bar@baz.com', Locale::EN, 'foo'],
     ])
     ->throws(InvalidUser::class);

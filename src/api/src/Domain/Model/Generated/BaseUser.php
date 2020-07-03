@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Model\Generated;
 
-use App\Domain\Model\ResetPasswordToken;
 use App\Domain\Model\Company;
+use App\Domain\Model\ResetPasswordToken;
 use TheCodingMachine\TDBM\AbstractTDBMObject;
 use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\AlterableResultIterator;
@@ -198,6 +198,17 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     }
 
     /**
+     * Returns the list of Company pointing to this bean via the user_id column.
+     *
+     * @return Company[]|\TheCodingMachine\TDBM\AlterableResultIterator
+     * @GraphqlField
+     */
+    public function getCompanies() : \TheCodingMachine\TDBM\AlterableResultIterator
+    {
+        return $this->retrieveManyToOneRelationshipsStorage('companies', 'from__user_id__to__table__users__columns__id', ['companies.user_id' => $this->get('id', 'users')]);
+    }
+
+    /**
      * Returns the ResetPasswordToken pointing to this bean via the user_id column.
      *
      * @
@@ -205,86 +216,6 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
     public function getResetPasswordToken() : ?\App\Domain\Model\ResetPasswordToken
     {
         return $this->retrieveManyToOneRelationshipsStorage('reset_password_tokens', 'from__user_id__to__table__users__columns__id', ['reset_password_tokens.user_id' => $this->get('id', 'users')])->first();
-    }
-
-    /**
-     * Returns the list of Company associated to this bean via the users_companies pivot table.
-     *
-     * @return \App\Domain\Model\Company[]
-     * @GraphqlField
-     */
-    public function getCompanies() : array
-    {
-        return $this->_getRelationships('users_companies.user_id');
-    }
-
-    /**
-     * Adds a relationship with Company associated to this bean via the users_companies pivot table.
-     *
-     * @param \App\Domain\Model\Company $company
-     */
-    public function addCompany(\App\Domain\Model\Company $company) : void
-    {
-        $this->addRelationship('users_companies', $company);
-    }
-
-    /**
-     * Deletes the relationship with Company associated to this bean via the users_companies pivot table.
-     *
-     * @param \App\Domain\Model\Company $company
-     */
-    public function removeCompany(\App\Domain\Model\Company $company) : void
-    {
-        $this->_removeRelationship('users_companies', $company);
-    }
-
-    /**
-     * Returns whether this bean is associated with Company via the users_companies pivot table.
-     *
-     * @param \App\Domain\Model\Company $company
-     * @return bool
-     */
-    public function hasCompany(\App\Domain\Model\Company $company) : bool
-    {
-        return $this->hasRelationship('users_companies.user_id', $company);
-    }
-
-    /**
-     * Sets all relationships with Company associated to this bean via the users_companies pivot table.
-     * Exiting relationships will be removed and replaced by the provided relationships.
-     *
-     * @param \App\Domain\Model\Company[] $companys
-     * @return void
-     */
-    public function setCompanies(array $companys) : void
-    {
-        $this->setRelationships('users_companies.user_id', $companys);
-    }
-
-    /**
-     * Get the paths used for many to many relationships methods.
-     *
-     * @internal
-     */
-    public function _getManyToManyRelationshipDescriptor(string $pathKey) : \TheCodingMachine\TDBM\Utils\ManyToManyRelationshipPathDescriptor
-    {
-        switch ($pathKey) {
-            case 'users_companies.user_id':
-                return new \TheCodingMachine\TDBM\Utils\ManyToManyRelationshipPathDescriptor('companies', 'users_companies', ['id'], ['company_id'], ['user_id']);
-            default:
-                return parent::_getManyToManyRelationshipDescriptor($pathKey);
-        }
-    }
-
-    /**
-     * Returns the list of keys supported for many to many relationships
-     *
-     * @internal
-     * @return string[]
-     */
-    public function _getManyToManyRelationshipDescriptorKeys() : array
-    {
-        return array_merge(parent::_getManyToManyRelationshipDescriptorKeys(), ['users_companies.user_id']);
     }
 
     /**
@@ -320,11 +251,6 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
         $array['password'] = $this->getPassword();
         $array['locale'] = $this->getLocale();
         $array['role'] = $this->getRole();
-        if (!$stopRecursion) {
-            $array['companies'] = array_map(function (Company $object) {
-                return $object->jsonSerialize(true);
-            }, $this->getCompanies());
-        };
         return $array;
     }
 
@@ -341,8 +267,6 @@ abstract class BaseUser extends \TheCodingMachine\TDBM\AbstractTDBMObject implem
 
     public function __clone()
     {
-        $this->getCompanies();
-
         parent::__clone();
         $this->setId(Uuid::uuid1()->toString());
     }

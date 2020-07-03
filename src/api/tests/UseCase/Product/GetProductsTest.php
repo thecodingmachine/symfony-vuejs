@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Domain\Enum\Filter\ProductsSortByEnum;
-use App\Domain\Enum\Filter\SortOrderEnum;
+use App\Domain\Enum\Filter\ProductsSortBy;
+use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Model\Product;
 use App\Domain\Throwable\Invalid\InvalidProductsFilters;
 use App\UseCase\Company\CreateCompany;
@@ -122,14 +122,14 @@ it(
             null,
             null,
             null,
-            ProductsSortByEnum::NAME,
+            ProductsSortBy::NAME,
             $sortOrder
         );
         assertCount(3, $result);
 
         /** @var Product[] $products */
         $products = $result->toArray();
-        if ($sortOrder === SortOrderEnum::ASC) {
+        if ($sortOrder === SortOrder::ASC) {
             assertStringContainsStringIgnoringCase('a', $products[0]->getName());
             assertStringContainsStringIgnoringCase('b', $products[1]->getName());
             assertStringContainsStringIgnoringCase('c', $products[2]->getName());
@@ -140,7 +140,7 @@ it(
         }
     }
 )
-    ->with([SortOrderEnum::ASC, SortOrderEnum::DESC]);
+    ->with([SortOrder::ASC, SortOrder::DESC]);
 
 it(
     'sorts products by price',
@@ -152,14 +152,14 @@ it(
             null,
             null,
             null,
-            ProductsSortByEnum::PRICE,
+            ProductsSortBy::PRICE,
             $sortOrder
         );
         assertCount(3, $result);
 
         /** @var Product[] $products */
         $products = $result->toArray();
-        if ($sortOrder === SortOrderEnum::ASC) {
+        if ($sortOrder === SortOrder::ASC) {
             assertTrue(
                 $products[0]->getPrice() <
                 $products[1]->getPrice() &&
@@ -176,7 +176,7 @@ it(
         }
     }
 )
-    ->with([SortOrderEnum::ASC, SortOrderEnum::DESC]);
+    ->with([SortOrder::ASC, SortOrder::DESC]);
 
 it(
     'throws an exception if invalid filters',
@@ -195,8 +195,8 @@ it(
 )
     ->with([
         // Invalid sort by.
-        ['foo', SortOrderEnum::ASC],
+        ['foo', SortOrder::ASC],
         // Invalid sort order.
-        [ProductsSortByEnum::NAME, 'foo'],
+        [ProductsSortBy::NAME, 'foo'],
     ])
     ->throws(InvalidProductsFilters::class);
