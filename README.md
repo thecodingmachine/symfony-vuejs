@@ -45,7 +45,7 @@ On MacOs, run `sudo nano /etc/hosts` to edit it.
 
 On Windows, edit the file `C:\Windows\System32\drivers\etc\hosts` with administrative privileges.
 
-If you're using Vagrant, check there no application running 
+If you're using Vagrant, check there is no application running 
 on port 80 (like Apache or another virtual machine).
 
 If OK, run `make vagrant`, then `vagrant up` and finally `vagrant ssh` 

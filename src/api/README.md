@@ -47,6 +47,12 @@ It will execute all tests and display the result and the code coverage in your t
 Speaking of code coverage, an HTML output is also available under the `converage` folder.
 Do not hesitate to take a look at it!
 
+You can also run tests per group, for instance:
+
+```
+pest --group=user,company
+```
+
 From time to time, also check the [Pest release page](https://github.com/pestphp/pest/releases)
 and [PHP Unit release page](https://github.com/sebastianbergmann/phpunit/releases).
 If new releases are available, run `composer update`.
@@ -131,11 +137,10 @@ php bin/console tdbm:generate
 
 **You must verify you didn't break anything: use the static analysis tools and tests.**
 
-> Remove the next paragraph when you'll have a distant environment
-> on which you can't reset the database.
-
 If you're updating an existing table edit the migration where the table is defined
 instead of creating a new migration.
+**You should only do that if the current migration has not been applied on a 
+remote environment like your production.**
 
 Once done, reset the database, recreate it, apply the migrations and finally
 regenerate the TDBM models and DAOs with:

@@ -2,17 +2,48 @@
 
 declare(strict_types=1);
 
+use App\Domain\Dao\CompanyDao;
+use App\Domain\Enum\Locale;
+use App\Domain\Enum\Role;
 use App\Domain\Model\Storable\ProductPicture;
 use App\Domain\Storage\ProductPictureStorage;
-use App\Domain\Throwable\Exists\ProductWithNameExists;
-use App\Domain\Throwable\Invalid\InvalidProduct;
-use App\Domain\Throwable\Invalid\InvalidProductPicture;
-use App\Tests\UseCase\AsyncTransport;
+use App\Domain\Throwable\InvalidModel;
 use App\Tests\UseCase\DummyValues;
 use App\UseCase\Company\CreateCompany;
 use App\UseCase\Product\CreateProduct;
-use App\UseCase\Product\DeleteProductPictures\DeleteProductPicturesTask;
-use Symfony\Component\Messenger\Transport\InMemoryTransport;
+use App\UseCase\User\CreateUser;
+
+beforeEach(function (): void {
+    $createUser = self::$container->get(CreateUser::class);
+    assert($createUser instanceof CreateUser);
+    $createCompany = self::$container->get(CreateCompany::class);
+    assert($createCompany instanceof CreateCompany);
+    $companyDao = self::$container->get(CompanyDao::class);
+    assert($companyDao instanceof CompanyDao);
+    $createProduct = self::$container->get(CreateProduct::class);
+    assert($createProduct instanceof CreateProduct);
+
+    $merchant = $createUser->createUser(
+        'foo',
+        'bar',
+        'merchant@foo.com',
+        Locale::EN(),
+        Role::MERCHANT()
+    );
+
+    $company = $createCompany->createCompany(
+        $merchant,
+        'foo'
+    );
+    $company->setId('1');
+    $companyDao->save($company);
+
+    $createProduct->create(
+        'bar',
+        1,
+        $company
+    );
+});
 
 it(
     'creates a product',
@@ -20,12 +51,12 @@ it(
         string $name,
         float $price
     ): void {
-        $createCompany = self::$container->get(CreateCompany::class);
+        $companyDao = self::$container->get(CompanyDao::class);
+        assert($companyDao instanceof CompanyDao);
         $createProduct = self::$container->get(CreateProduct::class);
-        assert($createCompany instanceof CreateCompany);
         assert($createProduct instanceof CreateProduct);
 
-        $company = $createCompany->create('foo');
+        $company = $companyDao->getById('1');
         $product = $createProduct->create(
             $name,
             $price,
@@ -34,100 +65,62 @@ it(
 
         assertEquals($name, $product->getName());
         assertEquals($price, $product->getPrice());
-        assertEquals($company->getId(), $product->getCompany()->getId());
+        assertEquals($company, $product->getCompany());
         assertNull($product->getPictures());
     }
 )
     ->with([
         ['foo', 1],
         ['foo', 1.0],
-    ]);
+    ])
+    ->group('product');
 
 it(
     'stores the pictures',
     function (): void {
-        $createCompany         = self::$container->get(CreateCompany::class);
-        $createProduct         = self::$container->get(CreateProduct::class);
-        $productPictureStorage = self::$container->get(ProductPictureStorage::class);
-        assert($createCompany instanceof CreateCompany);
+        $companyDao = self::$container->get(CompanyDao::class);
+        assert($companyDao instanceof CompanyDao);
+        $createProduct = self::$container->get(CreateProduct::class);
         assert($createProduct instanceof CreateProduct);
+        $productPictureStorage = self::$container->get(ProductPictureStorage::class);
         assert($productPictureStorage instanceof  ProductPictureStorage);
 
-        $pictures = [
-            dirname(__FILE__) . '/foo.png',
-            dirname(__FILE__) . '/foo.jpg',
-        ];
-
-        $storables = ProductPicture::createAllFromPaths(
-            $pictures
-        );
-
-        $company = $createCompany->create('foo');
         $product = $createProduct->create(
             'foo',
             1,
-            $company,
-            $storables
+            $companyDao->getById('1'),
+            ProductPicture::createAllFromPaths([
+                dirname(__FILE__) . '/foo.png',
+                dirname(__FILE__) . '/foo.jpg',
+            ])
         );
 
         assertNotNull($product->getPictures());
+        assertCount(2, $product->getPictures());
+
         foreach ($product->getPictures() as $picture) {
             assertTrue($productPictureStorage->fileExists($picture));
         }
     }
-);
-
-it(
-    'throws an exception if name is already associated to a product',
-    function (
-        string $name,
-        float $price
-    ): void {
-        $createCompany = self::$container->get(CreateCompany::class);
-        $createProduct = self::$container->get(CreateProduct::class);
-        assert($createCompany instanceof CreateCompany);
-        assert($createProduct instanceof CreateProduct);
-
-        $company = $createCompany->create('foo');
-
-        $createProduct->create(
-            $name,
-            $price,
-            $company
-        );
-
-        $createProduct->create(
-            $name,
-            $price,
-            $company
-        );
-    }
 )
-    ->with([
-        ['foo', 1],
-    ])
-    ->throws(ProductWithNameExists::class);
+    ->group('product');
 
 it(
     'throws an exception if invalid product picture',
     function (): void {
-        $createCompany         = self::$container->get(CreateCompany::class);
-        $createProduct         = self::$container->get(CreateProduct::class);
-        $productPictureStorage = self::$container->get(ProductPictureStorage::class);
-        assert($createCompany instanceof CreateCompany);
+        $companyDao = self::$container->get(CompanyDao::class);
+        assert($companyDao instanceof CompanyDao);
+        $createProduct = self::$container->get(CreateProduct::class);
         assert($createProduct instanceof CreateProduct);
+        $productPictureStorage = self::$container->get(ProductPictureStorage::class);
         assert($productPictureStorage instanceof  ProductPictureStorage);
 
-        $pictures = [
+        $storables = ProductPicture::createAllFromPaths([
             dirname(__FILE__) . '/foo.png',
             dirname(__FILE__) . '/foo.txt',
-        ];
+        ]);
 
-        $storables = ProductPicture::createAllFromPaths(
-            $pictures
-        );
-
-        $company = $createCompany->create('foo');
+        $company = $companyDao->getById('1');
         $createProduct->create(
             'foo',
             1,
@@ -142,28 +135,30 @@ it(
         }
     }
 )
-    ->throws(InvalidProductPicture::class);
+    ->throws(InvalidModel::class)
+    ->group('product');
 
 it(
-    'throws an exception if invalid product data',
+    'throws an exception if invalid product',
     function (
         string $name,
         float $price
     ): void {
-        $createCompany = self::$container->get(CreateCompany::class);
+        $companyDao = self::$container->get(CompanyDao::class);
+        assert($companyDao instanceof CompanyDao);
         $createProduct = self::$container->get(CreateProduct::class);
-        assert($createCompany instanceof CreateCompany);
         assert($createProduct instanceof CreateProduct);
 
-        $company = $createCompany->create('foo');
         $createProduct->create(
             $name,
             $price,
-            $company
+            $companyDao->getById('1')
         );
     }
 )
     ->with([
+        // Existing name.
+        ['bar', 1],
         // Blank name.
         [DummyValues::BLANK, 1],
         // Name > 255.
@@ -173,39 +168,5 @@ it(
         // No price.
         ['foo', 0],
     ])
-    ->throws(InvalidProduct::class);
-
-it(
-    'sends a task for deleting the pictures if exception',
-    function (): void {
-        $createCompany = self::$container->get(CreateCompany::class);
-        $createProduct = self::$container->get(CreateProduct::class);
-        $transport     = self::$container->get(AsyncTransport::KEY);
-        assert($createCompany instanceof CreateCompany);
-        assert($createProduct instanceof CreateProduct);
-        assert($transport instanceof InMemoryTransport);
-
-        $pictures = [
-            dirname(__FILE__) . '/foo.png',
-            dirname(__FILE__) . '/foo.jpg',
-        ];
-
-        $storables = ProductPicture::createAllFromPaths(
-            $pictures
-        );
-
-        $company = $createCompany->create('foo');
-        $createProduct->create(
-            DummyValues::BLANK,
-            1,
-            $company,
-            $storables
-        );
-
-        assertCount(1, $transport->getSent());
-        $envelope = $transport->get()[0];
-        $message  = $envelope->getMessage();
-        assert($message instanceof DeleteProductPicturesTask);
-    }
-)
-    ->throws(InvalidProduct::class);
+    ->throws(InvalidModel::class)
+    ->group('product');

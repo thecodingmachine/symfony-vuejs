@@ -4,19 +4,32 @@ declare(strict_types=1);
 
 use App\Domain\Enum\Filter\ProductsSortBy;
 use App\Domain\Enum\Filter\SortOrder;
+use App\Domain\Enum\Locale;
+use App\Domain\Enum\Role;
 use App\Domain\Model\Product;
-use App\Domain\Throwable\Invalid\InvalidProductsFilters;
 use App\UseCase\Company\CreateCompany;
 use App\UseCase\Product\CreateProduct;
 use App\UseCase\Product\GetProducts;
+use App\UseCase\User\CreateUser;
 
 beforeEach(function (): void {
+    $createUser = self::$container->get(CreateUser::class);
+    assert($createUser instanceof CreateUser);
     $createCompany = self::$container->get(CreateCompany::class);
     assert($createCompany instanceof CreateCompany);
     $createProduct = self::$container->get(CreateProduct::class);
     assert($createProduct instanceof CreateProduct);
 
-    $company = $createCompany->create(
+    $merchant = $createUser->createUser(
+        'foo',
+        'bar',
+        'merchant@foo.com',
+        Locale::EN(),
+        Role::MERCHANT()
+    );
+
+    $company = $createCompany->createCompany(
+        $merchant,
         'a',
         'http://a.a'
     );
@@ -49,7 +62,8 @@ it(
         $result = $getProducts->products();
         assertCount(3, $result);
     }
-);
+)
+    ->group('product');
 
 it(
     'filters products with a generic search',
@@ -65,7 +79,8 @@ it(
         assertStringContainsStringIgnoringCase($search, $product->getName());
     }
 )
-    ->with(['a', 'b', 'c']);
+    ->with(['a', 'b', 'c'])
+    ->group('product');
 
 it(
     'filters products by price range',
@@ -89,7 +104,6 @@ it(
 
         /** @var Product[] $products */
         $products = $result->toArray();
-
         foreach ($products as $product) {
             if ($lowerPrice !== null) {
                 assertGreaterThanOrEqual($lowerPrice, $product->getPrice());
@@ -110,11 +124,12 @@ it(
         [100, 300],
         [2000, 10000],
         [1000, 200],
-    ]);
+    ])
+    ->group('product');
 
 it(
     'sorts products by name',
-    function (string $sortOrder): void {
+    function (SortOrder $sortOrder): void {
         $getProducts = self::$container->get(GetProducts::class);
         assert($getProducts instanceof GetProducts);
 
@@ -122,14 +137,14 @@ it(
             null,
             null,
             null,
-            ProductsSortBy::NAME,
+            ProductsSortBy::NAME(),
             $sortOrder
         );
         assertCount(3, $result);
 
         /** @var Product[] $products */
         $products = $result->toArray();
-        if ($sortOrder === SortOrder::ASC) {
+        if ($sortOrder === SortOrder::ASC()) {
             assertStringContainsStringIgnoringCase('a', $products[0]->getName());
             assertStringContainsStringIgnoringCase('b', $products[1]->getName());
             assertStringContainsStringIgnoringCase('c', $products[2]->getName());
@@ -140,11 +155,12 @@ it(
         }
     }
 )
-    ->with([SortOrder::ASC, SortOrder::DESC]);
+    ->with([SortOrder::ASC(), SortOrder::DESC()])
+    ->group('product');
 
 it(
     'sorts products by price',
-    function (string $sortOrder): void {
+    function (SortOrder $sortOrder): void {
         $getProducts = self::$container->get(GetProducts::class);
         assert($getProducts instanceof GetProducts);
 
@@ -152,14 +168,14 @@ it(
             null,
             null,
             null,
-            ProductsSortBy::PRICE,
+            ProductsSortBy::PRICE(),
             $sortOrder
         );
         assertCount(3, $result);
 
         /** @var Product[] $products */
         $products = $result->toArray();
-        if ($sortOrder === SortOrder::ASC) {
+        if ($sortOrder === SortOrder::ASC()) {
             assertTrue(
                 $products[0]->getPrice() <
                 $products[1]->getPrice() &&
@@ -176,27 +192,5 @@ it(
         }
     }
 )
-    ->with([SortOrder::ASC, SortOrder::DESC]);
-
-it(
-    'throws an exception if invalid filters',
-    function (string $sortBy, string $sortOrder): void {
-        $getProducts = self::$container->get(GetProducts::class);
-        assert($getProducts instanceof GetProducts);
-
-        $getProducts->products(
-            null,
-            null,
-            null,
-            $sortBy,
-            $sortOrder
-        );
-    }
-)
-    ->with([
-        // Invalid sort by.
-        ['foo', SortOrder::ASC],
-        // Invalid sort order.
-        [ProductsSortBy::NAME, 'foo'],
-    ])
-    ->throws(InvalidProductsFilters::class);
+    ->with([SortOrder::ASC(), SortOrder::DESC()])
+    ->group('product');

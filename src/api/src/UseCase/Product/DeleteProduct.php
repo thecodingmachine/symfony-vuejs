@@ -29,7 +29,7 @@ final class DeleteProduct
     public function deleteProduct(Product $product): bool
     {
         $pictures = $product->getPictures();
-        $this->productDao->delete($product, true);
+        $this->productDao->delete($product);
 
         if (empty($pictures)) {
             return true;

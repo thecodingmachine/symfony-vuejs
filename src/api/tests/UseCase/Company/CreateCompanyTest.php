@@ -2,16 +2,47 @@
 
 declare(strict_types=1);
 
-use App\Domain\Model\Storable\CompanyLogo;
-use App\Domain\Storage\CompanyLogoStorage;
-use App\Domain\Throwable\Exists\CompanyWithNameExists;
-use App\Domain\Throwable\Invalid\InvalidCompany;
-use App\Domain\Throwable\Invalid\InvalidCompanyLogo;
-use App\Tests\UseCase\AsyncTransport;
+use App\Domain\Dao\UserDao;
+use App\Domain\Enum\Locale;
+use App\Domain\Enum\Role;
+use App\Domain\Throwable\InvalidModel;
 use App\Tests\UseCase\DummyValues;
 use App\UseCase\Company\CreateCompany;
-use App\UseCase\Company\DeleteCompanyLogo\DeleteCompaniesLogosTask;
-use Symfony\Component\Messenger\Transport\InMemoryTransport;
+use App\UseCase\User\CreateUser;
+
+beforeEach(function (): void {
+    $createUser = self::$container->get(CreateUser::class);
+    assert($createUser instanceof CreateUser);
+    $userDao = self::$container->get(UserDao::class);
+    assert($userDao instanceof UserDao);
+    $createCompany = self::$container->get(CreateCompany::class);
+    assert($createCompany instanceof CreateCompany);
+
+    $merchant = $createUser->createUser(
+        'foo',
+        'bar',
+        'merchant@foo.com',
+        Locale::EN(),
+        Role::MERCHANT()
+    );
+    $merchant->setId('1');
+    $userDao->save($merchant);
+
+    $client = $createUser->createUser(
+        'foo',
+        'bar',
+        'client@foo.com',
+        Locale::EN(),
+        Role::CLIENT()
+    );
+    $client->setId('2');
+    $userDao->save($client);
+
+    $createCompany->createCompany(
+        $merchant,
+        'bar'
+    );
+});
 
 it(
     'creates a company',
@@ -21,146 +52,63 @@ it(
     ): void {
         $createCompany = self::$container->get(CreateCompany::class);
         assert($createCompany instanceof CreateCompany);
+        $userDao = self::$container->get(UserDao::class);
+        assert($userDao instanceof UserDao);
 
-        $company = $createCompany->create(
-            $name,
-            $website
-        );
+        $company = $createCompany
+            ->createCompany(
+                $userDao->getById('1'),
+                $name,
+                $website
+            );
 
         assertEquals($name, $company->getName());
         assertEquals($website, $company->getWebsite());
-        assertNull($company->getLogo());
     }
 )
     ->with([
-        ['Foo', null],
-        ['Foo', 'http://foo.bar'],
-        ['Foo', null],
-        ['Foo', null],
-    ]);
+        ['foo', null],
+        ['foo', 'http://foo.bar'],
+        ['foo', null],
+        ['foo', null],
+    ])
+    ->group('company');
 
 it(
-    'stores the logo',
+    'throws an exception if invalid company',
     function (
-        string $logo
-    ): void {
-        $createCompany      = self::$container->get(CreateCompany::class);
-        $companyLogoStorage = self::$container->get(CompanyLogoStorage::class);
-        assert($createCompany instanceof CreateCompany);
-        assert($companyLogoStorage instanceof CompanyLogoStorage);
-
-        $storable = CompanyLogo::createFromPath(
-            dirname(__FILE__) . '/' . $logo,
-        );
-
-        $company = $createCompany->create(
-            'foo',
-            null,
-            $storable
-        );
-
-        assertNotNull($company->getLogo());
-        assertTrue($companyLogoStorage->fileExists($company->getLogo()));
-    }
-)
-    ->with(['foo.png', 'foo.jpg']);
-
-it(
-    'throws an exception if name is already associated to a company',
-    function (
-        string $name
-    ): void {
-        $createCompany = self::$container->get(CreateCompany::class);
-        assert($createCompany instanceof CreateCompany);
-
-        $createCompany->create($name);
-        $createCompany->create($name);
-    }
-)
-    ->with(['foo'])
-    ->throws(CompanyWithNameExists::class);
-
-it(
-    'throws an exception if invalid company logo',
-    function (
-        string $logo
-    ): void {
-        $createCompany      = self::$container->get(CreateCompany::class);
-        $companyLogoStorage = self::$container->get(CompanyLogoStorage::class);
-        assert($createCompany instanceof CreateCompany);
-        assert($companyLogoStorage instanceof CompanyLogoStorage);
-
-        $storable = CompanyLogo::createFromPath(
-            dirname(__FILE__) . '/' . $logo
-        );
-
-        $createCompany->create(
-            'foo',
-            null,
-            $storable
-        );
-
-        assertFalse($companyLogoStorage->fileExists($logo));
-    }
-)
-    ->with(['foo.txt'])
-    ->throws(InvalidCompanyLogo::class);
-
-it(
-    'throws an exception if invalid company data',
-    function (
+        string $merchantId,
         string $name,
         ?string $website
     ): void {
         $createCompany = self::$container->get(CreateCompany::class);
         assert($createCompany instanceof CreateCompany);
+        $userDao = self::$container->get(UserDao::class);
+        assert($userDao instanceof UserDao);
 
-        $createCompany->create(
+        $createCompany->createCompany(
+            $userDao->getById($merchantId),
             $name,
             $website
         );
     }
 )
     ->with([
+        // Existing name.
+        ['1', 'bar', null],
         // Blank name.
-        [DummyValues::BLANK, null],
+        ['1', DummyValues::BLANK, null],
         // Name > 255.
-        [DummyValues::CHAR256, null],
+        ['1', DummyValues::CHAR256, null],
         // Blank website.
-        ['foo', DummyValues::BLANK],
+        ['1', 'foo', DummyValues::BLANK],
         // Website > 255.
-        ['foo', DummyValues::CHAR256],
+        ['1', 'foo', DummyValues::CHAR256],
         // Website is not a URL.
-        ['foo', 'foo'],
-        ['foo', 'foo.bar'],
+        ['1', 'foo', 'foo'],
+        ['1', 'foo', 'foo.bar'],
+        // User is not a merchant.
+        ['2', 'foo', null],
     ])
-    ->throws(InvalidCompany::class);
-
-it(
-    'sends a task for deleting the logo if exception',
-    function (
-        string $logo
-    ): void {
-        $createCompany = self::$container->get(CreateCompany::class);
-        $transport     = self::$container->get(AsyncTransport::KEY);
-        assert($createCompany instanceof CreateCompany);
-        assert($transport instanceof InMemoryTransport);
-
-        $storable = CompanyLogo::createFromPath(
-            dirname(__FILE__) . '/' . $logo
-        );
-
-        $createCompany->create(
-            DummyValues::BLANK,
-            null,
-            $storable
-        );
-
-        assertCount(1, $transport->getSent());
-        $envelope = $transport->get()[0];
-        $message  = $envelope->getMessage();
-        assert($message instanceof DeleteCompaniesLogosTask);
-    }
-)
-    ->with(['foo.jpg'])
-    ->throws(InvalidCompany::class);
+    ->throws(InvalidModel::class)
+    ->group('company');

@@ -15,13 +15,24 @@ final class PasswordProxy
      */
     private string $plainPassword;
 
-    public function __construct(string $plainPassword)
-    {
-        $this->plainPassword = $plainPassword;
+    /** @Assert\Expression("this.getPlainPassword() === this.getPasswordConfirmation()", message="assert.wrong_password_confirmation") */
+    private string $passwordConfirmation;
+
+    public function __construct(
+        string $plainPassword,
+        string $passwordConfirmation
+    ) {
+        $this->plainPassword        = $plainPassword;
+        $this->passwordConfirmation = $passwordConfirmation;
     }
 
     public function getPlainPassword(): string
     {
         return $this->plainPassword;
+    }
+
+    public function getPasswordConfirmation(): string
+    {
+        return $this->passwordConfirmation;
     }
 }

@@ -6,19 +6,20 @@ namespace App\UseCase\Company;
 
 use App\Domain\Dao\CompanyDao;
 use App\Domain\Model\Company;
-use App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTask;
-use Symfony\Component\Messenger\MessageBusInterface;
+use App\UseCase\Product\DeleteProduct;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 
 final class DeleteCompany
 {
+    private DeleteProduct $deleteProduct;
     private CompanyDao $companyDao;
-    private MessageBusInterface $messageBus;
 
-    public function __construct(CompanyDao $companyDao, MessageBusInterface $messageBus)
-    {
-        $this->companyDao = $companyDao;
-        $this->messageBus = $messageBus;
+    public function __construct(
+        DeleteProduct $deleteProduct,
+        CompanyDao $companyDao
+    ) {
+        $this->deleteProduct = $deleteProduct;
+        $this->companyDao    = $companyDao;
     }
 
     /**
@@ -26,19 +27,11 @@ final class DeleteCompany
      */
     public function deleteCompany(Company $company): bool
     {
-        // As cascade deletion also delete the company
-        // products, we have to delete their pictures (if any).
-        $pictures = $company->getProductsPictures();
-        $this->companyDao->delete($company, true);
-
-        if (empty($pictures)) {
-            return true;
+        foreach ($company->getProducts() as $product) {
+            $this->deleteProduct->deleteProduct($product);
         }
 
-        // As the deletion of all the pictures might
-        // take some time, we do it asynchronously.
-        $task = new DeleteProductsPicturesTask($pictures);
-        $this->messageBus->dispatch($task);
+        $this->companyDao->delete($company);
 
         return true;
     }

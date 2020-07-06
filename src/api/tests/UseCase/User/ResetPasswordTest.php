@@ -7,10 +7,11 @@ use App\Domain\Dao\UserDao;
 use App\Domain\Enum\Locale;
 use App\Domain\Enum\Role;
 use App\Domain\Model\User;
-use App\Domain\Throwable\NotFound\UserNotFoundByEmail;
 use App\Tests\UseCase\AsyncTransport;
 use App\UseCase\User\ResetPassword\ResetPassword;
 use App\UseCase\User\ResetPassword\ResetPasswordNotification;
+use App\UseCase\User\ResetPassword\ResetPasswordTask;
+use App\UseCase\User\ResetPassword\ResetPasswordTaskHandler;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
 use TheCodingMachine\TDBM\TDBMException;
 
@@ -19,73 +20,99 @@ beforeEach(function (): void {
     assert($userDao instanceof UserDao);
 
     // We do not use the CreateUser use case
-    // as we check the notifications in the following tests.
+    // as it dispatches the same messages as the
+    // ones we want to test.
     $user = new User(
-        'Foo',
-        'Bar',
-        'foo.bar@baz.com',
-        Locale::EN,
-        Role::ADMINISTRATOR
+        'foo',
+        'bar',
+        'foo@foo.com',
+        strval(Locale::EN()),
+        strval(Role::MERCHANT())
     );
     $userDao->save($user);
 });
 
 it(
-    'dispatches a notification',
+    'dispatches a task; when handled dispatches a notification',
     function (string $email): void {
         $resetPassword = self::$container->get(ResetPassword::class);
-        $transport     = self::$container->get(AsyncTransport::KEY);
         assert($resetPassword instanceof ResetPassword);
+        $transport = self::$container->get(AsyncTransport::KEY);
         assert($transport instanceof InMemoryTransport);
+        $resetPasswordTaskHandler = self::$container->get(ResetPasswordTaskHandler::class);
+        assert($resetPasswordTaskHandler instanceof ResetPasswordTaskHandler);
 
-        $resetPassword->reset($email);
+        $resetPassword->resetPassword($email);
         assertCount(1, $transport->getSent());
-
         $envelope = $transport->get()[0];
+        $message  = $envelope->getMessage();
+        assert($message instanceof ResetPasswordTask);
+
+        $resetPasswordTaskHandler($message);
+        assertCount(2, $transport->getSent());
+        $envelope = $transport->get()[1];
         $message  = $envelope->getMessage();
         assert($message instanceof ResetPasswordNotification);
     }
 )
-    ->with(['foo.bar@baz.com']);
+    ->with(['foo@foo.com'])
+    ->group('user');
 
 it(
-    'throws an exception if the e-mail is not associated to a user',
+    'dispatches a task with a non-existing e-mail; when handled does not dispatch a notification',
     function (string $email): void {
         $resetPassword = self::$container->get(ResetPassword::class);
-        $transport     = self::$container->get(AsyncTransport::KEY);
         assert($resetPassword instanceof ResetPassword);
+        $transport = self::$container->get(AsyncTransport::KEY);
         assert($transport instanceof InMemoryTransport);
+        $resetPasswordTaskHandler = self::$container->get(ResetPasswordTaskHandler::class);
+        assert($resetPasswordTaskHandler instanceof ResetPasswordTaskHandler);
 
-        $resetPassword->reset($email);
-        assertCount(0, $transport->getSent());
+        $resetPassword->resetPassword($email);
+        assertCount(1, $transport->getSent());
+        $envelope = $transport->get()[0];
+        $message  = $envelope->getMessage();
+        assert($message instanceof ResetPasswordTask);
+
+        $resetPasswordTaskHandler($message);
+        assertCount(1, $transport->getSent());
     }
 )
     ->with(['foo'])
-    ->throws(UserNotFoundByEmail::class);
+    ->group('user');
 
 it(
-    'deletes the previous token if called twice',
+    'dispatches a task; when handled twice deletes the previous token',
     function (string $email): void {
-        $resetPassword         = self::$container->get(ResetPassword::class);
-        $transport             = self::$container->get(AsyncTransport::KEY);
-        $resetPasswordTokenDao = self::$container->get(ResetPasswordTokenDao::class);
+        $resetPassword = self::$container->get(ResetPassword::class);
         assert($resetPassword instanceof ResetPassword);
+        $transport = self::$container->get(AsyncTransport::KEY);
         assert($transport instanceof InMemoryTransport);
+        $resetPasswordTaskHandler = self::$container->get(ResetPasswordTaskHandler::class);
+        assert($resetPasswordTaskHandler instanceof ResetPasswordTaskHandler);
+        $resetPasswordTokenDao = self::$container->get(ResetPasswordTokenDao::class);
         assert($resetPasswordTokenDao instanceof ResetPasswordTokenDao);
 
-        $firstNotification = $resetPassword->reset($email);
-        $resetPassword->reset($email);
+        $resetPassword->resetPassword($email);
+        assertCount(1, $transport->getSent());
+        $envelope = $transport->get()[0];
+        $message  = $envelope->getMessage();
+        assert($message instanceof ResetPasswordTask);
 
-        assertCount(2, $transport->getSent());
+        $resetPasswordTaskHandler($message);
+        $resetPasswordTaskHandler($message);
 
-        $envelopes = $transport->get();
-        foreach ($envelopes as $envelope) {
-            $message = $envelope->getMessage();
-            assert($message instanceof ResetPasswordNotification);
-        }
+        assertCount(3, $transport->getSent());
+        $envelope = $transport->get()[1];
+        $message1 = $envelope->getMessage();
+        assert($message1 instanceof ResetPasswordNotification);
+        $envelope = $transport->get()[2];
+        $message2 = $envelope->getMessage();
+        assert($message2 instanceof ResetPasswordNotification);
 
-        $resetPasswordTokenDao->getById($firstNotification->getResetPasswordTokenId());
+        $resetPasswordTokenDao->getById($message1->getResetPasswordTokenId());
     }
 )
-    ->with(['foo.bar@baz.com'])
-    ->throws(TDBMException::class);
+    ->with(['foo@foo.com'])
+    ->throws(TDBMException::class)
+    ->group('user');

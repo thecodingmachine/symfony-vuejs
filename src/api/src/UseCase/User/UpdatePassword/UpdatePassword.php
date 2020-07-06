@@ -37,7 +37,8 @@ final class UpdatePassword
     public function updatePassword(
         ResetPasswordToken $resetPasswordToken,
         string $plainToken,
-        string $newPassword
+        string $newPassword,
+        string $passwordConfirmation
     ): bool {
         $token = $resetPasswordToken->getToken();
         if (! password_verify($plainToken, $token)) {
@@ -49,7 +50,7 @@ final class UpdatePassword
             throw new ResetPasswordTokenExpired();
         }
 
-        $passwordProxy = new PasswordProxy($newPassword);
+        $passwordProxy = new PasswordProxy($newPassword, $passwordConfirmation);
         $user          = $resetPasswordToken->getUser();
 
         $this->userDao->updatePassword($user, $passwordProxy);

@@ -11,19 +11,20 @@ it(
     'gets a user',
     function (): void {
         $createUser = self::$container->get(CreateUser::class);
-        $getUser    = self::$container->get(GetUser::class);
         assert($createUser instanceof CreateUser);
+        $getUser = self::$container->get(GetUser::class);
         assert($getUser instanceof GetUser);
 
         $user = $createUser->createUser(
-            'Foo',
-            'Bar',
-            'foo.bar@baz.com',
-            Locale::EN,
-            Role::ADMINISTRATOR
+            'foo',
+            'bar',
+            'foo@foo.com',
+            Locale::EN(),
+            Role::ADMINISTRATOR()
         );
 
         $foundUser = $getUser->user($user);
-        assertEquals($user->getId(), $foundUser->getId());
+        assertEquals($user, $foundUser);
     }
-);
+)
+    ->group('user');

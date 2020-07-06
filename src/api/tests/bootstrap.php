@@ -16,9 +16,9 @@ if (file_exists(dirname(__DIR__) . '/config/bootstrap.php')) {
 /** @var Process[] $processes */
 $processes = [
     // Delete the "tests" database.
-    new Process(['php', 'bin/console', 'doctrine:database:drop', '-n', '--force']),
+    new Process(['php', 'bin/console', 'doctrine:database:drop', '-n', '--force', '--if-exists']),
     // Create the "tests" database.
-    new Process(['php', 'bin/console', 'doctrine:database:create', '-n']),
+    new Process(['php', 'bin/console', 'doctrine:database:create', '-n', '--if-not-exists']),
     // Initialize the "tests" database structure.
     new Process(['php', 'bin/console', 'doctrine:migrations:migrate', '-n']),
     // Clear the cache.

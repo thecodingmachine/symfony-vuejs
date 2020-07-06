@@ -40,17 +40,22 @@ final class UnicityValidator extends ConstraintValidator
             throw new RuntimeException(Unicity::class . ' column argument is empty');
         }
 
-        $getter = 'get' . $constraint->column;
+        $getterValue = 'get' . $constraint->column;
+        $getterId    = 'getid';
 
         $existingObject = $this->tdbmService->findObject(
             $constraint->table,
             [$constraint->column . ' = :value'],
             [
-                'value' => $object->$getter(),
+                'value' => $object->$getterValue(),
             ]
         );
 
-        if ($existingObject !== $object) {
+        if ($existingObject === null) {
+            return;
+        }
+
+        if ($existingObject->$getterId() === $object->$getterId()) {
             return;
         }
 

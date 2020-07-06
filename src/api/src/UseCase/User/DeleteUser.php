@@ -6,21 +6,20 @@ namespace App\UseCase\User;
 
 use App\Domain\Dao\UserDao;
 use App\Domain\Model\User;
-use App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTask;
-use Symfony\Component\Messenger\MessageBusInterface;
+use App\UseCase\Company\DeleteCompany;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 
 final class DeleteUser
 {
+    private DeleteCompany $deleteCompany;
     private UserDao $userDao;
-    private MessageBusInterface $messageBus;
 
     public function __construct(
-        UserDao $userDao,
-        MessageBusInterface $messageBus
+        DeleteCompany $deleteCompany,
+        UserDao $userDao
     ) {
-        $this->userDao    = $userDao;
-        $this->messageBus = $messageBus;
+        $this->deleteCompany = $deleteCompany;
+        $this->userDao       = $userDao;
     }
 
     /**
@@ -29,15 +28,14 @@ final class DeleteUser
     public function deleteUser(User $user): bool
     {
         // If the user is a merchant, we have to
-        // delete all files related to its companies'
-        // products.
-        $pictures = $user->getProductsPictures();
-        $this->userDao->delete($user, true);
-
-        if (! empty($productsPictures)) {
-            $task = new DeleteProductsPicturesTask($productsPictures);
-            $this->messageBus->dispatch($task);
+        // delete his companies.
+        foreach ($user->getCompanies() as $company) {
+            $this->deleteCompany->deleteCompany($company);
         }
+
+        // Cascade = true will also delete the reset
+        // password token (if any).
+        $this->userDao->delete($user, true);
 
         return true;
     }

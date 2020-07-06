@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
-use function array_merge;
-
 /**
  * The Company class maps the 'companies' table in database.
  *
@@ -46,23 +44,11 @@ class Company extends BaseCompany
     }
 
     /**
-     * @return string[]
+     * @Field
+     * @Assert\Expression("this.getUser().getRole() === 'MERCHANT'", message="assert.company.user_not_a_merchant")
      */
-    public function getProductsPictures(): array
+    public function getUser(): User
     {
-        $products    = $this->getProducts();
-        $allPictures = [];
-
-        foreach ($products as $product) {
-            $pictures = $product->getPictures();
-
-            if (empty($pictures)) {
-                continue;
-            }
-
-            $allPictures = array_merge($allPictures, $pictures);
-        }
-
-        return $allPictures;
+        return parent::getUser();
     }
 }

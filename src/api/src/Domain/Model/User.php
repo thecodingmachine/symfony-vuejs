@@ -18,7 +18,6 @@ use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 use TheCodingMachine\TDBM\AlterableResultIterator;
 
-use function array_merge;
 use function Safe\password_hash;
 use function serialize;
 use function unserialize;
@@ -110,27 +109,6 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
     public function isActivated(): bool
     {
         return $this->getPassword() !== null;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getProductsPictures(): array
-    {
-        $companies   = $this->getCompanies();
-        $allPictures = [];
-
-        foreach ($companies as $company) {
-            $pictures = $company->getProductsPictures();
-
-            if (empty($pictures)) {
-                continue;
-            }
-
-            $allPictures = array_merge($allPictures, $pictures);
-        }
-
-        return $allPictures;
     }
 
     /*
