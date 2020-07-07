@@ -28,14 +28,14 @@ use const PASSWORD_DEFAULT;
  * The User class maps the 'users' table in database.
  *
  * @Type
- * @DomainAssert\Unicity(table="users", column="email", message="assert.user.email_not_unique")
+ * @DomainAssert\Unicity(table="users", column="email", message="user.email_not_unique")
  */
 class User extends BaseUser implements UserInterface, Serializable, EquatableInterface
 {
     /**
      * @Field
-     * @Assert\NotBlank(message="assert.not_blank")
-     * @Assert\Length(max=255, maxMessage="assert.max_length_255")
+     * @Assert\NotBlank(message="not_blank")
+     * @Assert\Length(max=255, maxMessage="max_length_255")
      * @Field
      */
     public function getFirstName(): string
@@ -45,8 +45,8 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
 
     /**
      * @Field
-     * @Assert\NotBlank(message="assert.not_blank")
-     * @Assert\Length(max=255, maxMessage="assert.max_length_255")
+     * @Assert\NotBlank(message="not_blank")
+     * @Assert\Length(max=255, maxMessage="max_length_255")
      */
     public function getLastName(): string
     {
@@ -55,9 +55,9 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
 
     /**
      * @Field
-     * @Assert\NotBlank(message="assert.not_blank")
-     * @Assert\Length(max=255, maxMessage="assert.max_length_255")
-     * @Assert\Email(message="assert.invalid_email")
+     * @Assert\NotBlank(message="not_blank")
+     * @Assert\Length(max=255, maxMessage="max_length_255")
+     * @Assert\Email(message="invalid_email")
      */
     public function getEmail(): string
     {
@@ -77,7 +77,7 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
 
     /**
      * @Field
-     * @Assert\Choice(callback={"App\Domain\Enum\Locale", "valuesAsArray"}, message="assert.invalid_locale")
+     * @Assert\Choice(callback={"App\Domain\Enum\Locale", "valuesAsArray"}, message="user.invalid_locale")
      */
     public function getLocale(): string
     {
@@ -86,7 +86,7 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
 
     /**
      * @Field
-     * @Assert\Choice(callback={"App\Domain\Enum\Role", "valuesAsArray"}, message="assert.invalid_role")
+     * @Assert\Choice(callback={"App\Domain\Enum\Role", "valuesAsArray"}, message="user.invalid_role")
      */
     public function getRole(): string
     {

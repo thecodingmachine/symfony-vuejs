@@ -20,7 +20,7 @@ final class ResetPassword
 
     /**
      * @Mutation
-     * @Assertion(for="email", constraint={@Assert\NotBlank(message="assert.not_blank"), @Assert\Length(max=255, maxMessage="assert.max_length_255"), @Assert\Email(message="assert.invalid_email")})
+     * @Assertion(for="email", constraint={@Assert\NotBlank(message="not_blank"), @Assert\Length(max=255, maxMessage="max_length_255"), @Assert\Email(message="invalid_email")})
      */
     public function resetPassword(string $email): bool
     {

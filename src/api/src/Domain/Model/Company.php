@@ -18,14 +18,14 @@ use TheCodingMachine\GraphQLite\Annotations\Type;
  * The Company class maps the 'companies' table in database.
  *
  * @Type
- * @DomainAssert\Unicity(table="companies", column="name", message="assert.company.name_not_unique")
+ * @DomainAssert\Unicity(table="companies", column="name", message="company.name_not_unique")
  */
 class Company extends BaseCompany
 {
     /**
      * @Field
-     * @Assert\NotBlank(message="assert.not_blank")
-     * @Assert\Length(max=255, maxMessage="assert.max_length_255")
+     * @Assert\NotBlank(message="not_blank")
+     * @Assert\Length(max=255, maxMessage="max_length_255")
      */
     public function getName(): string
     {
@@ -34,9 +34,9 @@ class Company extends BaseCompany
 
     /**
      * @Field
-     * @Assert\NotBlank(allowNull=true, message="assert.not_blank")
-     * @Assert\Length(max=255, maxMessage="assert.max_length_255")
-     * @Assert\Url(message="assert.invalid_url")
+     * @Assert\NotBlank(allowNull=true, message="not_blank")
+     * @Assert\Length(max=255, maxMessage="max_length_255")
+     * @Assert\Url(message="invalid_url")
      */
     public function getWebsite(): ?string
     {
@@ -45,7 +45,7 @@ class Company extends BaseCompany
 
     /**
      * @Field
-     * @Assert\Expression("this.getUser().getRole() === 'MERCHANT'", message="assert.company.user_not_a_merchant")
+     * @Assert\Expression("this.getUser().getRole() === 'MERCHANT'", message="company.user_not_a_merchant")
      */
     public function getUser(): User
     {

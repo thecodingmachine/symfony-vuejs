@@ -24,9 +24,9 @@ final class SignUp
      * @throws WrongRole
      *
      * @Mutation
-     * @Assertion(for="firstName", constraint={@Assert\NotBlank(message="assert.not_blank"), @Assert\Length(max=255, maxMessage="assert.max_length_255")})
-     * @Assertion(for="lastName", constraint={@Assert\NotBlank(message="assert.not_blank"), @Assert\Length(max=255, maxMessage="assert.max_length_255")})
-     * @Assertion(for="email", constraint={@Assert\NotBlank(message="assert.not_blank"), @Assert\Length(max=255, maxMessage="assert.max_length_255"), @Assert\Email(message="assert.invalid_email")})
+     * @Assertion(for="firstName", constraint={@Assert\NotBlank(message="not_blank"), @Assert\Length(max=255, maxMessage="max_length_255")})
+     * @Assertion(for="lastName", constraint={@Assert\NotBlank(message="not_blank"), @Assert\Length(max=255, maxMessage="max_length_255")})
+     * @Assertion(for="email", constraint={@Assert\NotBlank(message="not_blank"), @Assert\Length(max=255, maxMessage="max_length_255"), @Assert\Email(message="invalid_email")})
      */
     public function signUp(
         string $firstName,

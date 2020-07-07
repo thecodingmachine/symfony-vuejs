@@ -18,14 +18,14 @@ use TheCodingMachine\GraphQLite\Annotations\Type;
  * The Product class maps the 'products' table in database.
  *
  * @Type
- * @DomainAssert\Unicity(table="products", column="name", message="assert.product.name_not_unique")
+ * @DomainAssert\Unicity(table="products", column="name", message="product.name_not_unique")
  */
 class Product extends BaseProduct
 {
     /**
      * @Field
-     * @Assert\NotBlank(message="assert.not_blank")
-     * @Assert\Length(max=255, maxMessage="assert.max_length_255")
+     * @Assert\NotBlank(message="not_blank")
+     * @Assert\Length(max=255, maxMessage="max_length_255")
      */
     public function getName(): string
     {
@@ -34,7 +34,7 @@ class Product extends BaseProduct
 
     /**
      * @Field
-     * @Assert\Positive(message="assert.positive")
+     * @Assert\Positive(message="positive")
      */
     public function getPrice(): float
     {
@@ -45,7 +45,7 @@ class Product extends BaseProduct
      * @return string[]|null
      *
      * @Field
-     * @Assert\All({@Assert\NotBlank(message="assert.not_blank"), @Assert\Length(max=255, maxMessage="assert.max_length_255")})
+     * @Assert\All({@Assert\NotBlank(message="not_blank"), @Assert\Length(max=255, maxMessage="max_length_255")})
      */
     public function getPictures(): ?array
     {

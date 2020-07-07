@@ -43,3 +43,6 @@ services:
     App\Infrastructure\Command\InitializeMinIOStorageCommand:
         arguments:
             - '@minio.client'
+
+    App\Infrastructure\EventSubscriber\LocaleSubscriber:
+        arguments: ['%kernel.default_locale%']

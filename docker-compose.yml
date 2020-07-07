@@ -88,7 +88,7 @@ services:
       STORAGE_ACCESS_KEY: '$STORAGE_ACCESS_KEY'
       STORAGE_SECRET_KEY: '$STORAGE_SECRET_KEY'
       # i18n.
-      DEFAULT_LOCALE: "en" # Only used for translating notifications.
+      DEFAULT_LOCALE: "en"
       # Notifications data.
       WEBAPP_URL: "http://$DOMAIN/"
       WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT: "update-password/%s/%s"
