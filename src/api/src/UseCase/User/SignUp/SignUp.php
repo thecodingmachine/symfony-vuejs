@@ -32,7 +32,7 @@ final class SignUp
         Locale $locale,
         Role $role
     ): bool {
-        if ($role === Role::ADMINISTRATOR()) {
+        if ($role->equals(Role::ADMINISTRATOR())) {
             throw new WrongRole();
         }
 

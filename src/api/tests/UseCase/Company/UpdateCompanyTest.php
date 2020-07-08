@@ -10,7 +10,7 @@ use App\Domain\Model\Company;
 use App\Domain\Model\User;
 use App\Domain\Throwable\InvalidModel;
 use App\Tests\UseCase\DummyValues;
-use App\UseCase\Company\CreateCompany;
+use App\UseCase\Company\UpdateCompany;
 
 beforeEach(function (): void {
     $userDao = self::$container->get(UserDao::class);
@@ -25,18 +25,14 @@ beforeEach(function (): void {
         strval(Locale::EN()),
         strval(Role::MERCHANT())
     );
-    $merchant->setId('1');
     $userDao->save($merchant);
 
-    $client = new User(
-        'foo',
-        'bar',
-        'client@foo.com',
-        strval(Locale::EN()),
-        strval(Role::CLIENT())
+    $company = new Company(
+        $merchant,
+        'foo'
     );
-    $client->setId('2');
-    $userDao->save($client);
+    $company->setId('1');
+    $companyDao->save($company);
 
     $company = new Company(
         $merchant,
@@ -46,22 +42,21 @@ beforeEach(function (): void {
 });
 
 it(
-    'creates a company',
+    'updates a company',
     function (
         string $name,
         ?string $website
     ): void {
-        $createCompany = self::$container->get(CreateCompany::class);
-        assert($createCompany instanceof CreateCompany);
-        $userDao = self::$container->get(UserDao::class);
-        assert($userDao instanceof UserDao);
+        $updateCompany = self::$container->get(UpdateCompany::class);
+        assert($updateCompany instanceof UpdateCompany);
+        $companyDao = self::$container->get(CompanyDao::class);
+        assert($companyDao instanceof CompanyDao);
 
-        $company = $createCompany
-            ->createCompany(
-                $userDao->getById('1'),
-                $name,
-                $website
-            );
+        $company = $updateCompany->updateCompany(
+            $companyDao->getById('1'),
+            $name,
+            $website
+        );
 
         assertEquals($name, $company->getName());
         assertEquals($website, $company->getWebsite());
@@ -76,17 +71,16 @@ it(
 it(
     'throws an exception if invalid company',
     function (
-        string $userId,
         string $name,
         ?string $website
     ): void {
-        $createCompany = self::$container->get(CreateCompany::class);
-        assert($createCompany instanceof CreateCompany);
-        $userDao = self::$container->get(UserDao::class);
-        assert($userDao instanceof UserDao);
+        $updateCompany = self::$container->get(UpdateCompany::class);
+        assert($updateCompany instanceof UpdateCompany);
+        $companyDao = self::$container->get(CompanyDao::class);
+        assert($companyDao instanceof CompanyDao);
 
-        $createCompany->createCompany(
-            $userDao->getById($userId),
+        $updateCompany->updateCompany(
+            $companyDao->getById('1'),
             $name,
             $website
         );
@@ -94,20 +88,18 @@ it(
 )
     ->with([
         // Existing name.
-        ['1', 'bar', null],
+        ['bar', null],
         // Blank name.
-        ['1', DummyValues::BLANK, null],
+        [DummyValues::BLANK, null],
         // Name > 255.
-        ['1', DummyValues::CHAR256, null],
+        [DummyValues::CHAR256, null],
         // Blank website.
-        ['1', 'foo', DummyValues::BLANK],
+        ['foo', DummyValues::BLANK],
         // Website > 255.
-        ['1', 'foo', DummyValues::CHAR256],
+        ['foo', DummyValues::CHAR256],
         // Website is not a URL.
-        ['1', 'foo', 'foo'],
-        ['1', 'foo', 'foo.bar'],
-        // User is not a merchant.
-        ['2', 'foo', null],
+        ['foo', 'foo'],
+        ['foo', 'foo.bar'],
     ])
     ->throws(InvalidModel::class)
     ->group('company');
