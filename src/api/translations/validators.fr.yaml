@@ -6,7 +6,7 @@ invalid_url: "Cette valeur n'est pas une URL valide."
 positive: "Cette valeur doit être positive."
 
 user:
-  email_not_unique: "Cet e-mail n'est pas disponible."
+  email_not_unique: "Cet email n'est pas disponible."
   invalid_locale: "Cette valeur n'est pas une langue valide."
   invalid_role: "Cette valeur n'est pas un rôle valide.."
   not_compromised_password: "Ce mot de passe a été découvert lors d'un vole de données, il ne doit pas être utilisé. Merci d'utiliser un autre mot de passe."

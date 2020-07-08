@@ -74,9 +74,6 @@ services:
       TESTS_DATABASE_URL: "mysql://$MYSQL_USER:$MYSQL_PASSWORD@mysql_tests:3306/$MYSQL_DATABASE?server_version=8.0"
       # Messenger.
       MESSENGER_TRANSPORT_DSN: "redis://$REDIS_PASSWORD@redis:6379/messages"
-      # Mailer.
-      MAILER_URL: "smtp://mailhog:1025?encryption=&auth_mode="
-      MAIL_FROM: "no-reply@$DOMAIN"
       # Storage.
       # Note: in other environments, the following values might differ according
       # to your storage sources (see src/api/config/packages/flysystem.yaml).
@@ -89,9 +86,12 @@ services:
       STORAGE_SECRET_KEY: '$STORAGE_SECRET_KEY'
       # i18n.
       DEFAULT_LOCALE: "en"
-      # Notifications data.
-      WEBAPP_URL: "http://$DOMAIN/"
-      WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT: "update-password/%s/%s"
+      # Mailer.
+      MAILER_DSN: "smtp://null:null@mailhog:1025"
+      MAIL_FROM_ADDRESS: "no-reply@$DOMAIN"
+      MAIL_FROM_NAME: "Companies and products"
+      MAIL_WEBAPP_URL: "http://$DOMAIN/"
+      MAIL_WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT: "update-password/%s/%s"
     volumes:
       - ./src/api:/var/www/html
 

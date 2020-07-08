@@ -3,72 +3,66 @@
 declare(strict_types=1);
 
 use App\Domain\Dao\ResetPasswordTokenDao;
+use App\Domain\Dao\UserDao;
 use App\Domain\Enum\Locale;
 use App\Domain\Enum\Role;
+use App\Domain\Model\ResetPasswordToken;
+use App\Domain\Model\User;
 use App\Domain\Throwable\InvalidModel;
-use App\Tests\UseCase\AsyncTransport;
 use App\Tests\UseCase\DummyValues;
-use App\UseCase\User\CreateUser;
-use App\UseCase\User\ResetPassword\ResetPasswordNotification;
-use App\UseCase\User\ResetPassword\ResetPasswordTask;
-use App\UseCase\User\ResetPassword\ResetPasswordTaskHandler;
 use App\UseCase\User\UpdatePassword\ResetPasswordTokenExpired;
 use App\UseCase\User\UpdatePassword\UpdatePassword;
 use App\UseCase\User\UpdatePassword\WrongResetPasswordToken;
 use Safe\DateTimeImmutable;
-use Symfony\Component\Messenger\Transport\InMemoryTransport;
 use TheCodingMachine\TDBM\TDBMException;
 
 beforeEach(function (): void {
-    $createUser = self::$container->get(CreateUser::class);
-    assert($createUser instanceof CreateUser);
-    $transport = self::$container->get(AsyncTransport::KEY);
-    assert($transport instanceof InMemoryTransport);
-    $resetPasswordTaskHandler = self::$container->get(ResetPasswordTaskHandler::class);
-    assert($resetPasswordTaskHandler instanceof ResetPasswordTaskHandler);
+    $userDao = self::$container->get(UserDao::class);
+    assert($userDao instanceof UserDao);
+    $resetPasswordTokenDao = self::$container->get(ResetPasswordTokenDao::class);
+    assert($resetPasswordTokenDao instanceof  ResetPasswordTokenDao);
 
-    $createUser->createUser(
+    $user = new User(
         'foo',
         'bar',
-        'foo@foo.com',
-        Locale::EN(),
-        Role::MERCHANT()
+        'merchant@foo.com',
+        strval(Locale::EN()),
+        strval(Role::MERCHANT())
     );
+    $userDao->save($user);
 
-    assertCount(1, $transport->getSent());
-    $envelope = $transport->get()[0];
-    $message  = $envelope->getMessage();
-    assert($message instanceof ResetPasswordTask);
-    $resetPasswordTaskHandler($message);
+    $validUntil = new \DateTimeImmutable();
+    $validUntil = $validUntil->add(new DateInterval('P1D')); // Add one day to current date time.
+
+    $resetPasswordToken = new ResetPasswordToken(
+        $user,
+        'foo',
+        $validUntil
+    );
+    $resetPasswordToken->setId('1');
+    $resetPasswordTokenDao->save($resetPasswordToken);
 });
 
 it(
     'updates the password and deletes the token',
     function (): void {
-        $transport = self::$container->get(AsyncTransport::KEY);
-        assert($transport instanceof InMemoryTransport);
-        $updatePassword = self::$container->get(UpdatePassword::class);
-        assert($updatePassword instanceof UpdatePassword);
         $resetPasswordTokenDao = self::$container->get(ResetPasswordTokenDao::class);
         assert($resetPasswordTokenDao instanceof  ResetPasswordTokenDao);
+        $updatePassword = self::$container->get(UpdatePassword::class);
+        assert($updatePassword instanceof UpdatePassword);
 
-        assertCount(2, $transport->getSent());
-        $envelope = $transport->get()[1];
-        $message  = $envelope->getMessage();
-        assert($message instanceof ResetPasswordNotification);
-
-        $resetPasswordToken = $resetPasswordTokenDao->getById($message->getResetPasswordTokenId());
+        $resetPasswordToken = $resetPasswordTokenDao->getById('1');
         $user               = $resetPasswordToken->getUser();
 
         $updatePassword->updatePassword(
             $resetPasswordToken,
-            $message->getPlainToken(),
+            'foo',
             'foobarfoo',
             'foobarfoo'
         );
 
         assertTrue(password_verify('foobarfoo', $user->getPassword()));
-        $resetPasswordTokenDao->getById($message->getResetPasswordTokenId());
+        $resetPasswordTokenDao->getById($resetPasswordToken->getId());
     }
 )
     ->throws(TDBMException::class)
@@ -77,23 +71,16 @@ it(
 it(
     'throws an exception if wrong token',
     function (): void {
-        $transport = self::$container->get(AsyncTransport::KEY);
-        assert($transport instanceof InMemoryTransport);
-        $updatePassword = self::$container->get(UpdatePassword::class);
-        assert($updatePassword instanceof UpdatePassword);
         $resetPasswordTokenDao = self::$container->get(ResetPasswordTokenDao::class);
         assert($resetPasswordTokenDao instanceof  ResetPasswordTokenDao);
+        $updatePassword = self::$container->get(UpdatePassword::class);
+        assert($updatePassword instanceof UpdatePassword);
 
-        assertCount(2, $transport->getSent());
-        $envelope = $transport->get()[1];
-        $message  = $envelope->getMessage();
-        assert($message instanceof ResetPasswordNotification);
-
-        $resetPasswordToken = $resetPasswordTokenDao->getById($message->getResetPasswordTokenId());
+        $resetPasswordToken = $resetPasswordTokenDao->getById('1');
 
         $updatePassword->updatePassword(
             $resetPasswordToken,
-            'foo',
+            'bar',
             'foobarfoo',
             'foobarfoo'
         );
@@ -105,19 +92,12 @@ it(
 it(
     'throws an exception if token expired',
     function (): void {
-        $transport = self::$container->get(AsyncTransport::KEY);
-        assert($transport instanceof InMemoryTransport);
-        $updatePassword = self::$container->get(UpdatePassword::class);
-        assert($updatePassword instanceof UpdatePassword);
         $resetPasswordTokenDao = self::$container->get(ResetPasswordTokenDao::class);
         assert($resetPasswordTokenDao instanceof  ResetPasswordTokenDao);
+        $updatePassword = self::$container->get(UpdatePassword::class);
+        assert($updatePassword instanceof UpdatePassword);
 
-        assertCount(2, $transport->getSent());
-        $envelope = $transport->get()[1];
-        $message  = $envelope->getMessage();
-        assert($message instanceof ResetPasswordNotification);
-
-        $resetPasswordToken = $resetPasswordTokenDao->getById($message->getResetPasswordTokenId());
+        $resetPasswordToken = $resetPasswordTokenDao->getById('1');
 
         $validUntil = new DateTimeImmutable();
         $validUntil = $validUntil->sub(new DateInterval('P1D'));
@@ -126,7 +106,7 @@ it(
 
         $updatePassword->updatePassword(
             $resetPasswordToken,
-            $message->getPlainToken(),
+            'foo',
             'foobarfoo',
             'foobarfoo'
         );
@@ -138,23 +118,16 @@ it(
 it(
     'throws an exception if invalid password',
     function (string $newPassword, string $passwordConfirmation): void {
-        $transport = self::$container->get(AsyncTransport::KEY);
-        assert($transport instanceof InMemoryTransport);
-        $updatePassword = self::$container->get(UpdatePassword::class);
-        assert($updatePassword instanceof UpdatePassword);
         $resetPasswordTokenDao = self::$container->get(ResetPasswordTokenDao::class);
         assert($resetPasswordTokenDao instanceof  ResetPasswordTokenDao);
+        $updatePassword = self::$container->get(UpdatePassword::class);
+        assert($updatePassword instanceof UpdatePassword);
 
-        assertCount(2, $transport->getSent());
-        $envelope = $transport->get()[1];
-        $message  = $envelope->getMessage();
-        assert($message instanceof ResetPasswordNotification);
-
-        $resetPasswordToken = $resetPasswordTokenDao->getById($message->getResetPasswordTokenId());
+        $resetPasswordToken = $resetPasswordTokenDao->getById('1');
 
         $updatePassword->updatePassword(
             $resetPasswordToken,
-            $message->getPlainToken(),
+            'foo',
             $newPassword,
             $passwordConfirmation
         );

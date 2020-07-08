@@ -1,0 +1,13 @@
+footer: "Cet email a été envoyé depuis un compte que nous utilisons uniquement pour envoyer des messages. Merci de ne pas répondre à cet email."
+
+reset_password:
+  subject: "Mot de passe oublié"
+  hello: "Bonjour "
+  text: "Cliquez sur lien ci-dessous pour renseigner votre mot de passe."
+  button: "Renseigner mon mot de passe"
+
+welcome_new_user:
+  subject: "Bienvenue !"
+  hello: "Bonjour "
+  text: "Cliquez sur lien ci-dessous pour terminer la création de votre compte."
+  button: "Terminer la création de mon compte"

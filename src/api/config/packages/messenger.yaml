@@ -12,5 +12,5 @@ framework:
         routing:
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
-            'App\UseCase\Notification': async
             'App\UseCase\AsyncTask': async
+            'Symfony\Component\Mailer\Messenger\SendEmailMessage': async

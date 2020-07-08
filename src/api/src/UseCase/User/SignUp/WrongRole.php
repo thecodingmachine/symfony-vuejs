@@ -17,7 +17,7 @@ final class WrongRole extends RuntimeException implements ClientAware, BusinessR
 
     public function isClientSafe(): bool
     {
-        return false;
+        return true;
     }
 
     public function getCategory(): string

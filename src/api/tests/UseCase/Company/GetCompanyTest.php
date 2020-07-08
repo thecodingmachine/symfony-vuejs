@@ -2,34 +2,38 @@
 
 declare(strict_types=1);
 
+use App\Domain\Dao\CompanyDao;
+use App\Domain\Dao\UserDao;
 use App\Domain\Enum\Locale;
 use App\Domain\Enum\Role;
-use App\UseCase\Company\CreateCompany;
+use App\Domain\Model\Company;
+use App\Domain\Model\User;
 use App\UseCase\Company\GetCompany;
-use App\UseCase\User\CreateUser;
 
 it(
     'gets a company',
     function (): void {
-        $createUser = self::$container->get(CreateUser::class);
-        assert($createUser instanceof CreateUser);
-        $createCompany = self::$container->get(CreateCompany::class);
-        assert($createCompany instanceof CreateCompany);
+        $userDao = self::$container->get(UserDao::class);
+        assert($userDao instanceof UserDao);
+        $companyDao = self::$container->get(CompanyDao::class);
+        assert($companyDao instanceof CompanyDao);
         $getCompany = self::$container->get(GetCompany::class);
         assert($getCompany instanceof GetCompany);
 
-        $merchant = $createUser->createUser(
+        $merchant = new User(
             'foo',
             'bar',
             'merchant@foo.com',
-            Locale::EN(),
-            Role::MERCHANT()
+            strval(Locale::EN()),
+            strval(Role::MERCHANT())
         );
+        $userDao->save($merchant);
 
-        $company = $createCompany->createCompany(
+        $company = new Company(
             $merchant,
             'foo'
         );
+        $companyDao->save($company);
 
         $foundCompany = $getCompany->company($company);
         assertEquals($company, $foundCompany);

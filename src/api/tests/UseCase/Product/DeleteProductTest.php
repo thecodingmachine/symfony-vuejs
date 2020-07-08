@@ -4,35 +4,36 @@ declare(strict_types=1);
 
 use App\Domain\Dao\CompanyDao;
 use App\Domain\Dao\ProductDao;
+use App\Domain\Dao\UserDao;
 use App\Domain\Enum\Locale;
 use App\Domain\Enum\Role;
+use App\Domain\Model\Company;
+use App\Domain\Model\Product;
 use App\Domain\Model\Storable\ProductPicture;
+use App\Domain\Model\User;
 use App\Tests\UseCase\AsyncTransport;
-use App\UseCase\Company\CreateCompany;
 use App\UseCase\Product\CreateProduct;
 use App\UseCase\Product\DeleteProduct;
 use App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTask;
-use App\UseCase\User\CreateUser;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
 use TheCodingMachine\TDBM\TDBMException;
 
 beforeEach(function (): void {
-    $createUser = self::$container->get(CreateUser::class);
-    assert($createUser instanceof CreateUser);
-    $createCompany = self::$container->get(CreateCompany::class);
-    assert($createCompany instanceof CreateCompany);
+    $userDao = self::$container->get(UserDao::class);
+    assert($userDao instanceof UserDao);
     $companyDao = self::$container->get(CompanyDao::class);
     assert($companyDao instanceof CompanyDao);
 
-    $merchant = $createUser->createUser(
+    $merchant = new User(
         'foo',
         'bar',
         'merchant@foo.com',
-        Locale::EN(),
-        Role::MERCHANT()
+        strval(Locale::EN()),
+        strval(Role::MERCHANT())
     );
+    $userDao->save($merchant);
 
-    $company = $createCompany->createCompany(
+    $company = new Company(
         $merchant,
         'foo'
     );
@@ -43,20 +44,19 @@ beforeEach(function (): void {
 it(
     'deletes the product',
     function (): void {
-        $createProduct = self::$container->get(CreateProduct::class);
-        assert($createProduct instanceof CreateProduct);
+        $productDao = self::$container->get(ProductDao::class);
+        assert($productDao instanceof ProductDao);
         $companyDao = self::$container->get(CompanyDao::class);
         assert($companyDao instanceof CompanyDao);
         $deleteProduct = self::$container->get(DeleteProduct::class);
         assert($deleteProduct instanceof DeleteProduct);
-        $productDao = self::$container->get(ProductDao::class);
-        assert($productDao instanceof ProductDao);
 
-        $product = $createProduct->create(
+        $product = new Product(
+            $companyDao->getById('1'),
             'foo',
-            1,
-            $companyDao->getById('1')
+            1
         );
+        $productDao->save($product);
 
         $deleteProduct->deleteProduct($product);
         $productDao->getById($product->getId());
@@ -91,12 +91,8 @@ it(
 
         $deleteProduct->deleteProduct($product);
 
-        // There should be two messages: one from CreateUser
-        // use case called in the beforeEach function and one
-        // for deleting the product's pictures.
-        assertCount(2, $transport->getSent());
-
-        $envelope = $transport->get()[1];
+        assertCount(1, $transport->getSent());
+        $envelope = $transport->get()[0];
         $message  = $envelope->getMessage();
         assert($message instanceof DeleteProductsPicturesTask);
 

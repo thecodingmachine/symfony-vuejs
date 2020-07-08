@@ -1,0 +1,15 @@
+{% extends 'emails/email.html.twig' %}
+{% trans_default_domain domain %}
+
+{% block body %}
+    {% apply inky_to_html|inline_css(source('@css/foundation-emails.css'), source('@css/emails.css')) %}
+        <h1>{% trans into locale %}welcome_new_user.hello{% endtrans %}{{ first_name }} {{ last_name }}</h1>
+        <spacer size="16"></spacer>
+        <p class="text-center">
+            {% trans into locale %}welcome_new_user.text{% endtrans %}
+        </p>
+        <button class="large expand" href="{{ update_password_url }}">
+            {% trans into locale %}welcome_new_user.button{% endtrans %}
+        </button>
+    {% endapply %}
+{% endblock %}

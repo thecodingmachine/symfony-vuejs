@@ -1,13 +1,44 @@
+{% trans_default_domain domain %}
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
-    {% block stylesheets %}{% endblock %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width"/>
+    <style type="text/css">
+    </style>
 </head>
 <body>
-{% include 'emails/header.html.twig' %}
-{% block body %}{% endblock %}
-{% include 'emails/footer.html.twig' %}
+{% apply inky_to_html|inline_css(source('@css/foundation-emails.css'), source('@css/emails.css')) %}
+    <spacer size="16"></spacer>
+
+    <container>
+        <row class="header">
+            <columns>
+                <spacer size="16"></spacer>
+                <h4 class="text-center">Companies and products</h4>
+            </columns>
+        </row>
+
+        <spacer size="32"></spacer>
+
+        <row>
+            <columns>
+                {% block body %}{% endblock %}
+            </columns>
+        </row>
+
+        <hr/>
+
+        <row>
+            <columns>
+                <p>
+                    <small>{% trans into locale %}footer{% endtrans %}</small>
+                </p>
+            </columns>
+        </row>
+
+        <spacer size="16"></spacer>
+    </container>
+{% endapply %}
 </body>
 </html>

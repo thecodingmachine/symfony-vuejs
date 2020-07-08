@@ -2,46 +2,47 @@
 
 declare(strict_types=1);
 
+use App\Domain\Dao\CompanyDao;
 use App\Domain\Dao\UserDao;
 use App\Domain\Enum\Locale;
 use App\Domain\Enum\Role;
+use App\Domain\Model\Company;
+use App\Domain\Model\User;
 use App\Domain\Throwable\InvalidModel;
 use App\Tests\UseCase\DummyValues;
 use App\UseCase\Company\CreateCompany;
-use App\UseCase\User\CreateUser;
 
 beforeEach(function (): void {
-    $createUser = self::$container->get(CreateUser::class);
-    assert($createUser instanceof CreateUser);
     $userDao = self::$container->get(UserDao::class);
     assert($userDao instanceof UserDao);
-    $createCompany = self::$container->get(CreateCompany::class);
-    assert($createCompany instanceof CreateCompany);
+    $companyDao = self::$container->get(CompanyDao::class);
+    assert($companyDao instanceof CompanyDao);
 
-    $merchant = $createUser->createUser(
+    $merchant = new User(
         'foo',
         'bar',
         'merchant@foo.com',
-        Locale::EN(),
-        Role::MERCHANT()
+        strval(Locale::EN()),
+        strval(Role::MERCHANT())
     );
     $merchant->setId('1');
     $userDao->save($merchant);
 
-    $client = $createUser->createUser(
+    $client = new User(
         'foo',
         'bar',
         'client@foo.com',
-        Locale::EN(),
-        Role::CLIENT()
+        strval(Locale::EN()),
+        strval(Role::CLIENT())
     );
     $client->setId('2');
     $userDao->save($client);
 
-    $createCompany->createCompany(
+    $company = new Company(
         $merchant,
         'bar'
     );
+    $companyDao->save($company);
 });
 
 it(
@@ -77,7 +78,7 @@ it(
 it(
     'throws an exception if invalid company',
     function (
-        string $merchantId,
+        string $userId,
         string $name,
         ?string $website
     ): void {
@@ -87,7 +88,7 @@ it(
         assert($userDao instanceof UserDao);
 
         $createCompany->createCompany(
-            $userDao->getById($merchantId),
+            $userDao->getById($userId),
             $name,
             $website
         );

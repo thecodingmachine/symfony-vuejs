@@ -151,6 +151,9 @@
     "league/flysystem-memory": {
         "version": "1.0.2"
     },
+    "lorenzo/pinky": {
+        "version": "1.0.5"
+    },
     "monolog/monolog": {
         "version": "2.0.2"
     },
@@ -390,9 +393,6 @@
             "phpcs.xml.dist"
         ]
     },
-    "swiftmailer/swiftmailer": {
-        "version": "v6.2.3"
-    },
     "symfony/amqp-messenger": {
         "version": "v5.1.0"
     },
@@ -428,6 +428,9 @@
         "files": [
             "bin/console"
         ]
+    },
+    "symfony/css-selector": {
+        "version": "v5.1.2"
     },
     "symfony/debug-bundle": {
         "version": "4.1",
@@ -523,6 +526,18 @@
     "symfony/inflector": {
         "version": "v5.0.7"
     },
+    "symfony/mailer": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "15658c2a0176cda2e7dba66276a2030b52bd81b2"
+        },
+        "files": [
+            "config/packages/mailer.yaml"
+        ]
+    },
     "symfony/messenger": {
         "version": "4.3",
         "recipe": {
@@ -534,6 +549,9 @@
         "files": [
             "config/packages/messenger.yaml"
         ]
+    },
+    "symfony/mime": {
+        "version": "v5.1.2"
     },
     "symfony/monolog-bridge": {
         "version": "v5.0.7"
@@ -638,20 +656,6 @@
     },
     "symfony/string": {
         "version": "v5.1.0"
-    },
-    "symfony/swiftmailer-bundle": {
-        "version": "2.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "2.5",
-            "ref": "ae4d22af30bbd484506bc1817c5a3ef72c855b93"
-        },
-        "files": [
-            "config/packages/dev/swiftmailer.yaml",
-            "config/packages/swiftmailer.yaml",
-            "config/packages/test/swiftmailer.yaml"
-        ]
     },
     "symfony/translation": {
         "version": "3.3",
@@ -781,6 +785,18 @@
     },
     "theseer/tokenizer": {
         "version": "1.1.3"
+    },
+    "tijsverkoyen/css-to-inline-styles": {
+        "version": "2.2.2"
+    },
+    "twig/cssinliner-extra": {
+        "version": "v3.0.4"
+    },
+    "twig/extra-bundle": {
+        "version": "v3.0.4"
+    },
+    "twig/inky-extra": {
+        "version": "v3.0.4"
     },
     "twig/twig": {
         "version": "v3.0.3"

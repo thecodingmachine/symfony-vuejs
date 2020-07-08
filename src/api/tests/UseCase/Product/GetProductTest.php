@@ -2,38 +2,49 @@
 
 declare(strict_types=1);
 
+use App\Domain\Dao\CompanyDao;
+use App\Domain\Dao\ProductDao;
+use App\Domain\Dao\UserDao;
 use App\Domain\Enum\Locale;
 use App\Domain\Enum\Role;
-use App\UseCase\Company\CreateCompany;
-use App\UseCase\Product\CreateProduct;
+use App\Domain\Model\Company;
+use App\Domain\Model\Product;
+use App\Domain\Model\User;
 use App\UseCase\Product\GetProduct;
-use App\UseCase\User\CreateUser;
 
 it(
     'gets a product',
     function (): void {
-        $createUser = self::$container->get(CreateUser::class);
-        assert($createUser instanceof CreateUser);
-        $createCompany = self::$container->get(CreateCompany::class);
-        assert($createCompany instanceof CreateCompany);
-        $createProduct = self::$container->get(CreateProduct::class);
-        assert($createProduct instanceof CreateProduct);
+        $userDao = self::$container->get(UserDao::class);
+        assert($userDao instanceof UserDao);
+        $companyDao = self::$container->get(CompanyDao::class);
+        assert($companyDao instanceof CompanyDao);
+        $productDao = self::$container->get(ProductDao::class);
+        assert($productDao instanceof ProductDao);
         $getProduct = self::$container->get(GetProduct::class);
         assert($getProduct instanceof GetProduct);
 
-        $merchant = $createUser->createUser(
+        $merchant = new User(
             'foo',
             'bar',
             'merchant@foo.com',
-            Locale::EN(),
-            Role::MERCHANT()
+            strval(Locale::EN()),
+            strval(Role::MERCHANT())
         );
+        $userDao->save($merchant);
 
-        $company = $createCompany->createCompany(
+        $company = new Company(
             $merchant,
             'foo'
         );
-        $product = $createProduct->create('foo', 1, $company);
+        $companyDao->save($company);
+
+        $product = new Product(
+            $company,
+            'foo',
+            1
+        );
+        $productDao->save($product);
 
         $foundProduct = $getProduct->product($product);
         assertEquals($product, $foundProduct);

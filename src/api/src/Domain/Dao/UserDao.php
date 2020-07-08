@@ -15,7 +15,6 @@ use App\Domain\Enum\Role;
 use App\Domain\Model\Proxy\PasswordProxy;
 use App\Domain\Model\User;
 use App\Domain\Throwable\InvalidModel;
-use App\Domain\Throwable\NotFound;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\TDBMService;
@@ -61,20 +60,6 @@ class UserDao extends BaseUserDao
 
         $user->setPassword($passwordProxy->getPlainPassword());
         $this->save($user);
-    }
-
-    /**
-     * @throws NotFound
-     */
-    public function mustFindOneByEmail(string $email): User
-    {
-        $user = $this->findOneByEmail($email);
-
-        if ($user !== null) {
-            return $user;
-        }
-
-        throw new NotFound('User not found with "' . $email . '"');
     }
 
     /**

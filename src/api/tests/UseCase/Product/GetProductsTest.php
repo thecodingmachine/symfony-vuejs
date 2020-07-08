@@ -2,55 +2,61 @@
 
 declare(strict_types=1);
 
+use App\Domain\Dao\CompanyDao;
+use App\Domain\Dao\ProductDao;
+use App\Domain\Dao\UserDao;
 use App\Domain\Enum\Filter\ProductsSortBy;
 use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Enum\Locale;
 use App\Domain\Enum\Role;
+use App\Domain\Model\Company;
 use App\Domain\Model\Product;
-use App\UseCase\Company\CreateCompany;
-use App\UseCase\Product\CreateProduct;
+use App\Domain\Model\User;
 use App\UseCase\Product\GetProducts;
-use App\UseCase\User\CreateUser;
 
 beforeEach(function (): void {
-    $createUser = self::$container->get(CreateUser::class);
-    assert($createUser instanceof CreateUser);
-    $createCompany = self::$container->get(CreateCompany::class);
-    assert($createCompany instanceof CreateCompany);
-    $createProduct = self::$container->get(CreateProduct::class);
-    assert($createProduct instanceof CreateProduct);
+    $userDao = self::$container->get(UserDao::class);
+    assert($userDao instanceof UserDao);
+    $companyDao = self::$container->get(CompanyDao::class);
+    assert($companyDao instanceof CompanyDao);
+    $productDao = self::$container->get(ProductDao::class);
+    assert($productDao instanceof ProductDao);
 
-    $merchant = $createUser->createUser(
+    $merchant = new User(
         'foo',
         'bar',
         'merchant@foo.com',
-        Locale::EN(),
-        Role::MERCHANT()
+        strval(Locale::EN()),
+        strval(Role::MERCHANT())
     );
+    $userDao->save($merchant);
 
-    $company = $createCompany->createCompany(
+    $company = new Company(
         $merchant,
-        'a',
-        'http://a.a'
+        'foo'
     );
+    $companyDao->save($company);
 
-    $createProduct->create(
+    $product = new Product(
+        $company,
         'a',
-        10,
-        $company
+        10
     );
+    $productDao->save($product);
 
-    $createProduct->create(
+    $product = new Product(
+        $company,
         'b',
-        200,
-        $company
+        200
     );
+    $productDao->save($product);
 
-    $createProduct->create(
+    $product = new Product(
+        $company,
         'c',
-        3000,
-        $company
+        3000
     );
+    $productDao->save($product);
 });
 
 it(

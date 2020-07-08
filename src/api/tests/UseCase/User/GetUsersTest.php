@@ -2,41 +2,44 @@
 
 declare(strict_types=1);
 
+use App\Domain\Dao\UserDao;
 use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Enum\Filter\UsersSortBy;
 use App\Domain\Enum\Locale;
 use App\Domain\Enum\Role;
 use App\Domain\Model\User;
-use App\UseCase\User\CreateUser;
 use App\UseCase\User\GetUsers;
 
 beforeEach(function (): void {
-    $createUser = self::$container->get(CreateUser::class);
-    assert($createUser instanceof CreateUser);
+    $userDao = self::$container->get(UserDao::class);
+    assert($userDao instanceof UserDao);
 
-    $createUser->createUser(
-        'A',
-        'A',
+    $user = new User(
+        'a',
+        'a',
         'a.a@a.a',
-        Locale::EN(),
-        Role::ADMINISTRATOR()
+        strval(Locale::EN()),
+        strval(Role::ADMINISTRATOR())
     );
+    $userDao->save($user);
 
-    $createUser->createUser(
-        'B',
-        'B',
+    $user = new User(
+        'b',
+        'b',
         'b.b@b.b',
-        Locale::EN(),
-        Role::MERCHANT()
+        strval(Locale::EN()),
+        strval(Role::MERCHANT())
     );
+    $userDao->save($user);
 
-    $createUser->createUser(
+    $user = new User(
         'c',
         'c',
         'c.c@c.c',
-        Locale::EN(),
-        Role::CLIENT()
+        strval(Locale::EN()),
+        strval(Role::CLIENT())
     );
+    $userDao->save($user);
 });
 
 it(

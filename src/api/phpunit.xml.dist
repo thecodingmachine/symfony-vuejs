@@ -15,6 +15,10 @@
         <server name="KERNEL_CLASS" value="App\Kernel" />
         <server name="STORAGE_PUBLIC_SOURCE" value="public.storage.memory" force="true" />
         <server name="STORAGE_PRIVATE_SOURCE" value="private.storage.memory" force="true" />
+
+        <!-- ###+ symfony/mailer ### -->
+        <!-- MAILER_DSN=smtp://localhost -->
+        <!-- ###- symfony/mailer ### -->
     </php>
 
     <testsuites>

@@ -2,26 +2,28 @@
 
 declare(strict_types=1);
 
+use App\Domain\Dao\UserDao;
 use App\Domain\Enum\Locale;
 use App\Domain\Enum\Role;
-use App\UseCase\User\CreateUser;
+use App\Domain\Model\User;
 use App\UseCase\User\GetUser;
 
 it(
     'gets a user',
     function (): void {
-        $createUser = self::$container->get(CreateUser::class);
-        assert($createUser instanceof CreateUser);
+        $userDao = self::$container->get(UserDao::class);
+        assert($userDao instanceof UserDao);
         $getUser = self::$container->get(GetUser::class);
         assert($getUser instanceof GetUser);
 
-        $user = $createUser->createUser(
+        $user = new User(
             'foo',
             'bar',
-            'foo@foo.com',
-            Locale::EN(),
-            Role::ADMINISTRATOR()
+            'merchant@foo.com',
+            strval(Locale::EN()),
+            strval(Role::MERCHANT())
         );
+        $userDao->save($user);
 
         $foundUser = $getUser->user($user);
         assertEquals($user, $foundUser);

@@ -3,46 +3,49 @@
 declare(strict_types=1);
 
 use App\Domain\Dao\CompanyDao;
+use App\Domain\Dao\ProductDao;
+use App\Domain\Dao\UserDao;
 use App\Domain\Enum\Locale;
 use App\Domain\Enum\Role;
+use App\Domain\Model\Company;
+use App\Domain\Model\Product;
 use App\Domain\Model\Storable\ProductPicture;
+use App\Domain\Model\User;
 use App\Domain\Storage\ProductPictureStorage;
 use App\Domain\Throwable\InvalidModel;
 use App\Tests\UseCase\DummyValues;
-use App\UseCase\Company\CreateCompany;
 use App\UseCase\Product\CreateProduct;
-use App\UseCase\User\CreateUser;
 
 beforeEach(function (): void {
-    $createUser = self::$container->get(CreateUser::class);
-    assert($createUser instanceof CreateUser);
-    $createCompany = self::$container->get(CreateCompany::class);
-    assert($createCompany instanceof CreateCompany);
+    $userDao = self::$container->get(UserDao::class);
+    assert($userDao instanceof UserDao);
     $companyDao = self::$container->get(CompanyDao::class);
     assert($companyDao instanceof CompanyDao);
-    $createProduct = self::$container->get(CreateProduct::class);
-    assert($createProduct instanceof CreateProduct);
+    $productDao = self::$container->get(ProductDao::class);
+    assert($productDao instanceof ProductDao);
 
-    $merchant = $createUser->createUser(
+    $merchant = new User(
         'foo',
         'bar',
         'merchant@foo.com',
-        Locale::EN(),
-        Role::MERCHANT()
+        strval(Locale::EN()),
+        strval(Role::MERCHANT())
     );
+    $userDao->save($merchant);
 
-    $company = $createCompany->createCompany(
+    $company = new Company(
         $merchant,
         'foo'
     );
     $company->setId('1');
     $companyDao->save($company);
 
-    $createProduct->create(
+    $product = new Product(
+        $company,
         'bar',
-        1,
-        $company
+        1
     );
+    $productDao->save($product);
 });
 
 it(
@@ -83,7 +86,7 @@ it(
         $createProduct = self::$container->get(CreateProduct::class);
         assert($createProduct instanceof CreateProduct);
         $productPictureStorage = self::$container->get(ProductPictureStorage::class);
-        assert($productPictureStorage instanceof  ProductPictureStorage);
+        assert($productPictureStorage instanceof ProductPictureStorage);
 
         $product = $createProduct->create(
             'foo',
@@ -113,7 +116,7 @@ it(
         $createProduct = self::$container->get(CreateProduct::class);
         assert($createProduct instanceof CreateProduct);
         $productPictureStorage = self::$container->get(ProductPictureStorage::class);
-        assert($productPictureStorage instanceof  ProductPictureStorage);
+        assert($productPictureStorage instanceof ProductPictureStorage);
 
         $storables = ProductPicture::createAllFromPaths([
             dirname(__FILE__) . '/foo.png',

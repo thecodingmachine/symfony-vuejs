@@ -1,0 +1,13 @@
+footer: "This email is sent from an account we use for sending messages only. Don't reply to this email."
+
+reset_password:
+  subject: "Reset password"
+  hello: "Hi, "
+  text: "Click the link below to reset your password."
+  button: "Reset password"
+
+welcome_new_user:
+  subject: "Welcome!"
+  hello: "Hi, "
+  text: "Click the link below to finish your account creation."
+  button: "Finish account creation"

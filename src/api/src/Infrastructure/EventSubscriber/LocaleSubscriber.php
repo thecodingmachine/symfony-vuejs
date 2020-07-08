@@ -26,7 +26,7 @@ final class LocaleSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string,mixed>
      */
     public static function getSubscribedEvents(): array
     {

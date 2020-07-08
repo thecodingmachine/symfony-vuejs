@@ -6,27 +6,24 @@ namespace App\UseCase\User\SignUp;
 
 use App\Domain\Enum\Locale;
 use App\Domain\Enum\Role;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Domain\Throwable\InvalidModel;
+use App\UseCase\User\CreateUser;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
-use TheCodingMachine\Graphqlite\Validator\Annotations\Assertion;
 
 final class SignUp
 {
-    private MessageBusInterface $messageBus;
+    private CreateUser $createUser;
 
-    public function __construct(MessageBusInterface $messageBus)
+    public function __construct(CreateUser $createUser)
     {
-        $this->messageBus = $messageBus;
+        $this->createUser = $createUser;
     }
 
     /**
      * @throws WrongRole
+     * @throws InvalidModel
      *
      * @Mutation
-     * @Assertion(for="firstName", constraint={@Assert\NotBlank(message="not_blank"), @Assert\Length(max=255, maxMessage="max_length_255")})
-     * @Assertion(for="lastName", constraint={@Assert\NotBlank(message="not_blank"), @Assert\Length(max=255, maxMessage="max_length_255")})
-     * @Assertion(for="email", constraint={@Assert\NotBlank(message="not_blank"), @Assert\Length(max=255, maxMessage="max_length_255"), @Assert\Email(message="invalid_email")})
      */
     public function signUp(
         string $firstName,
@@ -39,17 +36,13 @@ final class SignUp
             throw new WrongRole();
         }
 
-        // As there is no security on this endpoint,
-        // we make sure that no one is able to check
-        // if an e-mail exists according to response time.
-        $task = new SignUpTask(
+        $this->createUser->createUser(
             $firstName,
             $lastName,
             $email,
             $locale,
             $role
         );
-        $this->messageBus->dispatch($task);
 
         return true;
     }

@@ -9,9 +9,10 @@ parameters:
     app.storage_private_source: '%env(STORAGE_PRIVATE_SOURCE)%'
     app.storage_public_bucket: '%env(STORAGE_PUBLIC_BUCKET)%'
     app.storage_private_bucket: '%env(STORAGE_PRIVATE_BUCKET)%'
-    app.mail_from: '%env(MAIL_FROM)%'
-    app.webapp_url: '%env(WEBAPP_URL)%'
-    app.webapp_update_password_route_format: '%env(WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT)%'
+    app.mail_from_address: '%env(MAIL_FROM_ADDRESS)%'
+    app.mail_from_name: '%env(MAIL_FROM_NAME)%'
+    app.mail_webapp_url: '%env(MAIL_WEBAPP_URL)%'
+    app.mail_webapp_update_password_route_format: '%env(MAIL_WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT)%'
 
 services:
     # default configuration for services in *this* file
@@ -45,4 +46,5 @@ services:
             - '@minio.client'
 
     App\Infrastructure\EventSubscriber\LocaleSubscriber:
-        arguments: ['%kernel.default_locale%']
+        arguments:
+            - '%kernel.default_locale%'
