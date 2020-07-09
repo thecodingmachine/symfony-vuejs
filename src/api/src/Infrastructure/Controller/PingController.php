@@ -15,6 +15,8 @@ final class PingController extends AbstractController
      */
     public function ping(): Response
     {
+        // A basic endpoint for your
+        // health check probes.
         return new Response(
             'pong'
         );
