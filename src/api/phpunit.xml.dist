@@ -34,7 +34,8 @@
                 <directory>src/Kernel.php</directory>
                 <directory>src/Domain/Model/Generated</directory>
                 <directory>src/Domain/Dao/Generated</directory>
-                <directory>src/Infrastructure/Command</directory>
+                <directory>src/Infrastructure/Command/DevFixturesCommand.php</directory>
+                <directory>src/Infrastructure/Command/InitializeMinIOStorageCommand.php</directory>
                 <directory>src/Infrastructure/EventSubscriber</directory>
                 <directory>src/Infrastructure/Fixtures</directory>
                 <directory>src/Infrastructure/S3</directory>
