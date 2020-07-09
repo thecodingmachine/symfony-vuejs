@@ -129,7 +129,7 @@ services:
       PMA_USER: "$MYSQL_USER"
       PMA_PASSWORD: "$MYSQL_PASSWORD"
 
-  # For asynchronous tasks and notifications.
+  # For asynchronous tasks and emails.
   redis:
     image: bitnami/redis:6.0
     environment:
@@ -137,7 +137,7 @@ services:
     tmpfs:
       - /bitnami/redis/data
 
-  # For catching and displaying e-mails.
+  # For catching and displaying emails.
   mailhog:
     image: mailhog/mailhog:latest
     labels:
