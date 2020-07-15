@@ -84,7 +84,7 @@ composer require [--dev] [package]
 As we're using Symfony, make sure to choose the package with Symfony support (aka bundle) if available.
 
 **Vagrant user might encounter some issues with Composer. 
-A workaround solution is to add the flag `--pref-source` to your Composer command.**
+A workaround solution is to add the flag `--prefer-source` to your Composer command.**
 
 From time to time, don't forget to update the dependencies:
 
