@@ -10,7 +10,7 @@ As the team (tech) leader, this documentation will help you to keep everything u
 
 Make sure you and your team always use the latest versions of Docker and Docker Compose.
 
-For non-vagrant users, follow the [Docker official documentation](https://docs.docker.com/engine/install/#server).
+For non-Vagrant users, follow the [Docker official documentation](https://docs.docker.com/engine/install/#server).
 For Docker Compose, also follow the [official documentation](https://docs.docker.com/compose/install/#install-compose-on-linux-systems).
 
 For Vagrant users, as the team (tech) leader, you should update the variable `DOCKER_COMPOSE_VERSION` of the [Makefile](Makefile).
