@@ -8,6 +8,8 @@ use App\Domain\Enum\Role;
 use App\Domain\Model\User;
 use App\UseCase\User\GetUser;
 
+use function PHPUnit\Framework\assertEquals;
+
 it(
     'gets a user',
     function (): void {

@@ -18,6 +18,8 @@ use App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTask;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
 use TheCodingMachine\TDBM\TDBMException;
 
+use function PHPUnit\Framework\assertCount;
+
 beforeEach(function (): void {
     $userDao = self::$container->get(UserDao::class);
     assert($userDao instanceof UserDao);

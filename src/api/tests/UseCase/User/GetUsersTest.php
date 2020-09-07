@@ -10,6 +10,10 @@ use App\Domain\Enum\Role;
 use App\Domain\Model\User;
 use App\UseCase\User\GetUsers;
 
+use function PHPUnit\Framework\assertCount;
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertStringContainsStringIgnoringCase;
+
 beforeEach(function (): void {
     $userDao = self::$container->get(UserDao::class);
     assert($userDao instanceof UserDao);
@@ -101,7 +105,7 @@ it(
 
         /** @var User[] $users */
         $users = $result->toArray();
-        if ($sortOrder === SortOrder::ASC()) {
+        if ($sortOrder == SortOrder::ASC()) {
             assertStringContainsStringIgnoringCase('a', $users[0]->getFirstName());
             assertStringContainsStringIgnoringCase('b', $users[1]->getFirstName());
             assertStringContainsStringIgnoringCase('c', $users[2]->getFirstName());
@@ -126,7 +130,7 @@ it(
 
         /** @var User[] $users */
         $users = $result->toArray();
-        if ($sortOrder === SortOrder::ASC()) {
+        if ($sortOrder == SortOrder::ASC()) {
             assertStringContainsStringIgnoringCase('a', $users[0]->getLastName());
             assertStringContainsStringIgnoringCase('b', $users[1]->getLastName());
             assertStringContainsStringIgnoringCase('c', $users[2]->getLastName());
@@ -151,7 +155,8 @@ it(
 
         /** @var User[] $users */
         $users = $result->toArray();
-        if ($sortOrder === SortOrder::ASC()) {
+
+        if ($sortOrder == SortOrder::ASC()) {
             assertStringContainsStringIgnoringCase('a', $users[0]->getEmail());
             assertStringContainsStringIgnoringCase('b', $users[1]->getEmail());
             assertStringContainsStringIgnoringCase('c', $users[2]->getEmail());
@@ -176,10 +181,10 @@ it(
 
         /** @var User[] $users */
         $users = $result->toArray();
-        if ($sortOrder === SortOrder::ASC()) {
+        if ($sortOrder == SortOrder::ASC()) {
             assertEquals(Role::ADMINISTRATOR(), $users[0]->getRole());
-            assertEquals(Role::MERCHANT(), $users[1]->getRole());
-            assertEquals(Role::CLIENT(), $users[2]->getRole());
+            assertEquals(Role::CLIENT(), $users[1]->getRole());
+            assertEquals(Role::MERCHANT(), $users[2]->getRole());
         } else {
             assertEquals(Role::ADMINISTRATOR(), $users[2]->getRole());
             assertEquals(Role::CLIENT(), $users[1]->getRole());

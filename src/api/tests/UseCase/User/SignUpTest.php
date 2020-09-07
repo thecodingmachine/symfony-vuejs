@@ -9,6 +9,9 @@ use App\Domain\Model\User;
 use App\UseCase\User\SignUp\SignUp;
 use App\UseCase\User\SignUp\WrongRole;
 
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertNull;
+
 it(
     'signs up a user',
     function (

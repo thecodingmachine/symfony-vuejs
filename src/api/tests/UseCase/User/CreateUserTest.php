@@ -8,6 +8,9 @@ use App\Domain\Throwable\InvalidModel;
 use App\Tests\UseCase\DummyValues;
 use App\UseCase\User\CreateUser;
 
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertNull;
+
 it(
     'creates a user',
     function (

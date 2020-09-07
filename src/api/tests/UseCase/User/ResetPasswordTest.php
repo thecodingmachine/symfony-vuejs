@@ -14,6 +14,8 @@ use Symfony\Component\Mailer\Messenger\SendEmailMessage;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
 use TheCodingMachine\TDBM\TDBMException;
 
+use function PHPUnit\Framework\assertCount;
+
 beforeEach(function (): void {
     $userDao = self::$container->get(UserDao::class);
     assert($userDao instanceof UserDao);

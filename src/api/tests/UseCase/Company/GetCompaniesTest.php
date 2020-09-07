@@ -12,6 +12,9 @@ use App\Domain\Model\Company;
 use App\Domain\Model\User;
 use App\UseCase\Company\GetCompanies;
 
+use function PHPUnit\Framework\assertCount;
+use function PHPUnit\Framework\assertStringContainsStringIgnoringCase;
+
 beforeEach(function (): void {
     $userDao = self::$container->get(UserDao::class);
     assert($userDao instanceof UserDao);
@@ -90,7 +93,7 @@ it(
 
         /** @var Company[] $companies */
         $companies = $result->toArray();
-        if ($sortOrder === SortOrder::ASC()) {
+        if ($sortOrder == SortOrder::ASC()) {
             assertStringContainsStringIgnoringCase('a', $companies[0]->getName());
             assertStringContainsStringIgnoringCase('b', $companies[1]->getName());
             assertStringContainsStringIgnoringCase('c', $companies[2]->getName());
@@ -115,7 +118,7 @@ it(
 
         /** @var Company[] $companies */
         $companies = $result->toArray();
-        if ($sortOrder === SortOrder::ASC()) {
+        if ($sortOrder == SortOrder::ASC()) {
             assertStringContainsStringIgnoringCase('a', $companies[0]->getWebsite());
             assertStringContainsStringIgnoringCase('b', $companies[1]->getWebsite());
             assertStringContainsStringIgnoringCase('c', $companies[2]->getWebsite());

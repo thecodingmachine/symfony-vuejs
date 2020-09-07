@@ -14,6 +14,12 @@ use App\Domain\Model\Product;
 use App\Domain\Model\User;
 use App\UseCase\Product\GetProducts;
 
+use function PHPUnit\Framework\assertCount;
+use function PHPUnit\Framework\assertGreaterThanOrEqual;
+use function PHPUnit\Framework\assertLessThanOrEqual;
+use function PHPUnit\Framework\assertStringContainsStringIgnoringCase;
+use function PHPUnit\Framework\assertTrue;
+
 beforeEach(function (): void {
     $userDao = self::$container->get(UserDao::class);
     assert($userDao instanceof UserDao);
@@ -150,7 +156,7 @@ it(
 
         /** @var Product[] $products */
         $products = $result->toArray();
-        if ($sortOrder === SortOrder::ASC()) {
+        if ($sortOrder == SortOrder::ASC()) {
             assertStringContainsStringIgnoringCase('a', $products[0]->getName());
             assertStringContainsStringIgnoringCase('b', $products[1]->getName());
             assertStringContainsStringIgnoringCase('c', $products[2]->getName());
@@ -181,7 +187,7 @@ it(
 
         /** @var Product[] $products */
         $products = $result->toArray();
-        if ($sortOrder === SortOrder::ASC()) {
+        if ($sortOrder == SortOrder::ASC()) {
             assertTrue(
                 $products[0]->getPrice() <
                 $products[1]->getPrice() &&

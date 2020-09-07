@@ -10,6 +10,8 @@ use App\Domain\Model\Company;
 use App\Domain\Model\User;
 use App\UseCase\Company\GetCompany;
 
+use function PHPUnit\Framework\assertEquals;
+
 it(
     'gets a company',
     function (): void {

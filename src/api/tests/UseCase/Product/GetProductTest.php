@@ -12,6 +12,8 @@ use App\Domain\Model\Product;
 use App\Domain\Model\User;
 use App\UseCase\Product\GetProduct;
 
+use function PHPUnit\Framework\assertEquals;
+
 it(
     'gets a product',
     function (): void {

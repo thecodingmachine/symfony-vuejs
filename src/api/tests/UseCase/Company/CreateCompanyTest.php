@@ -11,6 +11,7 @@ use App\Domain\Model\User;
 use App\Domain\Throwable\InvalidModel;
 use App\Tests\UseCase\DummyValues;
 use App\UseCase\Company\CreateCompany;
+use function PHPUnit\Framework\assertEquals;
 
 beforeEach(function (): void {
     $userDao = self::$container->get(UserDao::class);
