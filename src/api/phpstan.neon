@@ -13,13 +13,12 @@ parameters:
         -
             message: '#PHPDoc tag @throws .* is not compatible with parent#'
             path: %currentWorkingDirectory%/src/Domain/Dao/*.php
-        -
-            message: '#Unused @throws Symfony\\Component\\Console\\Exception\\LogicException annotation#'
-            path: %currentWorkingDirectory%/src/Infrastructure/Command/*.php
+#        -
+#            message: '#Unused @throws Symfony\\Component\\Console\\Exception\\LogicException annotation#'
+#            path: %currentWorkingDirectory%/src/Infrastructure/Command/*.php
     exceptionRules:
         reportUnusedCatchesOfUncheckedExceptions: false
         reportUnusedCheckedThrowsInSubtypes: false
         reportCheckedThrowsInGlobalScope: false
-        ignoreDescriptiveUncheckedExceptions: false
         checkedExceptions:
             - App\Domain\Throwable\BusinessRule
