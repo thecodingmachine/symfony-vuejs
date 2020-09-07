@@ -2,7 +2,9 @@
 
 * [Back to README](README.md)
 
-As the team (tech) leader, this documentation will help you to keep everything up-to-date. Please read it carefully.
+As the team (tech) leader, this documentation will help you to keep everything up-to-date. 
+Please read it carefully, as those actions will ensure your project is still relevant year after year. 
+The sooner the better!
 
 ## Docker and Docker compose
 
@@ -48,8 +50,7 @@ For VirtualBox, simply open the application, it should tell you to download the 
 
 As you know, Docker Compose files describe many services. Each service uses an image and a version.
 
-By default, most of the versions have to use X.Y format (X for major updates, Y for minor ones) - exceptions are the
-`webapp` and `api` services.
+By default, most of the versions have to use X.Y format (X for major updates, Y for minor ones).
 
 The idea here is that running `docker-compose pull` will only update images with bugs fixes (for most images, see below).
 
@@ -126,7 +127,7 @@ Update the corresponding Docker Compose files accordingly. You might also have t
 
 * [MailHog releases](https://github.com/mailhog/MailHog/releases)
 
-**Bugs fixes/minor/major versions:** run `docker-compose pull`.
+**Bugs fixes:** run `docker-compose pull`.
 
 **Minor/major versions:** run `docker-compose pull`. As for minor versions, major versions should be painless to update. 
 Anyway, read carefully the patch note and the related documentation. Update the corresponding Docker Compose files accordingly.
@@ -135,7 +136,7 @@ Anyway, read carefully the patch note and the related documentation. Update the 
 
 * [MinIO releases](https://github.com/minio/minio/releases)
 
-**Bugs fixes/minor/major versions:** run `docker-compose pull`.
+**Bugs fixes:** run `docker-compose pull`.
 
 **Minor/major versions:** run `docker-compose pull`. As for minor versions, major versions should be painless to update. 
 Anyway, read carefully the patch note and the related documentation. Update the corresponding Docker Compose files accordingly.
@@ -163,8 +164,7 @@ Read carefully the patch note and the related documentation before updating your
 
 **Major versions:** https://symfony.com/doc/current/setup/upgrade_major.html.
 
-As a team (tech) leader, you should update to the latest minor/majors version whenever a new version is available.
-This action will ensure your project is still relevant year after year. The sooner the better*!
+As a team (tech) leader, you should update to the latest minor/majors version whenever a new version is available*.
 
 *\* For major versions, make sure your Symfony bundles are ready before updating.*
 
