@@ -46,6 +46,7 @@
         "pestphp/pest": "^0.3.1",
         "phpstan/phpstan": "^0.12.19",
         "phpunit/phpunit": "^9.0",
+        "sensiolabs-de/deptrac-shim": "^0.8.2",
         "squizlabs/php_codesniffer": "^3.5",
         "symfony/debug-pack": "^1.0",
         "symfony/profiler-pack": "^1.0",
@@ -92,7 +93,7 @@
         "csfix": "phpcbf",
         "cscheck": "phpcs",
         "phpstan": "phpstan analyse src/ -c phpstan.neon --level=max --no-progress -vvv --memory-limit=1024M",
-        "deptrac": "php deptrac.phar",
+        "deptrac": "deptrac",
         "yaml-lint": "yaml-lint config translations"
     },
     "conflict": {

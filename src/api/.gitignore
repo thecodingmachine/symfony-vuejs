@@ -20,3 +20,7 @@
 .phpunit.result.cache
 /coverage
 ###< phpunit/phpunit ###
+
+###> sensiolabs-de/deptrac-shim ###
+/.deptrac.cache
+###< sensiolabs-de/deptrac-shim ###
