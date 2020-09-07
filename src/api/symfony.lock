@@ -123,8 +123,14 @@
     "guzzlehttp/psr7": {
         "version": "1.6.1"
     },
+    "laminas/laminas-code": {
+        "version": "3.4.1"
+    },
     "laminas/laminas-diactoros": {
         "version": "2.2.3"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.2.1"
     },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.0.3"
@@ -150,6 +156,9 @@
     },
     "league/flysystem-memory": {
         "version": "1.0.2"
+    },
+    "league/mime-type-detection": {
+        "version": "1.4.0"
     },
     "lorenzo/pinky": {
         "version": "1.0.5"
@@ -202,6 +211,9 @@
             "config/packages/nelmio_cors.yaml"
         ]
     },
+    "nikic/php-parser": {
+        "version": "v4.9.1"
+    },
     "nunomaduro/collision": {
         "version": "v5.0.0-beta1"
     },
@@ -240,6 +252,15 @@
     },
     "pestphp/pest": {
         "version": "v0.1.5"
+    },
+    "pestphp/pest-plugin": {
+        "version": "v0.3.0"
+    },
+    "pestphp/pest-plugin-coverage": {
+        "version": "v0.3.0"
+    },
+    "pestphp/pest-plugin-init": {
+        "version": "v0.3.0"
     },
     "phar-io/manifest": {
         "version": "1.0.3"
@@ -285,9 +306,6 @@
     },
     "phpunit/php-timer": {
         "version": "3.1.4"
-    },
-    "phpunit/php-token-stream": {
-        "version": "4.0.1"
     },
     "phpunit/phpunit": {
         "version": "4.7",
@@ -339,6 +357,9 @@
     "ramsey/uuid": {
         "version": "3.9.3"
     },
+    "sebastian/cli-parser": {
+        "version": "1.0.0"
+    },
     "sebastian/code-unit": {
         "version": "1.0.2"
     },
@@ -347,6 +368,9 @@
     },
     "sebastian/comparator": {
         "version": "4.0.0"
+    },
+    "sebastian/complexity": {
+        "version": "2.0.0"
     },
     "sebastian/diff": {
         "version": "4.0.1"
@@ -359,6 +383,9 @@
     },
     "sebastian/global-state": {
         "version": "4.0.0"
+    },
+    "sebastian/lines-of-code": {
+        "version": "1.0.0"
     },
     "sebastian/object-enumerator": {
         "version": "4.0.0"
@@ -521,9 +548,6 @@
         "version": "v5.0.7"
     },
     "symfony/http-kernel": {
-        "version": "v5.0.7"
-    },
-    "symfony/inflector": {
         "version": "v5.0.7"
     },
     "symfony/mailer": {

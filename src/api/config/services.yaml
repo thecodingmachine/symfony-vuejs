@@ -49,7 +49,7 @@ services:
         arguments:
             - '%kernel.default_locale%'
 
-    # A special kind of formatter that logs the stack traces (otherwise, Symfony logs do not contain stack traces (!) )
+    # A special kind of formatter that logs the stack traces (otherwise, Symfony logs do not contain stack traces).
     formatterWithStackTrace:
         class: Monolog\Formatter\LineFormatter
         calls:

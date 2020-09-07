@@ -42,8 +42,8 @@
     "require-dev": {
         "doctrine/coding-standard": "^8.0",
         "fzaninotto/faker": "^1.9",
-        "pepakriz/phpstan-exception-rules": "^0.10.1",
-        "pestphp/pest": "^0.1.5",
+        "pepakriz/phpstan-exception-rules": "^0.11.1",
+        "pestphp/pest": "^0.3.1",
         "phpstan/phpstan": "^0.12.19",
         "phpunit/phpunit": "^9.0",
         "squizlabs/php_codesniffer": "^3.5",

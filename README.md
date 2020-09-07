@@ -27,7 +27,7 @@ Vagrant allows us to abstract the MacOS filesystem bringing an almost Linux-like
 
 #### Windows
 
-A Linux-like terminal is strongly advised in order to run the `Makefile` commands.
+We strongly advise to use a Linux-like terminal in order to run the `Makefile` commands.
 Vagrant might also be an interesting solution regarding performances.
 
 If not possible, you may also directly run the commands specified in the `Makefile`. 
@@ -68,6 +68,10 @@ cp .env.dist .env
 
 Next make sure there is no application running on port 80 (Vagrant users can skip this check).
 
+**Vagrant users: the first time your start the Docker Compose stack, you have to comment the following 
+environment variables from the `api` service in the `docker-compose.yml` file: `STARTUP_COMMANDS_2`, `STARTUP_COMMAND_3` 
+and `STARTUP_COMMAND_4`. Indeed, `composer install` fails miserably but there is a workaround. See below.**
+
 Good? You may now start all the Docker containers with the following commands:
 
 ```
@@ -80,6 +84,9 @@ or run migrations for setting up the database structure.
 
 Next time you run this command, the containers should be ready faster as most of the 
 setting up will already be done.
+
+**Vagrant users: enter the `api` service with `make api`. Here run `composer install --prefer-source` (and prepare some coffee). 
+When done, exit the container, uncomment the previous environments variables and run `make up` again.**
 
 Once everything is ready, the following endpoints should be available:
 
@@ -150,7 +157,9 @@ You may now edit it, according to your environment, with:
 
 Make sure you have read the following documentations:
 
+* [Webapp](src/webapp/README.md)
 * [API](src/api/README.md)
+* [Housekeeping - or how to keep everything up-to-date](HOUSEKEEPING.md)
 
 ### How to stop the stack?
 

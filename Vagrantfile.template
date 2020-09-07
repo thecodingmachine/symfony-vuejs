@@ -2,7 +2,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 # Box / OS
-VAGRANT_BOX = 'bento/ubuntu-19.10'
+VAGRANT_BOX = '#BOX#'
 
 # Memorable name for your VM
 VM_NAME = '#PROJECT_NAME#-vm-vagrant'
@@ -32,8 +32,8 @@ Vagrant.configure(2) do |config|
   # Set VM name in Virtualbox
   config.vm.provider "virtualbox" do |v|
     v.name = VM_NAME
-    v.memory = 4096
-    v.cpus = 2
+    v.memory = #MEMORY#
+    v.cpus = #CPUS#
   end
 
   #DHCP — comment this out if planning on using NAT instead

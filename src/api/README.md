@@ -86,12 +86,6 @@ As we're using Symfony, make sure to choose the package with Symfony support (ak
 **Vagrant user might encounter some issues with Composer. 
 A workaround solution is to add the flag `--prefer-source` to your Composer command.**
 
-From time to time, don't forget to update the dependencies:
-
-```
-composer update
-```
-
 ## Database
 
 ### Structure
@@ -155,5 +149,3 @@ php bin/console tdbm:generate
 ### Data for development
 
 // TODO
-
-## Housekeeping

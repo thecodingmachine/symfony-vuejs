@@ -1,6 +1,9 @@
 # Those variables are only used for the Vagrant command!
-PROJECT_NAME=companies-and-products
-DOCKER_COMPOSE_VERSION=1.25.5
+VAGRANT_BOX=bento/ubuntu-19.10
+VAGRANT_PROJECT_NAME=companies-and-products
+VAGRANT_MEMORY=4096
+VAGRANT_CPUS=2
+VAGRANT_DOCKER_COMPOSE_VERSION=1.26.2
 
 # Start the Docker Compose stack.
 up:
@@ -24,4 +27,9 @@ consume:
 
 # Create the Vagrantfile from the template Vagrantfile.template.
 vagrant:
-	./scripts/create-vagrantfile-from-template.sh $(PROJECT_NAME) $(DOCKER_COMPOSE_VERSION)
+	./scripts/create-vagrantfile-from-template.sh \
+	$(VAGRANT_BOX) \
+	$(VAGRANT_PROJECT_NAME) \
+	$(VAGRANT_MEMORY) \
+	$(VAGRANT_CPUS) \
+	$(VAGRANT_DOCKER_COMPOSE_VERSION)
