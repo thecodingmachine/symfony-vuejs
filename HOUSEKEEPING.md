@@ -165,7 +165,7 @@ Read carefully the patch note and the related documentation before updating your
 As a team (tech) leader, you should update to the latest minor/majors version whenever a new version is available.
 This action will ensure your project is still relevant year after year. The sooner the better*!
 
-\* For major versions, make sure your Symfony bundles are ready before updating.
+*\* For major versions, make sure your Symfony bundles are ready before updating.*
 
 
 
