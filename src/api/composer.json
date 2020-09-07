@@ -1,11 +1,13 @@
 {
     "name": "thecodingmachine/companies-and-products",
     "type": "project",
-    "license": "MIT",
     "description": "A Symfony GraphQL API",
-    "authors": [{
-        "name": "TheCodingMachine"
-    }],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "TheCodingMachine"
+        }
+    ],
     "require": {
         "php": "^7.2.5",
         "ext-ctype": "*",
@@ -39,8 +41,21 @@
         "twig/extra-bundle": "^3.0",
         "twig/inky-extra": "^3.0"
     },
+    "replace": {
+        "paragonie/random_compat": "2.*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php56": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php72": "*"
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
     "require-dev": {
         "doctrine/coding-standard": "^8.0",
+        "ergebnis/composer-normalize": "^2.8",
         "fzaninotto/faker": "^1.9",
         "pepakriz/phpstan-exception-rules": "^0.11.1",
         "pestphp/pest": "^0.3.1",
@@ -59,6 +74,12 @@
         },
         "sort-packages": true
     },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "5.1.*"
+        }
+    },
     "autoload": {
         "psr-4": {
             "App\\": "src/"
@@ -69,42 +90,24 @@
             "App\\Tests\\": "tests/"
         }
     },
-    "replace": {
-        "paragonie/random_compat": "2.*",
-        "symfony/polyfill-ctype": "*",
-        "symfony/polyfill-iconv": "*",
-        "symfony/polyfill-php72": "*",
-        "symfony/polyfill-php71": "*",
-        "symfony/polyfill-php70": "*",
-        "symfony/polyfill-php56": "*"
-    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "scripts": {
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        },
         "post-install-cmd": [
             "@auto-scripts"
         ],
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "pest": "pest --coverage",
-        "csfix": "phpcbf",
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
         "cscheck": "phpcs",
-        "phpstan": "phpstan analyse src/ -c phpstan.neon --level=max --no-progress -vvv --memory-limit=1024M",
+        "csfix": "phpcbf",
         "deptrac": "deptrac",
+        "pest": "pest --coverage",
+        "phpstan": "phpstan analyse src/ -c phpstan.neon --level=max --no-progress -vvv --memory-limit=1024M",
         "yaml-lint": "yaml-lint config translations"
-    },
-    "conflict": {
-        "symfony/symfony": "*"
-    },
-    "extra": {
-        "symfony": {
-            "allow-contrib": false,
-            "require": "5.1.*"
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }

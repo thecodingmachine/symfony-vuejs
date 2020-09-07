@@ -149,7 +149,8 @@ Anyway, read carefully the patch note and the related documentation. Update the 
 ### Dependencies
 
 **Almost every day**, you should run `composer update` (or `composer update --prefer-source` for Vagrant users) 
-in order to keep your PHP dependencies up-to-date.
+in order to keep your PHP dependencies up-to-date. Also run `composer update --lock` to suppress warning about the 
+lock file being out of date.
 
 To know which packages are outdated, run `composer outdated --direct` and update your `composer.json` file accordingly.
 Read carefully the patch note and the related documentation before updating your code.

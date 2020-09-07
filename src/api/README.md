@@ -79,11 +79,12 @@ When installing a PHP dependency, ask yourself if it is a `dev` dependency or no
 
 ```
 composer require [--dev] [package]
+COMPOSER_MEMORY_LIMIT=-1 composer normalize
 ```
 
 As we're using Symfony, make sure to choose the package with Symfony support (aka bundle) if available.
 
-**Vagrant user might encounter some issues with Composer. 
+**Vagrant users might encounter some issues with Composer. 
 A workaround solution is to add the flag `--prefer-source` to your Composer command.**
 
 ## Database

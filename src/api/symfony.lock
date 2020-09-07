@@ -99,6 +99,9 @@
     "egulias/email-validator": {
         "version": "2.1.17"
     },
+    "ergebnis/composer-normalize": {
+        "version": "2.8.1"
+    },
     "facade/ignition-contracts": {
         "version": "1.0.0"
     },
