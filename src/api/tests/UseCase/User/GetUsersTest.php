@@ -105,7 +105,7 @@ it(
 
         /** @var User[] $users */
         $users = $result->toArray();
-        if ($sortOrder == SortOrder::ASC()) {
+        if ($sortOrder->equals(SortOrder::ASC())) {
             assertStringContainsStringIgnoringCase('a', $users[0]->getFirstName());
             assertStringContainsStringIgnoringCase('b', $users[1]->getFirstName());
             assertStringContainsStringIgnoringCase('c', $users[2]->getFirstName());
@@ -130,7 +130,7 @@ it(
 
         /** @var User[] $users */
         $users = $result->toArray();
-        if ($sortOrder == SortOrder::ASC()) {
+        if ($sortOrder->equals(SortOrder::ASC())) {
             assertStringContainsStringIgnoringCase('a', $users[0]->getLastName());
             assertStringContainsStringIgnoringCase('b', $users[1]->getLastName());
             assertStringContainsStringIgnoringCase('c', $users[2]->getLastName());
@@ -156,7 +156,7 @@ it(
         /** @var User[] $users */
         $users = $result->toArray();
 
-        if ($sortOrder == SortOrder::ASC()) {
+        if ($sortOrder->equals(SortOrder::ASC())) {
             assertStringContainsStringIgnoringCase('a', $users[0]->getEmail());
             assertStringContainsStringIgnoringCase('b', $users[1]->getEmail());
             assertStringContainsStringIgnoringCase('c', $users[2]->getEmail());
@@ -181,7 +181,7 @@ it(
 
         /** @var User[] $users */
         $users = $result->toArray();
-        if ($sortOrder == SortOrder::ASC()) {
+        if ($sortOrder->equals(SortOrder::ASC())) {
             assertEquals(Role::ADMINISTRATOR(), $users[0]->getRole());
             assertEquals(Role::CLIENT(), $users[1]->getRole());
             assertEquals(Role::MERCHANT(), $users[2]->getRole());

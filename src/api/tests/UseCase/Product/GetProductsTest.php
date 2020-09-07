@@ -156,7 +156,7 @@ it(
 
         /** @var Product[] $products */
         $products = $result->toArray();
-        if ($sortOrder == SortOrder::ASC()) {
+        if ($sortOrder->equals(SortOrder::ASC())) {
             assertStringContainsStringIgnoringCase('a', $products[0]->getName());
             assertStringContainsStringIgnoringCase('b', $products[1]->getName());
             assertStringContainsStringIgnoringCase('c', $products[2]->getName());
@@ -187,7 +187,7 @@ it(
 
         /** @var Product[] $products */
         $products = $result->toArray();
-        if ($sortOrder == SortOrder::ASC()) {
+        if ($sortOrder->equals(SortOrder::ASC())) {
             assertTrue(
                 $products[0]->getPrice() <
                 $products[1]->getPrice() &&

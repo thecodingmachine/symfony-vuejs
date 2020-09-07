@@ -15,6 +15,7 @@ use App\UseCase\User\UpdatePassword\UpdatePassword;
 use App\UseCase\User\UpdatePassword\WrongResetPasswordToken;
 use Safe\DateTimeImmutable;
 use TheCodingMachine\TDBM\TDBMException;
+
 use function PHPUnit\Framework\assertTrue;
 
 beforeEach(function (): void {

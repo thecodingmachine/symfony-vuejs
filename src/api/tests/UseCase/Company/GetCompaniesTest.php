@@ -93,7 +93,7 @@ it(
 
         /** @var Company[] $companies */
         $companies = $result->toArray();
-        if ($sortOrder == SortOrder::ASC()) {
+        if ($sortOrder->equals(SortOrder::ASC())) {
             assertStringContainsStringIgnoringCase('a', $companies[0]->getName());
             assertStringContainsStringIgnoringCase('b', $companies[1]->getName());
             assertStringContainsStringIgnoringCase('c', $companies[2]->getName());
@@ -118,7 +118,7 @@ it(
 
         /** @var Company[] $companies */
         $companies = $result->toArray();
-        if ($sortOrder == SortOrder::ASC()) {
+        if ($sortOrder->equals(SortOrder::ASC())) {
             assertStringContainsStringIgnoringCase('a', $companies[0]->getWebsite());
             assertStringContainsStringIgnoringCase('b', $companies[1]->getWebsite());
             assertStringContainsStringIgnoringCase('c', $companies[2]->getWebsite());
