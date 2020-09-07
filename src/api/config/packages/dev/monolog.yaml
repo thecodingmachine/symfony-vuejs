@@ -5,6 +5,7 @@ monolog:
             path: '%env(MONOLOG_LOGGING_PATH)%'
             level: debug
             channels: ["!event"]
+            formatter: formatterWithStackTrace
         # uncomment to get logging in your browser
         # you may have to allow bigger header sizes in your Web server configuration
         #firephp:
