@@ -53,11 +53,6 @@ You can also run tests per group, for instance:
 pest --group=user,company
 ```
 
-From time to time, also check the [Pest release page](https://github.com/pestphp/pest/releases)
-and [PHP Unit release page](https://github.com/sebastianbergmann/phpunit/releases).
-If new releases are available, run `composer update`.
-If a new major (**X**.Y.Z) or minor (X.**Y**.Z) release is available, update your `composer.json` file first.
-
 ### Static analysis tools
 
 Before pushing your commits to the repository or even while coding, run the following commands:
@@ -70,6 +65,8 @@ composer deptrac &&
 composer yaml-lint
 ```
 
+// TODO explain each command.
+
 They will analyze your code and give you feedback on what's wrong.
 `composer csfix` will also format your code.
 
@@ -81,6 +78,8 @@ When installing a PHP dependency, ask yourself if it is a `dev` dependency or no
 composer require [--dev] [package]
 COMPOSER_MEMORY_LIMIT=-1 composer normalize
 ```
+
+// TODO explain composer normalize.
 
 As we're using Symfony, make sure to choose the package with Symfony support (aka bundle) if available.
 
