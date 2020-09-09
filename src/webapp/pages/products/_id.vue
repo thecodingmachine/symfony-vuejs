@@ -1,14 +1,14 @@
 <template>
   <b-overlay :show="$apollo.queries.product.loading">
     <div v-if="!$apollo.queries.product.loading">
-      <ProductCardDetails :product="product"></ProductCardDetails>
+      <product-card-details :product="product" />
     </div>
   </b-overlay>
 </template>
 
 <script>
 import ProductQuery from '@/pages/products/product.query.gql'
-import ProductCardDetails from '@/components/products/ProductCardDetails'
+import ProductCardDetails from '@/components/route/products/ProductCardDetails'
 
 export default {
   components: { ProductCardDetails },

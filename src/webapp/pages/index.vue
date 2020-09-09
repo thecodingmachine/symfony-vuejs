@@ -1,41 +1,30 @@
 <template>
-  <b-container>
-    <b-row class="mb-4">
-      <b-input
-        v-model="search"
-        type="search"
-        debounce="300"
-        placeholder="Search a product"
-        autofocus
-      ></b-input>
-    </b-row>
-    <b-overlay :show="$apollo.queries.products.loading">
-      <div v-if="!$apollo.queries.products.loading">
-        <b-row>
-          <ProductCardGroup :products="products.items"></ProductCardGroup>
-        </b-row>
-        <b-row align-h="center">
-          <b-pagination
-            v-model="currentPage"
-            :per-page="productsPerPage"
-            :total-rows="products.count"
-            pills
-          ></b-pagination>
-        </b-row>
-      </div>
-    </b-overlay>
-  </b-container>
+  <b-overlay :show="$apollo.queries.products.loading">
+    <b-container>
+      <b-row align-h="center">
+        <product-card-group :products="products.items" />
+      </b-row>
+      <b-row align-h="center">
+        <b-pagination
+          v-model="currentPage"
+          :per-page="productsPerPage"
+          :total-rows="products.count"
+          pills
+        />
+      </b-row>
+    </b-container>
+  </b-overlay>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import ProductsQuery from '@/pages/products.query.gql'
-import ProductCardGroup from '@/components/products/ProductCardGroup'
+import ProductCardGroup from '@/components/route/products/ProductCardGroup'
 
 export default {
   components: { ProductCardGroup },
   data() {
     return {
-      search: '',
       currentPage: 1,
       productsPerPage: 10,
       products: {},
@@ -47,7 +36,7 @@ export default {
       query: ProductsQuery,
       variables() {
         return {
-          search: this.search,
+          search: this.currentSearch,
           limit: this.productsPerPage,
           offset: this.offset,
         }
@@ -58,6 +47,7 @@ export default {
     offset() {
       return (this.currentPage - 1) * this.productsPerPage
     },
+    ...mapState('products', ['currentSearch']),
   },
 }
 </script>

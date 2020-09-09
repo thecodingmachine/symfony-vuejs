@@ -1,13 +1,13 @@
 <template>
   <b-card-group deck>
     <div v-for="product in products" :key="product.id">
-      <ProductCard :product="product" class="mb-4"></ProductCard>
+      <product-card :product="product" class="mb-4" />
     </div>
   </b-card-group>
 </template>
 
 <script>
-import ProductCard from '@/components/products/ProductCard'
+import ProductCard from '@/components/route/products/ProductCard.vue'
 
 export default {
   name: 'ProductCardGroup',

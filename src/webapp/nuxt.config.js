@@ -29,7 +29,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['@/assets/css/main.scss'],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
@@ -69,6 +69,20 @@ export default {
   },
   bootstrapVue: {
     icons: true,
+    css: false,
+    bvCSS: false,
+    componentPlugins: [
+      'LayoutPlugin',
+      'FormPlugin',
+      'LinkPlugin',
+      'PaginationPlugin',
+      'CardPlugin',
+      'FormInputPlugin',
+      'OverlayPlugin',
+      'NavbarPlugin',
+      'ButtonPlugin',
+    ],
+    directivePlugins: [],
   },
   /*
    ** Build configuration
