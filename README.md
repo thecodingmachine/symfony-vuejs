@@ -90,12 +90,12 @@ When done, exit the container, uncomment the previous environments variables and
 
 Once everything is ready, the following endpoints should be available:
 
-* http://traefik.companies-and-products.localhost
-* http://companies-and-products.localhost
-* http://api.companies-and-products.localhost
-* http://phpmyadmin.companies-and-products.localhost
-* http://minio.companies-and-products.localhost
-* http://mailhog.companies-and-products.loclahost
+* http://traefik.companies-and-products.localhost (Reverse proxy, entrypoint of all the HTTP requests)
+* http://companies-and-products.localhost (Web application)
+* http://api.companies-and-products.localhost (API)
+* http://phpmyadmin.companies-and-products.localhost (phpMyAdmin, a web interface for your MySQL database)
+* http://minio.companies-and-products.localhost (S3 compatible storage)
+* http://mailhog.companies-and-products.loclahost (Emails catcher)
 
 > Update the domain with the one used in your project.
 
