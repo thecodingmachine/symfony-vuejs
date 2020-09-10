@@ -49,6 +49,7 @@ class Product extends BaseProduct
      */
     public function getPictures(): ?array
     {
+        // TODO not provided by user, useless asserts?
         return parent::getPictures();
     }
 }

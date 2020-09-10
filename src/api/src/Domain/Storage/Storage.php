@@ -140,4 +140,20 @@ abstract class Storage
 
         return $this->storage->has($path);
     }
+
+    public function getFileContent(string $filename): string
+    {
+        $path   = $this->getPath($filename);
+        $result = $this->storage->read($path);
+
+        if ($result !== false) {
+            return $result;
+        }
+
+        throw new RuntimeException(
+            'Failed to read "' .
+            $path .
+            '"'
+        );
+    }
 }

@@ -30,6 +30,11 @@ class DaoFactory
     private $doctrineMigrationVersionDao = null;
 
     /**
+     * @var \App\Domain\Dao\OrderDao|null
+     */
+    private $orderDao = null;
+
+    /**
      * @var \App\Domain\Dao\ProductDao|null
      */
     private $productDao = null;
@@ -75,6 +80,20 @@ class DaoFactory
     public function setDoctrineMigrationVersionDao(\App\Domain\Dao\DoctrineMigrationVersionDao $doctrineMigrationVersionDao) : void
     {
         $this->doctrineMigrationVersionDao = $doctrineMigrationVersionDao;
+    }
+
+    public function getOrderDao() : \App\Domain\Dao\OrderDao
+    {
+        if (!$this->orderDao) {
+            $this->orderDao = $this->container->get('App\\Domain\\Dao\\OrderDao');
+        }
+
+        return $this->orderDao;
+    }
+
+    public function setOrderDao(\App\Domain\Dao\OrderDao $orderDao) : void
+    {
+        $this->orderDao = $orderDao;
     }
 
     public function getProductDao() : \App\Domain\Dao\ProductDao

@@ -4,7 +4,7 @@
 
 # API
 
-A PHP backend based on Symfony and with GraphQL endpoints.
+A PHP application based on Symfony and with GraphQL endpoints.
 
 **All commands have to be run in the `api` service (`make api`).**
 

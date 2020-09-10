@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace App\Domain\Model\Generated;
 
 use App\Domain\Model\Company;
+use App\Domain\Model\Order;
 use TheCodingMachine\TDBM\AbstractTDBMObject;
 use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\AlterableResultIterator;
@@ -147,6 +148,17 @@ abstract class BaseProduct extends \TheCodingMachine\TDBM\AbstractTDBMObject imp
     public function setPictures(?array $pictures) : void
     {
         $this->set('pictures', $pictures, 'products');
+    }
+
+    /**
+     * Returns the list of Order pointing to this bean via the product_id column.
+     *
+     * @return Order[]|\TheCodingMachine\TDBM\AlterableResultIterator
+     * @GraphqlField
+     */
+    public function getOrders() : \TheCodingMachine\TDBM\AlterableResultIterator
+    {
+        return $this->retrieveManyToOneRelationshipsStorage('orders', 'from__product_id__to__table__products__columns__id', ['orders.product_id' => $this->get('id', 'products')]);
     }
 
     /**
