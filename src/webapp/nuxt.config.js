@@ -49,6 +49,14 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
   ],
+
+  /*
+   ** ROUTER
+   */
+  router: {
+    middleware: ['authenticated'],
+  },
+
   /*
    ** Nuxt.js modules
    */
@@ -59,11 +67,14 @@ export default {
       default: {
         httpEndpoint: process.env.VUE_APP_GRAPHQL_HTTP,
         browserHttpEndpoint: process.env.VUE_APP_GRAPHQL_BROWSER_HTTP,
+        httpLinkOptions: {
+          credentials: 'include',
+        },
       },
     },
     defaultOptions: {
       $query: {
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'cache-and-network',
       },
     },
   },
@@ -81,6 +92,9 @@ export default {
       'OverlayPlugin',
       'NavbarPlugin',
       'ButtonPlugin',
+      'FormSelectPlugin',
+      'FormGroupPlugin',
+      'ImagePlugin',
     ],
     directivePlugins: [],
   },

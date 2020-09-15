@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import ProductQuery from '@/pages/products/product.query.gql'
+import ProductQuery from '@/services/queries/products/product.query.gql'
 import ProductCardDetails from '@/components/route/products/ProductCardDetails'
 
 export default {

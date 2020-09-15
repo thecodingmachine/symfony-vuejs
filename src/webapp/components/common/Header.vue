@@ -1,5 +1,11 @@
 <template>
-  <b-navbar class="app-header" toggleable="lg" type="dark" variant="primary">
+  <b-navbar
+    sticky
+    class="app-header"
+    toggleable="lg"
+    type="dark"
+    variant="primary"
+  >
     <b-navbar-brand href="#">My products app</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -21,7 +27,9 @@
           <template #button-content>
             <em>User</em>
           </template>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          <b-dropdown-item href="#" @click="logout">
+            Sign Out
+          </b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -30,6 +38,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import LogoutMutation from '@/services/mutations/auth/logout.mutation.gql'
 
 export default {
   name: 'Header',
@@ -38,6 +47,10 @@ export default {
   },
   methods: {
     ...mapActions('products', ['setCurrentSearch']),
+    logout() {
+      this.$apollo.mutate({ mutation: LogoutMutation })
+      this.$router.push('/login')
+    },
   },
 }
 </script>

@@ -18,7 +18,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import ProductsQuery from '@/pages/products.query.gql'
+import ProductsQuery from '@/services/queries/products/products.query.gql'
 import ProductCardGroup from '@/components/route/products/ProductCardGroup'
 
 export default {
