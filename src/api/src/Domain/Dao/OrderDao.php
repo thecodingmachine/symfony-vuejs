@@ -66,7 +66,7 @@ class OrderDao extends BaseOrderDao
         // When using an expression in an ORDER BY statement,
         // we must wrap it in a UncheckedOrderBy object.
         if ($sortBy->equals(OrdersSortBy::TOTAL())) {
-            $orderBy = new UncheckedOrderBy($sortBy->getValue() . ' ' . $sortOrder);
+            $orderBy = new UncheckedOrderBy($orderBy);
         }
 
         return $this->find(

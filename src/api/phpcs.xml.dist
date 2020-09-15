@@ -33,5 +33,6 @@
     <exclude-pattern>src/Domain/Model/Generated/**</exclude-pattern>
     <exclude-pattern>src/Domain/Assert/**</exclude-pattern>
     <exclude-pattern>src/Domain/Dao/Generated/**</exclude-pattern>
+    <exclude-pattern>src/Domain/ResultIterator/Generated/**</exclude-pattern>
     <exclude-pattern>src/Kernel.php</exclude-pattern>
 </ruleset>

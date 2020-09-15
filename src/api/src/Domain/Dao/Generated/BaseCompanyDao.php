@@ -60,17 +60,15 @@ abstract class BaseCompanyDao
 
     /**
      * Get all Company records.
-     *
-     * @return \App\Domain\Model\Company[]|\TheCodingMachine\TDBM\ResultIterator
      */
-    public function findAll() : \TheCodingMachine\TDBM\ResultIterator
+    public function findAll() : \App\Domain\ResultIterator\CompanyResultIterator
     {
         if ($this->defaultSort) {
             $orderBy = 'companies.'.$this->defaultSort.' '.$this->defaultDirection;
         } else {
             $orderBy = null;
         }
-        return $this->tdbmService->findObjects('companies', null, [], $orderBy);
+        return $this->tdbmService->findObjects('companies', null, [], $orderBy, [], null, null, \App\Domain\ResultIterator\CompanyResultIterator::class);
     }
 
     /**
@@ -113,14 +111,13 @@ abstract class BaseCompanyDao
      * @param mixed $orderBy The order string
      * @param string[] $additionalTablesFetch A list of additional tables to fetch (for performance improvement)
      * @param int|null $mode Either TDBMService::MODE_ARRAY or TDBMService::MODE_CURSOR (for large datasets). Defaults to TDBMService::MODE_ARRAY.
-     * @return \App\Domain\Model\Company[]|\TheCodingMachine\TDBM\ResultIterator
      */
-    protected function find($filter = null, array $parameters = [], $orderBy = null, array $additionalTablesFetch = [], ?int $mode = null) : \TheCodingMachine\TDBM\ResultIterator
+    protected function find($filter = null, array $parameters = [], $orderBy = null, array $additionalTablesFetch = [], ?int $mode = null) : \App\Domain\ResultIterator\CompanyResultIterator
     {
         if ($this->defaultSort && $orderBy == null) {
             $orderBy = 'companies.'.$this->defaultSort.' '.$this->defaultDirection;
         }
-        return $this->tdbmService->findObjects('companies', $filter, $parameters, $orderBy, $additionalTablesFetch, $mode);
+        return $this->tdbmService->findObjects('companies', $filter, $parameters, $orderBy, $additionalTablesFetch, $mode, null, \App\Domain\ResultIterator\CompanyResultIterator::class);
     }
 
     /**
@@ -138,14 +135,13 @@ abstract class BaseCompanyDao
      * @param mixed $orderBy The order string
      * @param string[] $additionalTablesFetch A list of additional tables to fetch (for performance improvement)
      * @param int|null $mode Either TDBMService::MODE_ARRAY or TDBMService::MODE_CURSOR (for large datasets). Defaults to TDBMService::MODE_ARRAY.
-     * @return \App\Domain\Model\Company[]|\TheCodingMachine\TDBM\ResultIterator
      */
-    protected function findFromSql(string $from, $filter = null, array $parameters = [], $orderBy = null, array $additionalTablesFetch = [], ?int $mode = null) : \TheCodingMachine\TDBM\ResultIterator
+    protected function findFromSql(string $from, $filter = null, array $parameters = [], $orderBy = null, array $additionalTablesFetch = [], ?int $mode = null) : \App\Domain\ResultIterator\CompanyResultIterator
     {
         if ($this->defaultSort && $orderBy == null) {
             $orderBy = 'companies.'.$this->defaultSort.' '.$this->defaultDirection;
         }
-        return $this->tdbmService->findObjectsFromSql('companies', $from, $filter, $parameters, $orderBy, $mode);
+        return $this->tdbmService->findObjectsFromSql('companies', $from, $filter, $parameters, $orderBy, $mode, null, \App\Domain\ResultIterator\CompanyResultIterator::class);
     }
 
     /**
@@ -161,11 +157,10 @@ abstract class BaseCompanyDao
      * @param mixed[] $parameters The parameters associated with the query
      * @param string|null $countSql The sql query that provides total count of rows (automatically computed if not provided)
      * @param int|null $mode Either TDBMService::MODE_ARRAY or TDBMService::MODE_CURSOR (for large datasets). Defaults to TDBMService::MODE_ARRAY.
-     * @return \App\Domain\Model\Company[]|\TheCodingMachine\TDBM\ResultIterator
      */
-    protected function findFromRawSql(string $sql, array $parameters = [], ?string $countSql = null, ?int $mode = null) : \TheCodingMachine\TDBM\ResultIterator
+    protected function findFromRawSql(string $sql, array $parameters = [], ?string $countSql = null, ?int $mode = null) : \App\Domain\ResultIterator\CompanyResultIterator
     {
-        return $this->tdbmService->findObjectsFromRawSql('companies', $sql, $parameters, $mode, null, $countSql);
+        return $this->tdbmService->findObjectsFromRawSql('companies', $sql, $parameters, $mode, null, $countSql, \App\Domain\ResultIterator\CompanyResultIterator::class);
     }
 
     /**
