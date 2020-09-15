@@ -49,7 +49,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
-    App\Infrastructure\EventListener\NoBeanFoundExceptionListeneer:
+    App\Infrastructure\EventListener\NoBeanFoundExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 

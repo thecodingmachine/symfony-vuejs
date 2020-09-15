@@ -8,8 +8,8 @@ use App\Domain\Dao\CompanyDao;
 use App\Domain\Enum\Filter\CompaniesSortBy;
 use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Model\Company;
+use App\Domain\ResultIterator\CompanyResultIterator;
 use TheCodingMachine\GraphQLite\Annotations\Query;
-use TheCodingMachine\TDBM\ResultIterator;
 
 final class GetCompanies
 {
@@ -21,7 +21,7 @@ final class GetCompanies
     }
 
     /**
-     * @return Company[]|ResultIterator
+     * @return Company[]|CompanyResultIterator
      *
      * @Query
      */
@@ -29,7 +29,7 @@ final class GetCompanies
         ?string $search = null,
         ?CompaniesSortBy $sortBy = null,
         ?SortOrder $sortOrder = null
-    ): ResultIterator {
+    ): CompanyResultIterator {
         return $this->companyDao->search(
             $search,
             null,

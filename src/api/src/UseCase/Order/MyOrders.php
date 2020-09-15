@@ -9,9 +9,9 @@ use App\Domain\Enum\Filter\OrdersSortBy;
 use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Model\Order;
 use App\Domain\Model\User;
+use App\Domain\ResultIterator\OrderResultIterator;
 use TheCodingMachine\GraphQLite\Annotations\InjectUser;
 use TheCodingMachine\GraphQLite\Annotations\Query;
-use TheCodingMachine\TDBM\ResultIterator;
 
 final class MyOrders
 {
@@ -23,7 +23,7 @@ final class MyOrders
     }
 
     /**
-     * @return Order[]|ResultIterator
+     * @return Order[]|OrderResultIterator
      *
      * @Query
      * @InjectUser(for="$user")
@@ -33,7 +33,7 @@ final class MyOrders
         ?string $search = null,
         ?OrdersSortBy $sortBy = null,
         ?SortOrder $sortOrder = null
-    ): ResultIterator {
+    ): OrderResultIterator {
         return $this->orderDao->search(
             $search,
             $user,

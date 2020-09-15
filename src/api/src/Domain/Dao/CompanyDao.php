@@ -13,9 +13,9 @@ use App\Domain\Enum\Filter\CompaniesSortBy;
 use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Model\Company;
 use App\Domain\Model\User;
+use App\Domain\ResultIterator\CompanyResultIterator;
 use App\Domain\Throwable\InvalidModel;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\TDBMService;
 
 /**
@@ -50,14 +50,14 @@ class CompanyDao extends BaseCompanyDao
     }
 
     /**
-     * @return Company[]|ResultIterator
+     * @return Company[]|CompanyResultIterator
      */
     public function search(
         ?string $search = null,
         ?User $user = null,
         ?CompaniesSortBy $sortBy = null,
         ?SortOrder $sortOrder = null
-    ): ResultIterator {
+    ): CompanyResultIterator {
         $sortBy    = $sortBy ?: CompaniesSortBy::NAME();
         $sortOrder = $sortOrder ?: SortOrder::ASC();
 

@@ -12,9 +12,9 @@ use App\Domain\Dao\Generated\BaseProductDao;
 use App\Domain\Enum\Filter\ProductsSortBy;
 use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Model\Product;
+use App\Domain\ResultIterator\ProductResultIterator;
 use App\Domain\Throwable\InvalidModel;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\TDBMService;
 
 /**
@@ -49,7 +49,7 @@ class ProductDao extends BaseProductDao
     }
 
     /**
-     * @return Product[]|ResultIterator
+     * @return Product[]|ProductResultIterator
      */
     public function search(
         ?string $search = null,
@@ -57,7 +57,7 @@ class ProductDao extends BaseProductDao
         ?float $upperPrice = null,
         ?ProductsSortBy $sortBy = null,
         ?SortOrder $sortOrder = null
-    ): ResultIterator {
+    ): ProductResultIterator {
         $sortBy    = $sortBy ?: ProductsSortBy::PRICE();
         $sortOrder = $sortOrder ?: SortOrder::ASC();
 

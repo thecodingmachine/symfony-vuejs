@@ -13,9 +13,9 @@ use App\Domain\Enum\Filter\OrdersSortBy;
 use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Model\Order;
 use App\Domain\Model\User;
+use App\Domain\ResultIterator\OrderResultIterator;
 use App\Domain\Throwable\InvalidModel;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\TDBMService;
 use TheCodingMachine\TDBM\UncheckedOrderBy;
 
@@ -51,14 +51,14 @@ class OrderDao extends BaseOrderDao
     }
 
     /**
-     * @return Order[]|ResultIterator
+     * @return Order[]|OrderResultIterator
      */
     public function search(
         ?string $search = null,
         ?User $user = null,
         ?OrdersSortBy $sortBy = null,
         ?SortOrder $sortOrder = null
-    ): ResultIterator {
+    ): OrderResultIterator {
         $sortBy    = $sortBy ?: OrdersSortBy::PRODUCT_NAME();
         $sortOrder = $sortOrder ?: SortOrder::ASC();
         $orderBy   = $sortBy . ' ' . $sortOrder;
