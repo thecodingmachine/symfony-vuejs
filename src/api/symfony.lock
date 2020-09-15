@@ -5,6 +5,12 @@
     "beberlei/porpaginas": {
         "version": "v1.2"
     },
+    "brain-diminished/schema-version-control": {
+        "version": "dev-master"
+    },
+    "brick/math": {
+        "version": "0.9.1"
+    },
     "clue/graph": {
         "version": "v0.9.1"
     },
@@ -356,6 +362,9 @@
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
+    },
+    "ramsey/collection": {
+        "version": "1.1.1"
     },
     "ramsey/uuid": {
         "version": "3.9.3"
