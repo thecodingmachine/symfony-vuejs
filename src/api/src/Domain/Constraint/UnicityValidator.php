@@ -6,9 +6,11 @@ namespace App\Domain\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Exception\RuntimeException;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use TheCodingMachine\TDBM\TDBMService;
+
+use function get_debug_type;
 
 final class UnicityValidator extends ConstraintValidator
 {
@@ -29,15 +31,15 @@ final class UnicityValidator extends ConstraintValidator
         }
 
         if (empty($constraint->message)) {
-            throw new RuntimeException(Unicity::class . ' message argument is empty');
+            throw new ConstraintDefinitionException(get_debug_type($constraint) . ' message argument is empty');
         }
 
         if (empty($constraint->table)) {
-            throw new RuntimeException(Unicity::class . ' table argument is empty');
+            throw new ConstraintDefinitionException(get_debug_type($constraint) . ' table argument is empty');
         }
 
         if (empty($constraint->column)) {
-            throw new RuntimeException(Unicity::class . ' column argument is empty');
+            throw new ConstraintDefinitionException(get_debug_type($constraint) . ' column argument is empty');
         }
 
         $getterValue = 'get' . $constraint->column;

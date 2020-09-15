@@ -40,16 +40,4 @@ class Product extends BaseProduct
     {
         return parent::getPrice();
     }
-
-    /**
-     * @return string[]|null
-     *
-     * @Field
-     * @Assert\All({@Assert\NotBlank(message="not_blank"), @Assert\Length(max=255, maxMessage="max_length_255")})
-     */
-    public function getPictures(): ?array
-    {
-        // TODO not provided by user, useless asserts?
-        return parent::getPictures();
-    }
 }

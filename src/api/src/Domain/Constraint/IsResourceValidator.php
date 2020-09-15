@@ -27,6 +27,7 @@ final class IsResourceValidator extends ConstraintValidator
 
         $this->context
             ->buildViolation($constraint->message)
+            ->atPath('resource')
             ->addViolation();
     }
 }

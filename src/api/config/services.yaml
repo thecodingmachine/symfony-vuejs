@@ -45,6 +45,14 @@ services:
         arguments:
             - '@minio.client'
 
+    App\Infrastructure\EventListener\FileNotFoundExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    App\Infrastructure\EventListener\NoBeanFoundExceptionListeneer:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
     App\Infrastructure\EventSubscriber\LocaleSubscriber:
         arguments:
             - '%kernel.default_locale%'

@@ -9,10 +9,15 @@ declare(strict_types=1);
 namespace App\Domain\Dao;
 
 use App\Domain\Dao\Generated\BaseOrderDao;
+use App\Domain\Enum\Filter\OrdersSortBy;
+use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Model\Order;
+use App\Domain\Model\User;
 use App\Domain\Throwable\InvalidModel;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use TheCodingMachine\TDBM\ResultIterator;
 use TheCodingMachine\TDBM\TDBMService;
+use TheCodingMachine\TDBM\UncheckedOrderBy;
 
 /**
  * The OrderDao class will maintain the persistence of Order class into the orders table.
@@ -43,5 +48,38 @@ class OrderDao extends BaseOrderDao
     {
         $this->validate($order);
         parent::save($order);
+    }
+
+    /**
+     * @return Order[]|ResultIterator
+     */
+    public function search(
+        ?string $search = null,
+        ?User $user = null,
+        ?OrdersSortBy $sortBy = null,
+        ?SortOrder $sortOrder = null
+    ): ResultIterator {
+        $sortBy    = $sortBy ?: OrdersSortBy::PRODUCT_NAME();
+        $sortOrder = $sortOrder ?: SortOrder::ASC();
+        $orderBy   = $sortBy . ' ' . $sortOrder;
+
+        // When using an expression in an ORDER BY statement,
+        // we must wrap it in a UncheckedOrderBy object.
+        if ($sortBy->equals(OrdersSortBy::TOTAL())) {
+            $orderBy = new UncheckedOrderBy(OrdersSortBy::TOTAL()->getValue() . ' ' . $sortOrder);
+        }
+
+        return $this->find(
+            [
+                'products.name LIKE :search',
+                'user_id = :userId',
+            ],
+            [
+                'search' => '%' . $search . '%',
+                'userId' => $user !== null ? $user->getId() : null,
+            ],
+            $orderBy,
+            ['products']
+        );
     }
 }

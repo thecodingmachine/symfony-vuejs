@@ -38,11 +38,11 @@ final class CreateOrder
         Product $product,
         int $quantity
     ): Order {
+        // TODO a user cannot buy its own products!
         $order = new Order(
             $user,
             $product,
-            $quantity,
-            $product->getPrice()
+            $quantity
         );
 
         // Validate the order before uploading

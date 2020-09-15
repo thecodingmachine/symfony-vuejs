@@ -32,6 +32,7 @@ final class GetCompanies
     ): ResultIterator {
         return $this->companyDao->search(
             $search,
+            null,
             $sortBy,
             $sortOrder
         );

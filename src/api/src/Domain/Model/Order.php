@@ -20,6 +20,11 @@ use TheCodingMachine\GraphQLite\Annotations\Type;
  */
 class Order extends BaseOrder
 {
+    public function __construct(User $user, Product $product, int $quantity)
+    {
+        parent::__construct($user, $product, $quantity, $product->getPrice());
+    }
+
     /**
      * @Field()
      * @Assert\Positive(message="positive")
@@ -40,12 +45,10 @@ class Order extends BaseOrder
 
     /**
      * @Field()
-     * @Assert\NotBlank(message="not_blank", allowNull=true)
-     * @Assert\Length(max=255, maxMessage="max_length_255")
+     * @Assert\Positive(message="positive")
      */
-    public function getInvoice(): ?string
+    public function getTotal(): float
     {
-        // TODO not provided by user, useless asserts?
-        return parent::getInvoice();
+        return $this->getUnitPrice() * $this->getQuantity();
     }
 }

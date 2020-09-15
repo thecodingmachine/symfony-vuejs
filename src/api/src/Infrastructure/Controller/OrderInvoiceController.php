@@ -6,12 +6,10 @@ namespace App\Infrastructure\Controller;
 
 use App\Domain\Dao\OrderDao;
 use App\Domain\Storage\OrderInvoiceStorage;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class OrderInvoiceController extends AbstractController
+final class OrderInvoiceController extends DownloadController
 {
     private OrderDao $orderDao;
     private OrderInvoiceStorage $orderInvoiceStorage;
@@ -28,23 +26,18 @@ final class OrderInvoiceController extends AbstractController
     public function downloadInvoice(string $id): Response
     {
         // TODO use a voter to check if authenticated user owns the invoice.
-        // TODO listener for catching NoBeanFoundException?
+
+        // EventListener\NoBeanFoundExceptionListener will handle
+        // the NoBeanFoundException (if any).
         $order    = $this->orderDao->getById($id);
         $filename = $order->getInvoice();
-
-        if (! $this->orderInvoiceStorage->fileExists($filename)) {
-            throw $this->createNotFoundException();
-        }
-
+        // EventListener\FileNotFoundExceptionListener will handle
+        // the FileNotFoundException (if any).
         $fileContent = $this->orderInvoiceStorage->getFileContent($filename);
 
-        $response          = new Response($fileContent);
-        $dispositionHeader = $response->headers->makeDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            'invoice_' . $id . '.pdf'
+        return $this->createResponseWithAttachment(
+            'invoice_' . $id . '.pdf',
+            $fileContent
         );
-        $response->headers->set('Content-Disposition', $dispositionHeader);
-
-        return $response;
     }
 }

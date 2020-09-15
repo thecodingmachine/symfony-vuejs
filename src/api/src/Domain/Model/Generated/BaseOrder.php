@@ -47,6 +47,7 @@ abstract class BaseOrder extends \TheCodingMachine\TDBM\AbstractTDBMObject imple
         $this->setQuantity($quantity);
         $this->setUnitPrice($unitPrice);
         $this->setId(Uuid::uuid1()->toString());
+        $this->setInvoice('tmp');
     }
 
     /**
@@ -152,10 +153,9 @@ abstract class BaseOrder extends \TheCodingMachine\TDBM\AbstractTDBMObject imple
     /**
      * The getter for the "invoice" column.
      *
-     * @return string|null
-     * @GraphqlField
+     * @return string
      */
-    public function getInvoice() : ?string
+    public function getInvoice() : string
     {
         return $this->get('invoice', 'orders');
     }
@@ -163,9 +163,9 @@ abstract class BaseOrder extends \TheCodingMachine\TDBM\AbstractTDBMObject imple
     /**
      * The setter for the "invoice" column.
      *
-     * @param string|null $invoice
+     * @param string $invoice
      */
-    public function setInvoice(?string $invoice) : void
+    public function setInvoice(string $invoice) : void
     {
         $this->set('invoice', $invoice, 'orders');
     }

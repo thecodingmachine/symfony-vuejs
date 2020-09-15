@@ -29,7 +29,7 @@ final class Version20200910075836 extends AbstractMigration
             ->column('product_id')->references('products')->notNull()->graphqlField()
             ->column('quantity')->integer()->notNull()->graphqlField()
             ->column('unit_price')->float()->notNull()->graphqlField()
-            ->column('invoice')->string(255)->null()->default(null);
+            ->column('invoice')->string(255)->notNull()->default('tmp');
     }
 
     public function down(Schema $schema): void
