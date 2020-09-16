@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Domain\Model\Storable\ProductPicture;
 use App\Domain\Storage\ProductPictureStorage;
+use App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTask;
 use App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTaskHandler;
 
 use function PHPUnit\Framework\assertFalse;
@@ -22,7 +23,7 @@ it(
         ]);
         $filenames = $productPictureStorage->writeAll($storables);
 
-        $task = new App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTask($filenames);
+        $task = new DeleteProductsPicturesTask($filenames);
         $deleteProductsPicturesTaskHandler($task);
 
         foreach ($filenames as $filename) {

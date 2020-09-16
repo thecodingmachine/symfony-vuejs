@@ -23,8 +23,8 @@ beforeEach(function (): void {
         'foo',
         'bar',
         'merchant@foo.com',
-        strval(Locale::EN()),
-        strval(Role::MERCHANT())
+        Locale::EN(),
+        Role::MERCHANT()
     );
     $userDao->save($merchant);
 

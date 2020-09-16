@@ -15,7 +15,6 @@ use App\UseCase\Product\CreateProduct;
 use App\UseCase\User\DeleteUser;
 
 use function dirname;
-use function strval;
 
 final class AppFixtures extends Fixtures
 {
@@ -58,8 +57,8 @@ final class AppFixtures extends Fixtures
             $this->faker->firstName,
             $this->faker->lastName,
             'admin@companies-and-products.localhost',
-            strval(Locale::EN()),
-            strval(Role::ADMINISTRATOR())
+            Locale::EN(),
+            Role::ADMINISTRATOR()
         );
         $admin->setPassword('foo');
 
@@ -67,8 +66,8 @@ final class AppFixtures extends Fixtures
             $this->faker->firstName,
             $this->faker->lastName,
             'merchant@companies-and-products.localhost',
-            strval(Locale::EN()),
-            strval(Role::MERCHANT())
+            Locale::EN(),
+            Role::MERCHANT()
         );
         $merchant->setPassword('foo');
 
@@ -76,8 +75,8 @@ final class AppFixtures extends Fixtures
             $this->faker->firstName,
             $this->faker->lastName,
             'client@companies-and-products.localhost',
-            strval(Locale::EN()),
-            strval(Role::CLIENT())
+            Locale::EN(),
+            Role::CLIENT()
         );
         $client->setPassword('foo');
 

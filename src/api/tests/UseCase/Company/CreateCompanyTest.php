@@ -24,8 +24,8 @@ beforeEach(function (): void {
         'foo',
         'bar',
         'merchant@foo.com',
-        strval(Locale::EN()),
-        strval(Role::MERCHANT())
+        Locale::EN(),
+        Role::MERCHANT()
     );
     $merchant->setId('1');
     $userDao->save($merchant);
@@ -34,8 +34,8 @@ beforeEach(function (): void {
         'foo',
         'bar',
         'client@foo.com',
-        strval(Locale::EN()),
-        strval(Role::CLIENT())
+        Locale::EN(),
+        Role::CLIENT()
     );
     $client->setId('2');
     $userDao->save($client);

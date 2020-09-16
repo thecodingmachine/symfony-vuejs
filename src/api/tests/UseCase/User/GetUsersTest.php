@@ -22,8 +22,8 @@ beforeEach(function (): void {
         'a',
         'a',
         'a.a@a.a',
-        strval(Locale::EN()),
-        strval(Role::ADMINISTRATOR())
+        Locale::EN(),
+        Role::ADMINISTRATOR()
     );
     $userDao->save($user);
 
@@ -31,8 +31,8 @@ beforeEach(function (): void {
         'b',
         'b',
         'b.b@b.b',
-        strval(Locale::EN()),
-        strval(Role::MERCHANT())
+        Locale::EN(),
+        Role::MERCHANT()
     );
     $userDao->save($user);
 
@@ -40,8 +40,8 @@ beforeEach(function (): void {
         'c',
         'c',
         'c.c@c.c',
-        strval(Locale::EN()),
-        strval(Role::CLIENT())
+        Locale::EN(),
+        Role::CLIENT()
     );
     $userDao->save($user);
 });

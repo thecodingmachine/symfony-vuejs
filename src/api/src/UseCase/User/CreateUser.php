@@ -12,8 +12,6 @@ use App\Domain\Throwable\InvalidModel;
 use App\UseCase\User\ResetPassword\ResetPassword;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 
-use function strval;
-
 final class CreateUser
 {
     private UserDao $userDao;
@@ -43,8 +41,8 @@ final class CreateUser
             $firstName,
             $lastName,
             $email,
-            strval($locale),
-            strval($role)
+            $locale,
+            $role
         );
 
         $this->userDao->save($user);

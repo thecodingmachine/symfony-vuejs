@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace App\Domain\Model;
 
 use App\Domain\Constraint as DomainAssert;
+use App\Domain\Enum\Locale;
+use App\Domain\Enum\Role;
 use App\Domain\Model\Generated\BaseUser;
 use Serializable;
 use Symfony\Component\Security\Core\User\EquatableInterface;
@@ -20,6 +22,7 @@ use TheCodingMachine\TDBM\AlterableResultIterator;
 
 use function Safe\password_hash;
 use function serialize;
+use function strval;
 use function unserialize;
 
 use const PASSWORD_DEFAULT;
@@ -32,11 +35,26 @@ use const PASSWORD_DEFAULT;
  */
 class User extends BaseUser implements UserInterface, Serializable, EquatableInterface
 {
+    public function __construct(
+        string $firstName,
+        string $lastName,
+        string $email,
+        Locale $locale,
+        Role $role
+    ) {
+        parent::__construct(
+            $firstName,
+            $lastName,
+            $email,
+            strval($locale),
+            strval($role)
+        );
+    }
+
     /**
      * @Field
      * @Assert\NotBlank(message="not_blank")
      * @Assert\Length(max=255, maxMessage="max_length_255")
-     * @Field
      */
     public function getFirstName(): string
     {

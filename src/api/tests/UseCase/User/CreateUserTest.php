@@ -59,7 +59,7 @@ it(
         assert($createUser instanceof CreateUser);
 
         // We create a user for checking if an
-        // e-mail is not unique.
+        // email is not unique.
         $createUser->createUser(
             'foo',
             'bar',
