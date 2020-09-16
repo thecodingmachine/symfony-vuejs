@@ -40,4 +40,17 @@ class Product extends BaseProduct
     {
         return parent::getPrice();
     }
+
+    /**
+     * @return array<string>|null
+     *
+     * @Field
+     */
+    public function getPictures(): ?array
+    {
+        // We override the parent method
+        // as GraphQLite has to know which
+        // kind of array it is dealing with.
+        return parent::getPictures();
+    }
 }

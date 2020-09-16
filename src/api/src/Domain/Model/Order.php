@@ -26,7 +26,7 @@ class Order extends BaseOrder
     }
 
     /**
-     * @Field()
+     * @Field
      * @Assert\Positive(message="positive")
      */
     public function getQuantity(): int
@@ -35,7 +35,7 @@ class Order extends BaseOrder
     }
 
     /**
-     * @Field()
+     * @Field
      * @Assert\Positive(message="positive")
      */
     public function getUnitPrice(): float
@@ -44,7 +44,7 @@ class Order extends BaseOrder
     }
 
     /**
-     * @Field()
+     * @Field
      * @Assert\Positive(message="positive")
      */
     public function getTotal(): float
