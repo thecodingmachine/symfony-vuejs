@@ -1,9 +1,9 @@
 # Those variables are only used for the Vagrant command!
-VAGRANT_BOX=bento/ubuntu-19.10
+VAGRANT_BOX=bento/ubuntu-20.04
 VAGRANT_PROJECT_NAME=companies-and-products
 VAGRANT_MEMORY=4096
 VAGRANT_CPUS=2
-VAGRANT_DOCKER_COMPOSE_VERSION=1.26.2
+VAGRANT_DOCKER_COMPOSE_VERSION=1.27.3
 
 # Start the Docker Compose stack.
 up:
