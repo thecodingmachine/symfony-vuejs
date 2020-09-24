@@ -53,9 +53,9 @@ export default {
   /*
    ** ROUTER
    */
-  router: {
+  /* router: {
     middleware: ['authenticated'],
-  },
+  }, */
 
   /*
    ** Nuxt.js modules
@@ -77,6 +77,7 @@ export default {
         fetchPolicy: 'cache-and-network',
       },
     },
+    errorHandler: '~/plugins/apollo-error-handler.js',
   },
   bootstrapVue: {
     icons: true,

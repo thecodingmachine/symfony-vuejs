@@ -1249,16 +1249,16 @@
     webpack-node-externals "^1.7.2"
     webpackbar "^4.0.0"
 
-"@nuxtjs/apollo@^4.0.1-rc.1":
-  version "4.0.1-rc.1"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/apollo/-/apollo-4.0.1-rc.1.tgz#c11302107d1c2d7d955c74ec2308a178ed6280d1"
-  integrity sha512-i+/J/kL9rxw63ueJ4KpgqLt2Js0tYzoRgrUZ8eOT0sf/uDUCbvAxXlrOtgGD3ijVWolB2Dtlkz1YtJMJl8Lizw==
+"@nuxtjs/apollo@^4.0.1-rc.3":
+  version "4.0.1-rc.3"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/apollo/-/apollo-4.0.1-rc.3.tgz#8cb85b521b475f614e9fbcee9f58a40a809a708a"
+  integrity sha512-wkhVktqptHAO5xyh2DfKJBTK/Y20oMzS3IwUwF8GSGIlxnIeoqu4n+OhXRHTB6gTmzTaUO1muSKLK4Ra8q7aMA==
   dependencies:
     cross-fetch "^3.0.4"
     universal-cookie "^4.0.3"
-    vue-apollo "^3.0.3"
+    vue-apollo "^3.0.4"
     vue-cli-plugin-apollo "^0.21.3"
-    webpack-node-externals "^1.7.2"
+    webpack-node-externals "^2.5.0"
 
 "@nuxtjs/eslint-config@^3.0.0":
   version "3.0.0"
@@ -10386,7 +10386,7 @@ sentence-case@^2.1.0:
     no-case "^2.2.0"
     upper-case-first "^1.1.2"
 
-serialize-javascript@^2.1.0, serialize-javascript@^2.1.2:
+serialize-javascript@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-2.1.2.tgz#ecec53b0e0317bdc95ef76ab7074b7384785fa61"
   integrity sha512-rs9OggEUF0V4jUSecXazOYsLfu7OGK2qIn3c7IPBiffz32XniEp/TX9Xmc9LQfK2nQ2QKHvZ2oygKUGU0lG4jQ==
@@ -11932,13 +11932,13 @@ vscode-uri@^1.0.6:
   resolved "https://registry.yarnpkg.com/vscode-uri/-/vscode-uri-1.0.8.tgz#9769aaececae4026fb6e22359cb38946580ded59"
   integrity sha512-obtSWTlbJ+a+TFRYGaUumtVwb+InIUVI0Lu0VBUAPmj2cU5JutEXg3xUE0c2J5Tcy7h2DEKVJBFi+Y9ZSFzzPQ==
 
-vue-apollo@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/vue-apollo/-/vue-apollo-3.0.3.tgz#7f29558df76eec0f03251847eef153816a261827"
-  integrity sha512-WJaQ1v/i46/oIPlKv7J0Tx6tTlbuaeCdhrAbL06h+Zca2gzr5ywjUFpl8ijMTGJsQ+Ph/U4xEpBFBOMxQmL+7g==
+vue-apollo@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/vue-apollo/-/vue-apollo-3.0.4.tgz#d48a990d02c1febb5248d097f921c74c50a22e8a"
+  integrity sha512-sthSS9E6FB7OMmSJmIG7e89QZvzwK/1PCD8A/IfGBST48pxY7sdSxRp22Gu2/s/gxQBnQPI1H1ZPZE97IG+zXA==
   dependencies:
     chalk "^2.4.2"
-    serialize-javascript "^2.1.0"
+    serialize-javascript "^4.0.0"
     throttle-debounce "^2.1.0"
 
 vue-cli-plugin-apollo@^0.21.3:
@@ -12157,6 +12157,11 @@ webpack-node-externals@^1.7.2:
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/webpack-node-externals/-/webpack-node-externals-1.7.2.tgz#6e1ee79ac67c070402ba700ef033a9b8d52ac4e3"
   integrity sha512-ajerHZ+BJKeCLviLUUmnyd5B4RavLF76uv3cs6KNuO8W+HuQaEs0y0L7o40NQxdPy5w0pcv8Ew7yPUAQG0UdCg==
+
+webpack-node-externals@^2.5.0:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/webpack-node-externals/-/webpack-node-externals-2.5.2.tgz#178e017a24fec6015bc9e672c77958a6afac861d"
+  integrity sha512-aHdl/y2N7PW2Sx7K+r3AxpJO+aDMcYzMQd60Qxefq3+EwhewSbTBqNumOsCE1JsCUNoyfGj5465N0sSf6hc/5w==
 
 webpack-sources@^1.0.1, webpack-sources@^1.1.0, webpack-sources@^1.4.0, webpack-sources@^1.4.1, webpack-sources@^1.4.3:
   version "1.4.3"
