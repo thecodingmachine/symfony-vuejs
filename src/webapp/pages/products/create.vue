@@ -18,7 +18,6 @@
             required
             trim
             debounce="1000"
-            @update="checkProductNameAvailability"
           >
           </b-form-input>
           <b-form-invalid-feedback v-if="!nameValidation">
@@ -74,9 +73,9 @@
 </template>
 
 <script>
-import CompaniesQuery from '@/pages/products/companies.query.gql'
-import CheckProductNameAvailabilityQuery from '@/pages/products/check_product_name_availability.query.gql'
-import CreateProductMutation from '@/pages/products/create_product.mutation.gql'
+import CompaniesQuery from '@/services/queries/companies/companies.query.gql'
+import CheckProductNameAvailabilityQuery from '@/services/queries/products/check_product_name_availability.query.gql'
+import CreateProductMutation from '@/services/mutations/products/create_product.mutation.gql'
 
 export default {
   data() {
@@ -85,12 +84,13 @@ export default {
       form: {
         name: '',
         price: 1,
-        companyId: null,
+        companyId: 240,
       },
       asyncValidation: {
         isNameAvailable: true,
       },
       companies: [],
+      checkProductName: null,
     }
   },
   apollo: {
@@ -100,13 +100,23 @@ export default {
       query: CompaniesQuery,
       result({ data, loading }) {
         if (!loading) {
-          // Format select options.
-          const options = []
-          data.companies.items.forEach((company) =>
-            options.push({ id: company.id, value: company.name })
-          )
-
-          this.companies = options
+          this.companies = data.companies.items.map(({ id, name }) => ({
+            id,
+            value: name,
+          }))
+        }
+      },
+    },
+    checkProductName: {
+      query: CheckProductNameAvailabilityQuery,
+      variables() {
+        return {
+          name: this.form.name,
+        }
+      },
+      result({ data, loading }) {
+        if (!loading) {
+          this.asyncValidation.isNameAvailable = data.checkProductName
         }
       },
     },
@@ -120,21 +130,10 @@ export default {
     },
   },
   methods: {
-    async checkProductNameAvailability(value) {
-      const result = await this.$apollo.query({
-        query: CheckProductNameAvailabilityQuery,
-        variables: {
-          name: value,
-        },
-      })
-
-      this.asyncValidation.isNameAvailable =
-        result.data.checkProductNameAvailability
-    },
     async onSubmit() {
       this.blockUserInputs = true
 
-      const result = await this.$apollo.mutate({
+      const { data } = await this.$apollo.mutate({
         mutation: CreateProductMutation,
         variables: {
           name: this.form.name,
@@ -143,7 +142,9 @@ export default {
         },
       })
 
-      this.$router.push('/products/' + result.data.createProduct.id)
+      this.blockUserInputs = false
+
+      this.$router.push(`/products/ + ${data.createProduct.id}`)
     },
   },
 }
