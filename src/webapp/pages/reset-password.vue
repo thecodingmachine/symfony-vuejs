@@ -1,72 +1,89 @@
 <template>
-  <b-container class="h-100 d-flex align-items-center justify-content-center">
-    <b-row align-h="center" align-v="center">
-      <div class="d-flex flex-column bg-white p-5">
-        <b-form @submit.stop.prevent="onSubmit">
-          <b-form-group
-            id="input-group-email"
-            label="Email"
-            label-for="input-email"
-          >
-            <b-form-input
-              id="input-email"
-              v-model="form.email"
-              type="text"
-              placeholder="Enter your email"
-              autofocus
-              required
-              trim
-              :state="formErrors.email === ''"
-            />
-            <b-form-invalid-feedback :state="formErrors.email === ''">
-              {{ formErrors.email }}
-            </b-form-invalid-feedback>
-          </b-form-group>
-          <b-button type="submit" variant="primary">Send email</b-button>
-        </b-form>
-      </div>
-    </b-row>
-  </b-container>
+  <div>
+    <b-form v-if="!success" @submit.stop.prevent="onSubmit">
+      <b-form-group
+        id="input-group-email"
+        label="Email"
+        label-for="input-email"
+      >
+        <b-form-input
+          id="input-email"
+          v-model="form.email"
+          type="text"
+          placeholder="Enter your email"
+          autofocus
+          trim
+          :disabled="isFormReadOnly"
+          :state="formState('email')"
+        />
+        <b-form-invalid-feedback :state="formState('email')">
+          {{ formError('email') }}
+        </b-form-invalid-feedback>
+      </b-form-group>
+      <b-button type="submit" variant="primary" :disabled="isFormReadOnly">
+        <b-spinner v-show="isFormReadOnly" small type="grow"></b-spinner>
+        {{ isFormReadOnly ? 'Sending...' : 'Send email' }}
+      </b-button>
+      <b-link v-if="!isFormReadOnly" :to="'/login?email=' + form.email"
+        >Back to login</b-link
+      >
+    </b-form>
+    <div v-if="success">
+      <p>
+        If the email <i>{{ form.email }}</i> exists in our system, it has been
+        delivered with instructions to help you change your password.
+      </p>
+
+      <b-nav align="center">
+        <b-nav-item>
+          <b-link :to="'/login?email=' + form.email">Login</b-link>
+        </b-nav-item>
+        <b-nav-item>
+          <b-link @click="resetForm">Retry</b-link>
+        </b-nav-item>
+      </b-nav>
+    </div>
+  </div>
 </template>
 
 <script>
-import ResetPasswordMutation from '~/services/mutations/auth/reset_password.mutation.gql'
-import GraphQLErrorsParser from '~/services/graphql-errors-parser'
+import FormErrors from '@/mixins/form/form-errors'
+import ReadOnlyForm from '@/mixins/form/readonly-form'
+import ResetPasswordMutation from '@/services/mutations/auth/reset_password.mutation.gql'
 
 export default {
   name: 'ResetPassword',
-  layout: 'empty',
+  layout: 'box',
+  mixins: [FormErrors, ReadOnlyForm],
   data() {
     return {
       form: {
-        email: '',
+        email: this.$route.query.email,
       },
-      formErrors: {
-        email: '',
-      },
-      blockUserInputs: false,
+      success: false,
     }
   },
   methods: {
     async onSubmit() {
-      this.blockUserInputs = true
+      this.resetFormErrors()
+      this.makeFormReadOnly()
 
       try {
-        await this.$apollo.mutate({
-          mutation: ResetPasswordMutation,
-          variables: {
-            email: this.form.email,
-          },
+        await this.$graphql.request(ResetPasswordMutation, {
+          email: this.form.email,
         })
+
+        this.success = true
       } catch (e) {
-        for (const [key, value] of Object.entries(e)) {
-          console.log(`${key}: ${value}`)
-        }
-
-        GraphQLErrorsParser(e.graphQLErrors, this.formErrors)
+        this.hydrateFormErrors(e)
+      } finally {
+        this.makeFormWritable()
       }
+    },
 
-      this.blockUserInputs = false
+    resetForm() {
+      this.success = false
+      this.form.email = ''
     },
   },
 }

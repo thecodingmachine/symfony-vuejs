@@ -31,7 +31,8 @@ final class LocaleSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            // Must be registered before (i.e. with a higher priority than) the default Locale listener.
+            // Must be registered before (i.e. with a higher priority than) the default Locale listener onKernelRequest.
+            // Run php bin/console debug:event kernel.request to see the order.
             KernelEvents::REQUEST => [['onKernelRequest', 20]],
         ];
     }

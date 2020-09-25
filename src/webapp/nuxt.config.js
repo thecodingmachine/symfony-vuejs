@@ -60,25 +60,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/apollo', 'bootstrap-vue/nuxt'],
-  // See https://github.com/nuxt-community/apollo-module.
-  apollo: {
-    clientConfigs: {
-      default: {
-        httpEndpoint: process.env.VUE_APP_GRAPHQL_HTTP,
-        browserHttpEndpoint: process.env.VUE_APP_GRAPHQL_BROWSER_HTTP,
-        httpLinkOptions: {
-          credentials: 'include',
-        },
-      },
-    },
-    defaultOptions: {
-      $query: {
-        fetchPolicy: 'cache-and-network',
-      },
-    },
-    errorHandler: '~/plugins/apollo-error-handler.js',
-  },
+  modules: ['bootstrap-vue/nuxt', 'nuxt-graphql-request'],
   bootstrapVue: {
     icons: true,
     css: false,
@@ -96,8 +78,37 @@ export default {
       'FormSelectPlugin',
       'FormGroupPlugin',
       'ImagePlugin',
+      'SpinnerPlugin',
     ],
     directivePlugins: [],
+  },
+  // See https://github.com/Gomah/nuxt-graphql-request.
+  graphql: {
+    /**
+     * Your GraphQL endpoint (required)
+     */
+    endpoint: process.env.VUE_APP_GRAPHQL_BROWSER_HTTP,
+
+    /**
+     * Options
+     * See: https://github.com/prisma-labs/graphql-request#passing-more-options-to-fetch
+     */
+    options: {
+      credentials: 'include',
+      mode: 'cors',
+    },
+
+    /**
+     * Optional
+     * default: true (this includes cross-fetch/polyfill before creating the graphql client)
+     */
+    useFetchPolyfill: true,
+
+    /**
+     * Optional
+     * default: false (this includes graphql-tag for node_modules folder)
+     */
+    includeNodeModules: true,
   },
   /*
    ** Build configuration

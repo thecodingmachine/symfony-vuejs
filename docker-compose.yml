@@ -94,6 +94,12 @@ services:
       MAIL_WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT: "update-password/%s/%s"
     volumes:
       - ./src/api:/var/www/html
+    networks:
+      default:
+        aliases:
+          # Required so that the webapp service is able to call the same endpoint
+          # from both the browser and the server.
+          - "$API_SUBDOMAIN.$DOMAIN"
 
   # For business data and user sessions.
   mysql:

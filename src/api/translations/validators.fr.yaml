@@ -1,7 +1,7 @@
 not_blank: "Cette valeur ne doit pas être vide."
 max_length_255: "Cette valeur est trop longue. Elle doit avoir 255 caractères ou moins."
 min_length_8: "Cette valeur est trop courte. Elle doit avoir 8 caractères ou plus."
-invalid_email: "Cette valeur n'est pas une adresse e-mail valide."
+invalid_email: "Cette valeur n'est pas une adresse email valide."
 invalid_url: "Cette valeur n'est pas une URL valide."
 positive: "Cette valeur doit être positive."
 
