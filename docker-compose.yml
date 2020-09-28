@@ -32,7 +32,7 @@ services:
     command: yarn dev
     environment:
       # Docker image.
-      STARTUP_COMMAND_1: "yarn install"
+      STARTUP_COMMAND_1: "yarn"
       # Nuxt.js
       # Either Vagrant or Docker requires the usage of polling, otherwise Nuxt.js does not recompile our code
       # as fast as we would like.

@@ -2,32 +2,38 @@
 
 declare(strict_types=1);
 
-namespace App\UseCase\User\UpdatePassword;
+namespace App\UseCase\User;
 
 use App\Domain\Dao\ResetPasswordTokenDao;
 use App\Domain\Dao\UserDao;
 use App\Domain\Model\Proxy\PasswordProxy;
 use App\Domain\Model\ResetPasswordToken;
+use App\Domain\Model\User;
 use App\Domain\Throwable\InvalidModel;
-use Safe\DateTimeImmutable;
+use App\UseCase\User\VerifyResetPasswordToken\InvalidResetPasswordTokenId;
+use App\UseCase\User\VerifyResetPasswordToken\ResetPasswordTokenExpired;
+use App\UseCase\User\VerifyResetPasswordToken\VerifyResetPasswordToken;
+use App\UseCase\User\VerifyResetPasswordToken\WrongResetPasswordToken;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
-
-use function password_verify;
 
 final class UpdatePassword
 {
+    private VerifyResetPasswordToken $verifyResetPasswordToken;
     private ResetPasswordTokenDao $resetPasswordTokenDao;
     private UserDao $userDao;
 
     public function __construct(
+        VerifyResetPasswordToken $verifyResetPasswordToken,
         ResetPasswordTokenDao $resetPasswordTokenDao,
         UserDao $userDao
     ) {
-        $this->resetPasswordTokenDao = $resetPasswordTokenDao;
-        $this->userDao               = $userDao;
+        $this->verifyResetPasswordToken = $verifyResetPasswordToken;
+        $this->resetPasswordTokenDao    = $resetPasswordTokenDao;
+        $this->userDao                  = $userDao;
     }
 
     /**
+     * @throws InvalidResetPasswordTokenId
      * @throws WrongResetPasswordToken
      * @throws ResetPasswordTokenExpired
      * @throws InvalidModel
@@ -39,16 +45,11 @@ final class UpdatePassword
         string $plainToken,
         string $newPassword,
         string $passwordConfirmation
-    ): bool {
-        $token = $resetPasswordToken->getToken();
-        if (! password_verify($plainToken, $token)) {
-            throw new WrongResetPasswordToken();
-        }
-
-        $now = new DateTimeImmutable();
-        if ($now > $resetPasswordToken->getValidUntil()) {
-            throw new ResetPasswordTokenExpired();
-        }
+    ): User {
+        $this->verifyResetPasswordToken->verifyResetPasswordToken(
+            $resetPasswordToken->getId(),
+            $plainToken
+        );
 
         $passwordProxy = new PasswordProxy($newPassword, $passwordConfirmation);
         $user          = $resetPasswordToken->getUser();
@@ -56,8 +57,6 @@ final class UpdatePassword
         $this->userDao->updatePassword($user, $passwordProxy);
         $this->resetPasswordTokenDao->delete($resetPasswordToken);
 
-        // Do not return any relevant information
-        // of the user as this is not a secure endpoint.
-        return true;
+        return $user;
     }
 }

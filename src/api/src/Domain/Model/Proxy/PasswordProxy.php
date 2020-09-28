@@ -13,22 +13,22 @@ final class PasswordProxy
      * @Assert\Length(min=8, minMessage="min_length_8")
      * @Assert\NotCompromisedPassword(message="user.not_compromised_password")
      */
-    private string $plainPassword;
+    private string $newPassword;
 
-    /** @Assert\Expression("this.getPlainPassword() === this.getPasswordConfirmation()", message="user.wrong_password_confirmation") */
+    /** @Assert\Expression("this.getNewPassword() === this.getPasswordConfirmation()", message="user.wrong_password_confirmation") */
     private string $passwordConfirmation;
 
     public function __construct(
-        string $plainPassword,
+        string $newPassword,
         string $passwordConfirmation
     ) {
-        $this->plainPassword        = $plainPassword;
+        $this->newPassword          = $newPassword;
         $this->passwordConfirmation = $passwordConfirmation;
     }
 
-    public function getPlainPassword(): string
+    public function getNewPassword(): string
     {
-        return $this->plainPassword;
+        return $this->newPassword;
     }
 
     public function getPasswordConfirmation(): string

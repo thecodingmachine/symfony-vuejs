@@ -8,9 +8,7 @@
     img-width="200"
     img-height="134"
   >
-    <b-card-text>
-      A wonderful product!
-    </b-card-text>
+    <b-card-text> A wonderful product! </b-card-text>
     <template #footer>
       <small class="text-muted">From {{ product.company.name }}</small>
     </template>

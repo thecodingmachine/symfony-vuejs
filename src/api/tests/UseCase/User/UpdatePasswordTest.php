@@ -10,10 +10,7 @@ use App\Domain\Model\ResetPasswordToken;
 use App\Domain\Model\User;
 use App\Domain\Throwable\InvalidModel;
 use App\Tests\UseCase\DummyValues;
-use App\UseCase\User\UpdatePassword\ResetPasswordTokenExpired;
-use App\UseCase\User\UpdatePassword\UpdatePassword;
-use App\UseCase\User\UpdatePassword\WrongResetPasswordToken;
-use Safe\DateTimeImmutable;
+use App\UseCase\User\UpdatePassword;
 use TheCodingMachine\TDBM\TDBMException;
 
 use function PHPUnit\Framework\assertTrue;
@@ -33,7 +30,7 @@ beforeEach(function (): void {
     );
     $userDao->save($user);
 
-    $validUntil = new \DateTimeImmutable();
+    $validUntil = new DateTimeImmutable();
     $validUntil = $validUntil->add(new DateInterval('P1D')); // Add one day to current date time.
 
     $resetPasswordToken = new ResetPasswordToken(
@@ -68,53 +65,6 @@ it(
     }
 )
     ->throws(TDBMException::class)
-    ->group('user');
-
-it(
-    'throws an exception if wrong token',
-    function (): void {
-        $resetPasswordTokenDao = self::$container->get(ResetPasswordTokenDao::class);
-        assert($resetPasswordTokenDao instanceof  ResetPasswordTokenDao);
-        $updatePassword = self::$container->get(UpdatePassword::class);
-        assert($updatePassword instanceof UpdatePassword);
-
-        $resetPasswordToken = $resetPasswordTokenDao->getById('1');
-
-        $updatePassword->updatePassword(
-            $resetPasswordToken,
-            'bar',
-            'foobarfoo',
-            'foobarfoo'
-        );
-    }
-)
-    ->throws(WrongResetPasswordToken::class)
-    ->group('user');
-
-it(
-    'throws an exception if token expired',
-    function (): void {
-        $resetPasswordTokenDao = self::$container->get(ResetPasswordTokenDao::class);
-        assert($resetPasswordTokenDao instanceof  ResetPasswordTokenDao);
-        $updatePassword = self::$container->get(UpdatePassword::class);
-        assert($updatePassword instanceof UpdatePassword);
-
-        $resetPasswordToken = $resetPasswordTokenDao->getById('1');
-
-        $validUntil = new DateTimeImmutable();
-        $validUntil = $validUntil->sub(new DateInterval('P1D'));
-        $resetPasswordToken->setValidUntil($validUntil);
-        $resetPasswordTokenDao->save($resetPasswordToken);
-
-        $updatePassword->updatePassword(
-            $resetPasswordToken,
-            'foo',
-            'foobarfoo',
-            'foobarfoo'
-        );
-    }
-)
-    ->throws(ResetPasswordTokenExpired::class)
     ->group('user');
 
 it(

@@ -8,12 +8,9 @@
         placeholder="Enter your email"
         autofocus
         trim
+        required
         :disabled="isFormReadOnly"
-        :state="formState('email')"
       />
-      <b-form-invalid-feedback :state="formState('email')">
-        {{ formError('email') }}
-      </b-form-invalid-feedback>
     </b-form-group>
     <b-form-group
       id="input-group-password"
@@ -26,34 +23,28 @@
         type="text"
         placeholder="Enter a password"
         trim
+        required
         :disabled="isFormReadOnly"
-        :state="formState('password')"
       />
-      <b-form-invalid-feedback :state="formState('password')">
-        {{ formError('password') }}
-      </b-form-invalid-feedback>
     </b-form-group>
     <b-button type="submit" variant="primary" :disabled="isFormReadOnly">
       <b-spinner v-show="isFormReadOnly" small type="grow"></b-spinner>
       {{ isFormReadOnly ? 'Login...' : 'Login' }}
     </b-button>
-    <b-link
-      v-if="!isFormReadOnly"
-      :to="'/reset-password?email=' + this.form.email"
+    <b-link v-if="!isFormReadOnly" :to="'/reset-password?email=' + form.email"
       >I forgot my password</b-link
     >
   </b-form>
 </template>
 
 <script>
-import FormErrors from '@/mixins/form/form-errors'
-import ReadOnlyForm from '@/mixins/form/readonly-form'
+import Form from '@/mixins/form'
 import LoginMutation from '@/services/mutations/auth/login.mutation.gql'
 
 export default {
   name: 'Login',
   layout: 'box',
-  mixins: [FormErrors, ReadOnlyForm],
+  mixins: [Form],
   data() {
     return {
       form: {
@@ -76,7 +67,6 @@ export default {
         this.$router.push('/')
       } catch (e) {
         this.hydrateFormErrors(e)
-      } finally {
         this.makeFormWritable()
       }
     },

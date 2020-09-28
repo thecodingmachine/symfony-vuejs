@@ -13,11 +13,12 @@
           placeholder="Enter your email"
           autofocus
           trim
+          required
           :disabled="isFormReadOnly"
           :state="formState('email')"
         />
         <b-form-invalid-feedback :state="formState('email')">
-          {{ formError('email') }}
+          <ErrorsList :errors="formErrors('email')" />
         </b-form-invalid-feedback>
       </b-form-group>
       <b-button type="submit" variant="primary" :disabled="isFormReadOnly">
@@ -28,7 +29,7 @@
         >Back to login</b-link
       >
     </b-form>
-    <div v-if="success">
+    <div v-else>
       <p>
         If the email <i>{{ form.email }}</i> exists in our system, it has been
         delivered with instructions to help you change your password.
@@ -47,14 +48,15 @@
 </template>
 
 <script>
-import FormErrors from '@/mixins/form/form-errors'
-import ReadOnlyForm from '@/mixins/form/readonly-form'
+import Form from '@/mixins/form'
 import ResetPasswordMutation from '@/services/mutations/auth/reset_password.mutation.gql'
+import ErrorsList from '@/components/form/ErrorsList'
 
 export default {
   name: 'ResetPassword',
   layout: 'box',
-  mixins: [FormErrors, ReadOnlyForm],
+  components: { ErrorsList },
+  mixins: [Form],
   data() {
     return {
       form: {

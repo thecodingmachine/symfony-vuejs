@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\UseCase\User\UpdatePassword;
+namespace App\UseCase\User\VerifyResetPasswordToken;
 
 use App\Domain\Throwable\BusinessRule;
 use GraphQL\Error\ClientAware;
 use RuntimeException;
 
-final class ResetPasswordTokenExpired extends RuntimeException implements ClientAware, BusinessRule
+final class WrongResetPasswordToken extends RuntimeException implements ClientAware, BusinessRule
 {
     public function __construct()
     {
@@ -17,11 +17,11 @@ final class ResetPasswordTokenExpired extends RuntimeException implements Client
 
     public function isClientSafe(): bool
     {
-        return false;
+        return true;
     }
 
     public function getCategory(): string
     {
-        return 'Reset password token expired';
+        return 'verifyResetPasswordToken';
     }
 }

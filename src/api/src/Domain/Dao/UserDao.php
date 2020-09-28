@@ -58,7 +58,7 @@ class UserDao extends BaseUserDao
         $violations = $this->validator->validate($passwordProxy);
         InvalidModel::throwException($violations);
 
-        $user->setPassword($passwordProxy->getPlainPassword());
+        $user->setPassword($passwordProxy->getNewPassword());
         $this->save($user);
     }
 
