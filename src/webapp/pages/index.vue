@@ -1,53 +1,79 @@
 <template>
-  <b-overlay :show="$apollo.queries.products.loading">
-    <b-container>
+  <b-container>
+    <b-row align-h="center" class="mt-3 mb-3">
+      <b-input
+        id="inline-form-input-search"
+        v-model="search"
+        type="text"
+        placeholder="Search..."
+        autofocus
+        trim
+        :debounce="debounce"
+        @update="onSearch"
+      ></b-input>
+    </b-row>
+
+    <b-overlay :show="isLoading" rounded="sm">
       <b-row align-h="center">
-        <product-card-group :products="products.items" />
+        <product-card-group :products="items" />
       </b-row>
       <b-row align-h="center">
         <b-pagination
           v-model="currentPage"
-          :per-page="productsPerPage"
-          :total-rows="products.count"
+          :per-page="itemsPerPage"
+          :total-rows="count"
           pills
+          @input="onSearch"
+          @click.native="$scrollToTop"
         />
       </b-row>
-    </b-container>
-  </b-overlay>
+    </b-overlay>
+  </b-container>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import List, { defaultItemsPerPage } from '@/mixins/list'
 import ProductsQuery from '@/services/queries/products/products.query.gql'
-import ProductCardGroup from '@/components/route/products/ProductCardGroup'
+import ProductCardGroup from '@/components/routes/products/ProductCardGroup'
 
 export default {
   components: { ProductCardGroup },
-  data() {
-    return {
-      currentPage: 1,
-      productsPerPage: 10,
-      products: {},
+  mixins: [List],
+  async asyncData(context) {
+    try {
+      const result = await context.app.$graphql.request(ProductsQuery, {
+        search: '',
+        limit: defaultItemsPerPage,
+        offset: 0,
+      })
+
+      return {
+        items: result.products.items,
+        count: result.products.count,
+      }
+    } catch (e) {
+      context.error(e)
     }
   },
-  apollo: {
-    products: {
-      prefetch: true,
-      query: ProductsQuery,
-      variables() {
-        return {
-          search: this.currentSearch,
-          limit: this.productsPerPage,
-          offset: this.offset,
-        }
-      },
-    },
+  data() {
+    return {
+      search: '',
+    }
   },
-  computed: {
-    offset() {
-      return (this.currentPage - 1) * this.productsPerPage
+  methods: {
+    async onSearch() {
+      this.isLoading = true
+
+      const result = await this.$graphql.request(ProductsQuery, {
+        search: this.search,
+        limit: this.itemsPerPage,
+        offset: this.offset,
+      })
+
+      this.items = result.products.items
+      this.count = result.products.count
+      this.isLoading = false
     },
-    ...mapState('products', ['currentSearch']),
   },
 }
 </script>

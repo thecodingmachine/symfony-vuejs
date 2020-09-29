@@ -20,7 +20,7 @@
       <b-form-input
         id="input-password"
         v-model="form.password"
-        type="text"
+        type="password"
         placeholder="Enter a password"
         trim
         required
@@ -39,35 +39,38 @@
 
 <script>
 import Form from '@/mixins/form'
-import LoginMutation from '@/services/mutations/auth/login.mutation.gql'
+import LoginMutation from '@/services/mutations/auth/login.mutation.js'
+import EmptyStringIfUndefined from '@/services/empty-string-if-undefined'
+import { mapMutations } from 'vuex'
 
 export default {
-  name: 'Login',
   layout: 'box',
   mixins: [Form],
   data() {
     return {
       form: {
-        email: this.$route.query.email,
+        email: EmptyStringIfUndefined(this.$route.query.email),
         password: '',
       },
     }
   },
   methods: {
+    ...mapMutations('auth', ['setUser']),
     async onSubmit() {
       this.resetFormErrors()
-      this.makeFormReadOnly()
+      this.isFormReadOnly = true
 
       try {
-        await this.$graphql.request(LoginMutation, {
+        const result = await this.$graphql.request(LoginMutation, {
           userName: this.form.email,
           password: this.form.password,
         })
 
+        this.setUser(result.login)
         this.$router.push('/')
       } catch (e) {
         this.hydrateFormErrors(e)
-        this.makeFormWritable()
+        this.isFormReadOnly = false
       }
     },
   },

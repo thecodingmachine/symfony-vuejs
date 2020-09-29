@@ -69,10 +69,9 @@
 import Form from '@/mixins/form'
 import VerifyResetPasswordTokenMutation from '@/services/mutations/auth/verify_reset_password_token.mutation.gql'
 import UpdatePasswordMutation from '@/services/mutations/auth/update_password.mutation.gql'
-import ErrorsList from '@/components/form/ErrorsList'
+import ErrorsList from '@/components/forms/ErrorsList'
 
 export default {
-  name: 'UpdatePassword',
   components: { ErrorsList },
   layout: 'box',
   mixins: [Form],
@@ -110,7 +109,7 @@ export default {
   methods: {
     async onSubmit() {
       this.resetFormErrors()
-      this.makeFormReadOnly()
+      this.isFormReadOnly = true
 
       try {
         const result = await this.$graphql.request(UpdatePasswordMutation, {
@@ -124,7 +123,7 @@ export default {
         this.email = result.updatePassword.email
       } catch (e) {
         this.hydrateFormErrors(e)
-        this.makeFormWritable()
+        this.isFormReadOnly = true
       }
     },
   },

@@ -50,17 +50,17 @@
 <script>
 import Form from '@/mixins/form'
 import ResetPasswordMutation from '@/services/mutations/auth/reset_password.mutation.gql'
-import ErrorsList from '@/components/form/ErrorsList'
+import ErrorsList from '@/components/forms/ErrorsList'
+import EmptyStringIfUndefined from '@/services/empty-string-if-undefined'
 
 export default {
-  name: 'ResetPassword',
   layout: 'box',
   components: { ErrorsList },
   mixins: [Form],
   data() {
     return {
       form: {
-        email: this.$route.query.email,
+        email: EmptyStringIfUndefined(this.$route.query.email),
       },
       success: false,
     }
@@ -68,7 +68,7 @@ export default {
   methods: {
     async onSubmit() {
       this.resetFormErrors()
-      this.makeFormReadOnly()
+      this.isFormReadOnly = true
 
       try {
         await this.$graphql.request(ResetPasswordMutation, {
@@ -79,7 +79,7 @@ export default {
       } catch (e) {
         this.hydrateFormErrors(e)
       } finally {
-        this.makeFormWritable()
+        this.isFormReadOnly = false
       }
     },
 

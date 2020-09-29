@@ -16,14 +16,6 @@ export default {
     }
   },
   methods: {
-    makeFormReadOnly() {
-      this.isFormReadOnly = true
-    },
-
-    makeFormWritable() {
-      this.isFormReadOnly = false
-    },
-
     resetFormErrors() {
       this.allFormErrors = {}
     },

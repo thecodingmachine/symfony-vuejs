@@ -14,10 +14,9 @@
     "lint": "yarn lint:js && yarn lint:style"
   },
   "dependencies": {
-    "@nuxtjs/apollo": "^4.0.1-rc.3",
     "bootstrap-vue": "^2.17.0",
     "graphql": "^15.3.0",
-    "graphql-tag": "^2.10.3",
+    "graphql-tag": "^2.11.0",
     "nuxt": "^2.14.0",
     "nuxt-graphql-request": "^3.1.2"
   },

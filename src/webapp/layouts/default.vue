@@ -8,11 +8,9 @@
 </template>
 
 <script>
-import Header from '../components/common/Header'
+import Header from '@/components/layouts/Header'
+
 export default {
   components: { Header },
-  mounted() {
-    console.error(this.$store)
-  },
 }
 </script>

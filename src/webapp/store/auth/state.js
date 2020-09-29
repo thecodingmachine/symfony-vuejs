@@ -1,3 +1,12 @@
+export const defaultUserData = {
+  id: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  locale: '',
+  roles: [],
+}
+
 export default () => ({
-  currentSearch: null,
+  user: defaultUserData,
 })

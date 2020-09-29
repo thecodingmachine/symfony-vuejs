@@ -29,7 +29,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [],
+  plugins: ['@/plugins/scroll-to-top.client'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -68,6 +68,7 @@ export default {
       'CardPlugin',
       'FormInputPlugin',
       'OverlayPlugin',
+      'NavPlugin',
       'NavbarPlugin',
       'ButtonPlugin',
       'FormSelectPlugin',
@@ -82,7 +83,7 @@ export default {
     /**
      * Your GraphQL endpoint (required)
      */
-    endpoint: process.env.VUE_APP_GRAPHQL_BROWSER_HTTP,
+    endpoint: process.env.NUXT_ENV_GRAPHQL_HTTP,
 
     /**
      * Options

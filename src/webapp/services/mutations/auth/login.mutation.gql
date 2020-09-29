@@ -1,6 +1,0 @@
-mutation login($userName: String!, $password: String!){
-  login(userName: $userName, password: $password){
-    roles
-    userName
-  }
-}

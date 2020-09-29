@@ -41,8 +41,7 @@ services:
       # Host 0.0.0.0 is designated to tell Nuxt.js to resolve a host address, which is accessible to connections outside
       # of the host machine.
       HOST: "0.0.0.0"
-      VUE_APP_GRAPHQL_HTTP: "http://api/graphql"
-      VUE_APP_GRAPHQL_BROWSER_HTTP: "http://$API_SUBDOMAIN.$DOMAIN/graphql"
+      NUXT_ENV_GRAPHQL_HTTP: "http://$API_SUBDOMAIN.$DOMAIN/graphql"
     volumes:
       - ./src/webapp:/usr/src/app
 

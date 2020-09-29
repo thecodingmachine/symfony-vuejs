@@ -8,9 +8,9 @@
     img-width="200"
     img-height="134"
   >
-    <b-link :to="`/products/${product.id}`" class="card-link">
-      View product details
-    </b-link>
+    <!--    <b-link :to="`/products/${product.id}`" class="card-link">-->
+    <!--      View product details-->
+    <!--    </b-link>-->
     <template #footer>
       <small class="text-muted">From {{ product.company.name }}</small>
     </template>
