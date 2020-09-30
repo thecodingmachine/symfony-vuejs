@@ -1,6 +1,10 @@
 <template>
   <b-form @submit.stop.prevent="onSubmit">
-    <b-form-group id="input-group-email" label="Email" label-for="input-email">
+    <b-form-group
+      id="input-group-email"
+      label="Email *"
+      label-for="input-email"
+    >
       <b-form-input
         id="input-email"
         v-model="form.email"
@@ -14,7 +18,7 @@
     </b-form-group>
     <b-form-group
       id="input-group-password"
-      label="Password"
+      label="Password *"
       label-for="input-password"
     >
       <b-form-input

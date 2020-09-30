@@ -6,7 +6,7 @@
     >
       <b-form-group
         id="input-group-new-password"
-        label="New password"
+        label="New password *"
         label-for="input-new-password"
       >
         <b-form-input
@@ -26,7 +26,7 @@
       </b-form-group>
       <b-form-group
         id="input-group-password-confirmation"
-        label="Password confirmation"
+        label="Password confirmation *"
         label-for="input-password-confirmation"
       >
         <b-form-input

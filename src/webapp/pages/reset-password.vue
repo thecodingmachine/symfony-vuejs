@@ -3,7 +3,7 @@
     <b-form v-if="!success" @submit.stop.prevent="onSubmit">
       <b-form-group
         id="input-group-email"
-        label="Email"
+        label="Email *"
         label-for="input-email"
       >
         <b-form-input
