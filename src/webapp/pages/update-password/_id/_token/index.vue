@@ -48,7 +48,7 @@
         {{ isFormReadOnly ? 'Updating...' : 'Update' }}
       </b-button>
     </b-form>
-    <div v-else-if="hasTokenValidationFailed">
+    <div v-else-if="!success && hasTokenValidationFailed">
       <p>Your reset password token has either expired or is invalid.</p>
 
       <div class="d-flex justify-content-center">
@@ -123,7 +123,7 @@ export default {
         this.email = result.updatePassword.email
       } catch (e) {
         this.hydrateFormErrors(e)
-        this.isFormReadOnly = true
+        this.isFormReadOnly = false
       }
     },
   },
