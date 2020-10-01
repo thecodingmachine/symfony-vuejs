@@ -32,7 +32,8 @@
 </template>
 
 <script>
-import List, { defaultItemsPerPage } from '@/mixins/list'
+import List, { calculateOffset, defaultItemsPerPage } from '@/mixins/list'
+import defaultIfUndefined from '@/services/default-if-undefined'
 import ProductsQuery from '@/services/queries/products/products.query.gql'
 import ProductCardGroup from '@/components/pages/products/ProductCardGroup'
 
@@ -42,9 +43,12 @@ export default {
   async asyncData(context) {
     try {
       const result = await context.app.$graphql.request(ProductsQuery, {
-        search: '',
+        search: defaultIfUndefined(context.route.query.search, ''),
         limit: defaultItemsPerPage,
-        offset: 0,
+        offset: calculateOffset(
+          defaultIfUndefined(context.route.query.page, 1),
+          defaultItemsPerPage
+        ),
       })
 
       return {
@@ -57,12 +61,16 @@ export default {
   },
   data() {
     return {
-      search: '',
+      search: defaultIfUndefined(this.$route.query.search, ''),
     }
   },
   methods: {
     async onSearch() {
       this.isLoading = true
+
+      this.updateRouter({
+        search: this.search,
+      })
 
       const result = await this.$graphql.request(ProductsQuery, {
         search: this.search,

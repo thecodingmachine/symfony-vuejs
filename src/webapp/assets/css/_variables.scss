@@ -1145,8 +1145,3 @@ $secondary:       #EFDB60 !default;
 
 //$print-page-size:                   a3 !default;
 //$print-body-min-width:              map-get($grid-breakpoints, "lg") !default;
-
-// CUSTOM
-// APP
-$app-header-height:                         80px;
-$app-content-container-height:              calc(100vh - #{$app-header-height});

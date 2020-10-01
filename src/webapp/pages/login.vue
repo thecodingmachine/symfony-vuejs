@@ -50,7 +50,8 @@
 <script>
 import Form from '@/mixins/form'
 import LoginMutation from '@/services/mutations/auth/login.mutation.js'
-import EmptyStringIfUndefined from '@/services/empty-string-if-undefined'
+import defaultIfUndefined from '@/services/default-if-undefined'
+
 import { mapMutations } from 'vuex'
 
 export default {
@@ -59,7 +60,7 @@ export default {
   data() {
     return {
       form: {
-        email: EmptyStringIfUndefined(this.$route.query.email),
+        email: defaultIfUndefined(this.$route.query.email, ''),
         password: '',
       },
     }
