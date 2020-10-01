@@ -31,6 +31,9 @@
         :disabled="isFormReadOnly"
       />
     </b-form-group>
+    <b-form-invalid-feedback :state="formState('Security')" class="mb-3">
+      {{ $t('pages.login.form.error') }}
+    </b-form-invalid-feedback>
     <b-button type="submit" variant="primary" :disabled="isFormReadOnly">
       <b-spinner v-show="isFormReadOnly" small type="grow"></b-spinner>
       {{
@@ -76,7 +79,7 @@ export default {
         })
 
         this.setUser(result.login)
-        this.$router.push('/')
+        this.$router.push(this.$i18n.localePath({ name: 'index' }))
       } catch (e) {
         this.hydrateFormErrors(e)
         this.isFormReadOnly = false

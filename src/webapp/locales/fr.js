@@ -36,6 +36,7 @@ export default {
           label: 'Mot de passe',
           placeholder: 'Entrer votre mot de passe',
         },
+        error: "L'email ou le mot de passe fourni est incorrect.",
         submit: 'Se connecter',
         submitting: 'Connexion...',
         forgot_password_link: "J'ai oublié mon mot de passe",

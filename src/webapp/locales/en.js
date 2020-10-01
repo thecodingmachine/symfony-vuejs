@@ -36,6 +36,7 @@ export default {
           label: 'Password',
           placeholder: 'Enter your password',
         },
+        error: 'The provided email or password is incorrect.',
         submit: 'Login',
         submitting: 'Login...',
         forgot_password_link: 'I forgot my password',

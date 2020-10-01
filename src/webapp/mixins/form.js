@@ -36,7 +36,7 @@ export default {
             ),
           }
         } else {
-          this._formErrors = {
+          this.allFormErrors = {
             ...this.allFormErrors,
             [error.extensions.category]: appendError(
               this.allFormErrors[error.extensions.field],

@@ -1,6 +1,6 @@
 <template>
   <b-navbar toggleable="lg" type="dark" variant="primary">
-    <b-navbar-brand :to="localePath('/')"
+    <b-navbar-brand :to="localePath({ name: 'index' })"
       >Companies and Products</b-navbar-brand
     >
 
@@ -68,7 +68,7 @@ export default {
     async logout() {
       await this.$graphql.request(LogoutMutation)
       this.resetUser()
-      this.$router.push('/login')
+      this.$router.push(this.$i18n.localePath({ name: 'login' }))
     },
   },
 }
