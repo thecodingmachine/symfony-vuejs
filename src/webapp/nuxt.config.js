@@ -29,7 +29,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['@/plugins/scroll-to-top.client'],
+  plugins: ['@/plugins/i18n', '@/plugins/scroll-to-top.client'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -55,7 +55,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['bootstrap-vue/nuxt', 'nuxt-graphql-request'],
+  modules: ['bootstrap-vue/nuxt', 'nuxt-graphql-request', 'nuxt-i18n'],
   bootstrapVue: {
     icons: true,
     css: false,
@@ -105,6 +105,26 @@ export default {
      * default: false (this includes graphql-tag for node_modules folder)
      */
     includeNodeModules: true,
+  },
+  i18n: {
+    locales: [
+      { code: 'en', file: 'en.js' },
+      { code: 'fr', file: 'fr.js' },
+    ],
+    defaultLocale: process.env.DEFAULT_LOCALE,
+    strategy: 'prefix_and_default',
+    lazy: true,
+    langDir: 'locales/',
+    detectBrowserLanguage: {
+      fallbackLocale: process.env.DEFAULT_LOCALE,
+      onlyForRoot: true,
+      useCookie: true,
+      alwaysRedirect: true,
+    },
+    vuex: {
+      moduleName: 'i18n',
+      syncLocale: true,
+    },
   },
   /*
    ** Build configuration

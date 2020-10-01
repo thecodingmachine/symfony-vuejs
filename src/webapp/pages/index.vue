@@ -5,7 +5,7 @@
         id="inline-form-input-search"
         v-model="search"
         type="text"
-        placeholder="Search..."
+        :placeholder="$t('pages.root.search')"
         autofocus
         trim
         :debounce="debounce"
@@ -34,7 +34,7 @@
 <script>
 import List, { defaultItemsPerPage } from '@/mixins/list'
 import ProductsQuery from '@/services/queries/products/products.query.gql'
-import ProductCardGroup from '@/components/routes/products/ProductCardGroup'
+import ProductCardGroup from '@/components/pages/products/ProductCardGroup'
 
 export default {
   components: { ProductCardGroup },

@@ -42,6 +42,8 @@ services:
       # of the host machine.
       HOST: "0.0.0.0"
       NUXT_ENV_GRAPHQL_HTTP: "http://$API_SUBDOMAIN.$DOMAIN/graphql"
+      # i18n.
+      DEFAULT_LOCALE: "$DEFAULT_LOCALE"
     volumes:
       - ./src/webapp:/usr/src/app
 
@@ -84,13 +86,13 @@ services:
       STORAGE_ACCESS_KEY: '$STORAGE_ACCESS_KEY'
       STORAGE_SECRET_KEY: '$STORAGE_SECRET_KEY'
       # i18n.
-      DEFAULT_LOCALE: "en"
+      DEFAULT_LOCALE: "$DEFAULT_LOCALE"
       # Mailer.
       MAILER_DSN: "smtp://null:null@mailhog:1025"
       MAIL_FROM_ADDRESS: "no-reply@$DOMAIN"
       MAIL_FROM_NAME: "Companies and products"
       MAIL_WEBAPP_URL: "http://$DOMAIN/"
-      MAIL_WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT: "update-password/%s/%s"
+      MAIL_WEBAPP_UPDATE_PASSWORD_ROUTE_FORMAT: "%s/update-password/%s/%s" # {locale}/update-password/{resetPasswordTokenId}/{plainToken}
     volumes:
       - ./src/api:/var/www/html
     networks:

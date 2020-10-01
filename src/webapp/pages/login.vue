@@ -2,14 +2,14 @@
   <b-form @submit.stop.prevent="onSubmit">
     <b-form-group
       id="input-group-email"
-      label="Email *"
+      :label="$t('pages.login.form.email.label') + ' *'"
       label-for="input-email"
     >
       <b-form-input
         id="input-email"
         v-model="form.email"
         type="text"
-        placeholder="Enter your email"
+        :placeholder="$t('pages.login.form.email.placeholder')"
         autofocus
         trim
         required
@@ -18,14 +18,14 @@
     </b-form-group>
     <b-form-group
       id="input-group-password"
-      label="Password *"
+      :label="$t('pages.login.form.password.label') + ' *'"
       label-for="input-password"
     >
       <b-form-input
         id="input-password"
         v-model="form.password"
         type="password"
-        placeholder="Enter a password"
+        :placeholder="$t('pages.login.form.password.placeholder')"
         trim
         required
         :disabled="isFormReadOnly"
@@ -33,10 +33,16 @@
     </b-form-group>
     <b-button type="submit" variant="primary" :disabled="isFormReadOnly">
       <b-spinner v-show="isFormReadOnly" small type="grow"></b-spinner>
-      {{ isFormReadOnly ? 'Login...' : 'Login' }}
+      {{
+        isFormReadOnly
+          ? $t('pages.login.form.submitting')
+          : $t('pages.login.form.submit')
+      }}
     </b-button>
-    <b-link v-if="!isFormReadOnly" :to="'/reset-password?email=' + form.email"
-      >I forgot my password</b-link
+    <b-link
+      v-if="!isFormReadOnly"
+      :to="localePath('/reset-password?email=' + form.email)"
+      >{{ $t('pages.login.form.forgot_password_link') }}</b-link
     >
   </b-form>
 </template>

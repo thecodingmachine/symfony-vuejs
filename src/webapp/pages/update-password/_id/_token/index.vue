@@ -6,14 +6,16 @@
     >
       <b-form-group
         id="input-group-new-password"
-        label="New password *"
+        :label="$t('pages.update_password.form.new_password.label') + ' *'"
         label-for="input-new-password"
       >
         <b-form-input
           id="input-new-password"
           v-model="form.newPassword"
           type="password"
-          placeholder="Enter your new password"
+          :placeholder="
+            $t('pages.update_password.form.new_password.placeholder')
+          "
           autofocus
           trim
           required
@@ -26,14 +28,18 @@
       </b-form-group>
       <b-form-group
         id="input-group-password-confirmation"
-        label="Password confirmation *"
+        :label="
+          $t('pages.update_password.form.password_confirmation.label') + ' *'
+        "
         label-for="input-password-confirmation"
       >
         <b-form-input
           id="input-password-confirmation"
           v-model="form.passwordConfirmation"
           type="password"
-          placeholder="Enter again your new password"
+          :placeholder="
+            $t('pages.update_password.form.password_confirmation.placeholder')
+          "
           trim
           required
           :disabled="isFormReadOnly"
@@ -45,21 +51,29 @@
       </b-form-group>
       <b-button type="submit" variant="primary" :disabled="isFormReadOnly">
         <b-spinner v-show="isFormReadOnly" small type="grow"></b-spinner>
-        {{ isFormReadOnly ? 'Updating...' : 'Update' }}
+        {{
+          isFormReadOnly
+            ? $t('pages.update_password.form.submitting')
+            : $t('pages.update_password.form.submit')
+        }}
       </b-button>
     </b-form>
     <div v-else-if="!success && hasTokenValidationFailed">
-      <p>Your reset password token has either expired or is invalid.</p>
+      <p>{{ $t('pages.update_password.invalid_token') }}</p>
 
       <div class="d-flex justify-content-center">
-        <b-link :to="'/reset-password'">Retry</b-link>
+        <b-link :to="localePath('/reset-password')">{{
+          $t('pages.update_password.retry_link')
+        }}</b-link>
       </div>
     </div>
     <div v-else>
-      <p>Your password has been updated!</p>
+      <p>{{ $t('pages.update_password.success') }}</p>
 
       <div class="d-flex justify-content-center">
-        <b-link :to="'/login?email=' + email">Login</b-link>
+        <b-link :to="localePath('/login?email=' + email)">{{
+          $t('pages.update_password.login_link')
+        }}</b-link>
       </div>
     </div>
   </div>

@@ -1,12 +1,8 @@
 <template>
-  <b-navbar
-    sticky
-    class="app-header"
-    toggleable="lg"
-    type="dark"
-    variant="primary"
-  >
-    <b-navbar-brand href="#">My products app</b-navbar-brand>
+  <b-navbar toggleable="lg" type="dark" variant="primary">
+    <b-navbar-brand :to="localePath('/')"
+      >Companies and Products</b-navbar-brand
+    >
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -16,22 +12,35 @@
           <template #button-content>
             <em>{{ user.firstName + ' ' + user.lastName }}</em>
           </template>
-          <b-dropdown-item href="#" @click="logout">Sign Out</b-dropdown-item>
+          <b-dropdown-item href="#" @click="logout">{{
+            $t('components.layouts.header.logout_link')
+          }}</b-dropdown-item>
         </b-nav-item-dropdown>
-        <b-nav-item v-if="!isAuthenticated" right to="/login">Login</b-nav-item>
-        <b-nav-item v-if="!isAuthenticated" right to="/sign-in"
-          >Sign In</b-nav-item
+        <b-nav-item
+          v-if="!isAuthenticated"
+          right
+          :to="localePath('/login')"
+          :active="$route.path === localePath('/login')"
+          >{{ $t('components.layouts.header.login_link') }}</b-nav-item
+        >
+        <b-nav-item
+          v-if="!isAuthenticated"
+          right
+          :to="localePath('/create-account')"
+          :active="$route.path === localePath('/create-account')"
+          >{{ $t('components.layouts.header.create_account_link') }}</b-nav-item
         >
         <b-nav-item-dropdown right>
           <template #button-content>
-            {{ activeLocaleUppercase }}
+            {{ currentLocale }}
           </template>
           <b-dropdown-item
-            v-for="(locale, index) in localesUppercase"
-            :key="index"
-            :active="locale === activeLocaleUppercase"
+            v-for="locale in availableLocales"
+            :key="locale.code"
+            :active="locale.code === currentLocale"
+            :to="switchLocalePath(locale.code)"
           >
-            {{ locale }}
+            {{ locale.code }}
           </b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -47,7 +56,12 @@ export default {
   computed: {
     ...mapState('auth', ['user']),
     ...mapGetters('auth', ['isAuthenticated']),
-    ...mapGetters('i18n', ['activeLocaleUppercase', 'localesUppercase']),
+    availableLocales() {
+      return this.$i18n.locales.filter((i) => i.code !== this.$i18n.locale)
+    },
+    currentLocale() {
+      return this.$i18n.locale
+    },
   },
   methods: {
     ...mapMutations('auth', ['resetUser']),

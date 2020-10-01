@@ -8,16 +8,21 @@
     img-width="200"
     img-height="134"
   >
-    <b-card-text> A wonderful product! </b-card-text>
+    <!--    <b-link :to="`/products/${product.id}`" class="card-link">-->
+    <!--      View product details-->
+    <!--    </b-link>-->
     <template #footer>
-      <small class="text-muted">From {{ product.company.name }}</small>
+      <small class="text-muted"
+        >{{ $t('components.pages.products.product_card.from') }}
+        {{ product.company.name }}</small
+      >
     </template>
   </b-card>
 </template>
 
 <script>
 export default {
-  name: 'ProductCardDetails',
+  name: 'ProductCard',
   props: {
     product: {
       type: Object,

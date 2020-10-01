@@ -1,6 +1,7 @@
 <template>
-  <div style="height: 100vh">
-    <b-container class="h-100 d-flex align-items-center justify-content-center">
+  <div>
+    <Header />
+    <b-container class="mt-3 d-flex align-items-center justify-content-center">
       <b-row align-h="center" align-v="center">
         <div class="d-flex flex-column bg-white p-5">
           <Nuxt />
@@ -9,3 +10,11 @@
     </b-container>
   </div>
 </template>
+
+<script>
+import Header from '@/components/layouts/Header'
+
+export default {
+  components: { Header },
+}
+</script>

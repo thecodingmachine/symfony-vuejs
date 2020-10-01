@@ -22,8 +22,12 @@ final class ResetPassword
     private CreateResetPasswordEmail $createResetPasswordEmail;
     private MailerInterface $mailer;
 
-    public function __construct(UserDao $userDao, ResetPasswordTokenDao $resetPasswordTokenDao, CreateResetPasswordEmail $createResetPasswordEmail, MailerInterface $mailer)
-    {
+    public function __construct(
+        UserDao $userDao,
+        ResetPasswordTokenDao $resetPasswordTokenDao,
+        CreateResetPasswordEmail $createResetPasswordEmail,
+        MailerInterface $mailer
+    ) {
         $this->userDao                  = $userDao;
         $this->resetPasswordTokenDao    = $resetPasswordTokenDao;
         $this->createResetPasswordEmail = $createResetPasswordEmail;

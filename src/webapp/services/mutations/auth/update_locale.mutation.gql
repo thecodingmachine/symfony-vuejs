@@ -1,0 +1,5 @@
+mutation updateLocale($locale: Locale!) {
+  updateLocale(locale: $locale) {
+    locale
+  }
+}

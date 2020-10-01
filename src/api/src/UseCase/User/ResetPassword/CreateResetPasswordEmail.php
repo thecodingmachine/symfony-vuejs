@@ -29,6 +29,7 @@ final class CreateResetPasswordEmail extends CreateEmail
                     $this->parameters->get('app.mail_webapp_url') .
                     sprintf(
                         $this->parameters->get('app.mail_webapp_update_password_route_format'),
+                        $user->getLocale(),
                         $resetPasswordToken->getId(),
                         $plainToken
                     ),

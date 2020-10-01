@@ -3,14 +3,14 @@
     <b-form v-if="!success" @submit.stop.prevent="onSubmit">
       <b-form-group
         id="input-group-email"
-        label="Email *"
+        :label="$t('pages.reset_password.form.email.label') + ' *'"
         label-for="input-email"
       >
         <b-form-input
           id="input-email"
           v-model="form.email"
           type="text"
-          placeholder="Enter your email"
+          :placeholder="$t('pages.reset_password.form.email.placeholder')"
           autofocus
           trim
           required
@@ -23,24 +23,33 @@
       </b-form-group>
       <b-button type="submit" variant="primary" :disabled="isFormReadOnly">
         <b-spinner v-show="isFormReadOnly" small type="grow"></b-spinner>
-        {{ isFormReadOnly ? 'Sending...' : 'Send email' }}
+        {{
+          isFormReadOnly
+            ? $t('pages.reset_password.form.submitting')
+            : $t('pages.reset_password.form.submit')
+        }}
       </b-button>
-      <b-link v-if="!isFormReadOnly" :to="'/login?email=' + form.email"
-        >Back to login</b-link
+      <b-link
+        v-if="!isFormReadOnly"
+        :to="localePath('/login?email=' + form.email)"
+        >{{ $t('pages.reset_password.login_link') }}</b-link
       >
     </b-form>
     <div v-else>
       <p>
-        If the email <i>{{ form.email }}</i> exists in our system, it has been
-        delivered with instructions to help you change your password.
+        {{ $t('pages.reset_password.success', { email: form.email }) }}
       </p>
 
       <b-nav align="center">
         <b-nav-item>
-          <b-link :to="'/login?email=' + form.email">Login</b-link>
+          <b-link :to="localePath('/login?email=' + form.email)">{{
+            $t('pages.reset_password.login_link')
+          }}</b-link>
         </b-nav-item>
         <b-nav-item>
-          <b-link @click="resetForm">Retry</b-link>
+          <b-link @click="resetForm">{{
+            $t('pages.reset_password.retry_link')
+          }}</b-link>
         </b-nav-item>
       </b-nav>
     </div>

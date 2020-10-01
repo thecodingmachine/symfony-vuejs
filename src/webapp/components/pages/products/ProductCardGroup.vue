@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import ProductCard from '@/components/routes/products/ProductCard.vue'
+import ProductCard from '@/components/pages/products/ProductCard.vue'
 
 export default {
   name: 'ProductCardGroup',
