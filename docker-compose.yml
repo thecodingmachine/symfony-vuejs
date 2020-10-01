@@ -65,6 +65,9 @@ services:
       STARTUP_COMMAND_4: "php bin/console app:init-storage:minio"
       # Symfony.
       APP_ENV: "dev"
+      # Note: in your remote environments, make sure you do not change
+      # the value of APP_SECRET between deployments. Otherwise, password
+      # verification will not work anymore.
       APP_SECRET: "$APP_SECRET"
       # CORS.
       CORS_ALLOW_ORIGIN: "http://$DOMAIN" # Never use "*": https://stackoverflow.com/questions/52060784/graphql-and-csrf-protection.
