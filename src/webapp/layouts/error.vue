@@ -6,9 +6,13 @@
       <b-col
         class="d-flex flex-column justify-content-center align-items-center"
       >
-        <h1 v-if="error.statusCode === 404">Page not found</h1>
-        <h1 v-else>An error occurred</h1>
-        <b-link to="/">Home page</b-link>
+        <h1 v-if="error.statusCode === 404">
+          {{ $t('layouts.error.not_found') }}
+        </h1>
+        <h1 v-else>{{ $t('layouts.error.generic') }}</h1>
+        <b-link :to="localePath('/')">{{
+          $t('layouts.error.home_page_link')
+        }}</b-link>
       </b-col>
       <b-col
         class="d-flex flex-column justify-content-center align-items-center"

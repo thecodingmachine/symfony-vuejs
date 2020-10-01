@@ -15,6 +15,13 @@ export default {
       },
     },
   },
+  layouts: {
+    error: {
+      generic: 'An error occurred',
+      not_found: 'Page not found',
+      home_page_link: 'Home page',
+    },
+  },
   pages: {
     root: {
       search: 'Search...',
