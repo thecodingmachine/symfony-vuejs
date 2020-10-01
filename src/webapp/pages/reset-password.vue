@@ -60,7 +60,7 @@
 import Form from '@/mixins/form'
 import ResetPasswordMutation from '@/services/mutations/auth/reset_password.mutation.gql'
 import ErrorsList from '@/components/forms/ErrorsList'
-import defaultIfUndefined from '@/services/default-if-undefined'
+import { defaultIfNilOrEmpty } from '@/services/default-if'
 
 export default {
   layout: 'box',
@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       form: {
-        email: defaultIfUndefined(this.$route.query.email, ''),
+        email: defaultIfNilOrEmpty(this.$route.query.email, ''),
       },
       success: false,
     }

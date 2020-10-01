@@ -3,7 +3,7 @@
     <b-row align-h="center" class="mt-3 mb-3">
       <b-input
         id="inline-form-input-search"
-        v-model="search"
+        v-model="filters.search"
         type="text"
         :placeholder="$t('pages.root.search')"
         autofocus
@@ -23,7 +23,7 @@
           :per-page="itemsPerPage"
           :total-rows="count"
           pills
-          @input="onSearch"
+          @change="onPaginate"
           @click.native="$scrollToTop"
         />
       </b-row>
@@ -33,7 +33,7 @@
 
 <script>
 import List, { calculateOffset, defaultItemsPerPage } from '@/mixins/list'
-import defaultIfUndefined from '@/services/default-if-undefined'
+import { defaultIfNilOrEmpty } from '@/services/default-if'
 import ProductsQuery from '@/services/queries/products/products.query.gql'
 import ProductCardGroup from '@/components/pages/products/ProductCardGroup'
 
@@ -43,10 +43,10 @@ export default {
   async asyncData(context) {
     try {
       const result = await context.app.$graphql.request(ProductsQuery, {
-        search: defaultIfUndefined(context.route.query.search, ''),
+        search: defaultIfNilOrEmpty(context.route.query.search, ''),
         limit: defaultItemsPerPage,
         offset: calculateOffset(
-          defaultIfUndefined(context.route.query.page, 1),
+          defaultIfNilOrEmpty(context.route.query.page, 1),
           defaultItemsPerPage
         ),
       })
@@ -61,19 +61,18 @@ export default {
   },
   data() {
     return {
-      search: defaultIfUndefined(this.$route.query.search, ''),
+      filters: {
+        search: defaultIfNilOrEmpty(this.$route.query.search, ''),
+      },
     }
   },
   methods: {
-    async onSearch() {
+    async doSearch() {
       this.isLoading = true
-
-      this.updateRouter({
-        search: this.search,
-      })
+      this.updateRouter()
 
       const result = await this.$graphql.request(ProductsQuery, {
-        search: this.search,
+        search: this.filters.search,
         limit: this.itemsPerPage,
         offset: this.offset,
       })

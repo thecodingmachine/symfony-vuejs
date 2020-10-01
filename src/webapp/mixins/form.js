@@ -1,4 +1,4 @@
-import defaultIfUndefined from '@/services/default-if-undefined'
+import { defaultIfNilOrEmpty } from '@/services/default-if'
 
 function appendError(array, error) {
   if (typeof array === 'undefined') {
@@ -21,7 +21,6 @@ export default {
     resetFormErrors() {
       this.allFormErrors = {}
     },
-
     hydrateFormErrors(e) {
       if (typeof e.response.errors === 'undefined') {
         // The error must be thrown to be handled by our
@@ -49,17 +48,14 @@ export default {
         }
       })
     },
-
     formState(key) {
       return typeof this.allFormErrors[key] === 'undefined' ? null : false
     },
-
     hasFormErrors(key) {
       return typeof this.allFormErrors[key] !== 'undefined'
     },
-
     formErrors(key) {
-      return defaultIfUndefined(this.allFormErrors[key], [])
+      return defaultIfNilOrEmpty(this.allFormErrors[key], [])
     },
   },
 }
