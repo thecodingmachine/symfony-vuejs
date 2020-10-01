@@ -62,7 +62,7 @@
       <p>{{ $t('pages.update_password.invalid_token') }}</p>
 
       <div class="d-flex justify-content-center">
-        <b-link :to="localePath('/reset-password')">{{
+        <b-link :to="localePath({ name: 'reset-password' })">{{
           $t('pages.update_password.retry_link')
         }}</b-link>
       </div>
@@ -71,7 +71,7 @@
       <p>{{ $t('pages.update_password.success') }}</p>
 
       <div class="d-flex justify-content-center">
-        <b-link :to="localePath('/login?email=' + email)">{{
+        <b-link :to="localePath({ name: 'login' })">{{
           $t('pages.update_password.login_link')
         }}</b-link>
       </div>

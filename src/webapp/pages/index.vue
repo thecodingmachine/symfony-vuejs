@@ -33,7 +33,6 @@
 
 <script>
 import List, { calculateOffset, defaultItemsPerPage } from '@/mixins/list'
-import { defaultIfNilOrEmpty } from '@/services/default-if'
 import ProductsQuery from '@/services/queries/products/products.query.gql'
 import ProductCardGroup from '@/components/pages/products/ProductCardGroup'
 
@@ -43,10 +42,10 @@ export default {
   async asyncData(context) {
     try {
       const result = await context.app.$graphql.request(ProductsQuery, {
-        search: defaultIfNilOrEmpty(context.route.query.search, ''),
+        search: context.route.query.search || '',
         limit: defaultItemsPerPage,
         offset: calculateOffset(
-          defaultIfNilOrEmpty(context.route.query.page, 1),
+          context.route.query.page || 1,
           defaultItemsPerPage
         ),
       })
@@ -62,7 +61,7 @@ export default {
   data() {
     return {
       filters: {
-        search: defaultIfNilOrEmpty(this.$route.query.search, ''),
+        search: this.$route.query.search || '',
       },
     }
   },

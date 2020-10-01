@@ -1,5 +1,3 @@
-import { defaultIfNilOrEmpty } from '@/services/default-if'
-
 export function calculateOffset(currentPage, itemsPerPage) {
   return (currentPage - 1) * itemsPerPage
 }
@@ -21,7 +19,7 @@ export default {
       // The current page.
       // You should not update it directly but use onPaginate(page) or
       // onSearch() instead.
-      currentPage: defaultIfNilOrEmpty(this.$route.query.page, 1),
+      currentPage: this.$route.query.page || 1,
       // In your component, you should set this value to true when waiting
       // for your query result and to false when the query is done.
       // You should use it in your template block to display a loader.
@@ -43,7 +41,7 @@ export default {
     // Set the current page and call doSearch().
     // You should call it wherever your user can paginate the list.
     onPaginate(page) {
-      this.currentPage = defaultIfNilOrEmpty(page, 1)
+      this.currentPage = page
       this.doSearch()
     },
     // Reset the current page and call doSearch().

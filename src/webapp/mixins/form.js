@@ -1,5 +1,3 @@
-import { defaultIfNilOrEmpty } from '@/services/default-if'
-
 function appendError(array, error) {
   if (typeof array === 'undefined') {
     array = []
@@ -55,7 +53,7 @@ export default {
       return typeof this.allFormErrors[key] !== 'undefined'
     },
     formErrors(key) {
-      return defaultIfNilOrEmpty(this.allFormErrors[key], [])
+      return this.allFormErrors[key] || []
     },
   },
 }

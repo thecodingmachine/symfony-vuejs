@@ -31,7 +31,7 @@
       </b-button>
       <b-link
         v-if="!isFormReadOnly"
-        :to="localePath('/login?email=' + form.email)"
+        :to="localePath({ name: 'login', query: { email: form.email } })"
         >{{ $t('pages.reset_password.login_link') }}</b-link
       >
     </b-form>
@@ -42,9 +42,10 @@
 
       <b-nav align="center">
         <b-nav-item>
-          <b-link :to="localePath('/login?email=' + form.email)">{{
-            $t('pages.reset_password.login_link')
-          }}</b-link>
+          <b-link
+            :to="localePath({ name: 'login', query: { email: form.email } })"
+            >{{ $t('pages.reset_password.login_link') }}</b-link
+          >
         </b-nav-item>
         <b-nav-item>
           <b-link @click="resetForm">{{
@@ -60,7 +61,6 @@
 import Form from '@/mixins/form'
 import ResetPasswordMutation from '@/services/mutations/auth/reset_password.mutation.gql'
 import ErrorsList from '@/components/forms/ErrorsList'
-import { defaultIfNilOrEmpty } from '@/services/default-if'
 
 export default {
   layout: 'box',
@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       form: {
-        email: defaultIfNilOrEmpty(this.$route.query.email, ''),
+        email: this.$route.query.email || '',
       },
       success: false,
     }

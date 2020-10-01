@@ -10,7 +10,7 @@
           {{ $t('layouts.error.not_found') }}
         </h1>
         <h1 v-else>{{ $t('layouts.error.generic') }}</h1>
-        <b-link :to="localePath('/')">{{
+        <b-link :to="localePath({ name: 'index' })">{{
           $t('layouts.error.home_page_link')
         }}</b-link>
       </b-col>

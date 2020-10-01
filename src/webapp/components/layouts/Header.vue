@@ -19,15 +19,15 @@
         <b-nav-item
           v-if="!isAuthenticated"
           right
-          :to="localePath('/login')"
-          :active="$route.path === localePath('/login')"
+          :to="localePath({ name: 'login' })"
+          :active="$route.path === localePath({ name: 'login' })"
           >{{ $t('components.layouts.header.login_link') }}</b-nav-item
         >
         <b-nav-item
           v-if="!isAuthenticated"
           right
-          :to="localePath('/create-account')"
-          :active="$route.path === localePath('/create-account')"
+          :to="localePath({ name: 'create-account' })"
+          :active="$route.path === localePath({ name: 'create-account' })"
           >{{ $t('components.layouts.header.create_account_link') }}</b-nav-item
         >
         <b-nav-item-dropdown right>

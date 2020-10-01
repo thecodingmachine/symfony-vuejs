@@ -41,7 +41,7 @@
     </b-button>
     <b-link
       v-if="!isFormReadOnly"
-      :to="localePath('/reset-password?email=' + form.email)"
+      :to="localePath({ name: 'reset-password', query: { email: form.email } })"
       >{{ $t('pages.login.form.forgot_password_link') }}</b-link
     >
   </b-form>
@@ -50,7 +50,6 @@
 <script>
 import Form from '@/mixins/form'
 import LoginMutation from '@/services/mutations/auth/login.mutation.js'
-import { defaultIfNilOrEmpty } from '@/services/default-if'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -59,7 +58,7 @@ export default {
   data() {
     return {
       form: {
-        email: defaultIfNilOrEmpty(this.$route.query.email, ''),
+        email: this.$route.query.email || '',
         password: '',
       },
     }
