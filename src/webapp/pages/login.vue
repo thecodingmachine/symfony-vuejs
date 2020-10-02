@@ -58,12 +58,14 @@ import { mapMutations } from 'vuex'
 export default {
   layout: 'box',
   mixins: [Form],
+  middleware: ['redirect-if-authenticated'],
   data() {
     return {
       form: {
         email: this.$route.query.email || '',
         password: '',
       },
+      redirect: this.$route.query.redirect || '',
     }
   },
   methods: {
@@ -79,7 +81,12 @@ export default {
         })
 
         this.setUser(result.login)
-        this.$router.push(this.localePath({ name: 'index' }))
+
+        if (this.redirect !== '') {
+          this.$router.push(this.redirect)
+        } else {
+          this.$router.push(this.localePath({ name: 'index' }))
+        }
       } catch (e) {
         this.hydrateFormErrors(e)
         this.isFormReadOnly = false

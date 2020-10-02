@@ -171,6 +171,10 @@ class User extends BaseUser implements UserInterface, Serializable, EquatableInt
 
     public function serialize(): string
     {
+        if ($this->userNameFromSerialize === null) {
+            $this->userNameFromSerialize = $this->getEmail();
+        }
+
         return serialize([$this->userNameFromSerialize]);
     }
 

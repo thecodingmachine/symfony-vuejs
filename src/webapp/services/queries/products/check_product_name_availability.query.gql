@@ -1,3 +1,0 @@
-query CheckProductNameAvailability($name: String!) {
-  checkProductNameAvailability(name: $name)
-}

@@ -5,7 +5,9 @@ export default {
     const result = await this.app.$graphql.request(MeQuery)
 
     if (result.me) {
-      commit('auth/setUser', result.me)
+      commit('setUser', result.me)
+    } else {
+      commit('resetUser')
     }
   },
 }

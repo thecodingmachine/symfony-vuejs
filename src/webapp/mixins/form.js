@@ -20,7 +20,11 @@ export default {
       this.allFormErrors = {}
     },
     hydrateFormErrors(e) {
-      if (typeof e.response.errors === 'undefined') {
+      if (
+        typeof e === 'undefined' ||
+        typeof e.response === 'undefined' ||
+        typeof e.response.errors === 'undefined'
+      ) {
         // The error must be thrown to be handled by our
         // "error" layout.
         throw e

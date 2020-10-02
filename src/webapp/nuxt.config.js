@@ -49,13 +49,18 @@ export default {
    ** ROUTER
    */
   router: {
-    middleware: ['authenticated'],
+    middleware: ['is-authenticated'],
   },
 
   /*
    ** Nuxt.js modules
    */
-  modules: ['bootstrap-vue/nuxt', 'nuxt-graphql-request', 'nuxt-i18n'],
+  modules: [
+    'bootstrap-vue/nuxt',
+    'nuxt-graphql-request',
+    'nuxt-i18n',
+    'cookie-universal-nuxt',
+  ],
   bootstrapVue: {
     icons: true,
     css: false,

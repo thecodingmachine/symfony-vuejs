@@ -10,6 +10,7 @@ framework:
         cookie_secure: auto
         #cookie_samesite: lax # CORS requests and SameSite cookies issue: https://github.com/whatwg/fetch/issues/769.
         cookie_samesite: null
+        cookie_domain: '%env(COOKIE_DOMAIN)%'
 
     #esi: true
     #fragments: true

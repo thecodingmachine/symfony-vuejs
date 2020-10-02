@@ -66,6 +66,7 @@ export default {
   layout: 'box',
   components: { ErrorsList },
   mixins: [Form],
+  middleware: ['redirect-if-authenticated'],
   data() {
     return {
       form: {

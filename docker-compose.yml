@@ -69,6 +69,7 @@ services:
       # the value of APP_SECRET between deployments. Otherwise, password
       # verification will not work anymore.
       APP_SECRET: "$APP_SECRET"
+      COOKIE_DOMAIN: ".$DOMAIN"
       # CORS.
       CORS_ALLOW_ORIGIN: "http://$DOMAIN" # Never use "*": https://stackoverflow.com/questions/52060784/graphql-and-csrf-protection.
       # Logging.
