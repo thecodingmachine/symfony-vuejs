@@ -1,8 +1,11 @@
-import MeQuery from '@/services/queries/auth/me.query.gql'
+import MeQuery from '@/services/queries/auth/me.query.js'
 
 export default {
   async me({ commit }) {
-    const { data } = await this.app.$graphql.request(MeQuery)
-    return data
+    const result = await this.app.$graphql.request(MeQuery)
+
+    if (result.me) {
+      commit('auth/setUser', result.me)
+    }
   },
 }

@@ -48,9 +48,9 @@ export default {
   /*
    ** ROUTER
    */
-  /* router: {
+  router: {
     middleware: ['authenticated'],
-  }, */
+  },
 
   /*
    ** Nuxt.js modules

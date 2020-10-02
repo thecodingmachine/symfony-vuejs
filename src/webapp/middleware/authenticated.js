@@ -1,6 +1,3 @@
-export default async function ({ app, redirect }) {
-  const { me } = await app.store.dispatch('auth/me')
-  if (!me) {
-    return redirect('/login')
-  }
+export default async function ({ app }) {
+  await app.store.dispatch('auth/me')
 }

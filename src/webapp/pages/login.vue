@@ -79,7 +79,7 @@ export default {
         })
 
         this.setUser(result.login)
-        this.$router.push(this.$i18n.localePath({ name: 'index' }))
+        this.$router.push(this.localePath({ name: 'index' }))
       } catch (e) {
         this.hydrateFormErrors(e)
         this.isFormReadOnly = false

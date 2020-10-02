@@ -30,7 +30,7 @@ export default {
       form: {
         email: {
           label: 'Email',
-          placeholder: 'Entrer votre e-mail',
+          placeholder: 'Entrer votre email',
         },
         password: {
           label: 'Mot de passe',
