@@ -184,6 +184,15 @@
     "lorenzo/pinky": {
         "version": "1.0.5"
     },
+    "maennchen/zipstream-php": {
+        "version": "2.1.0"
+    },
+    "markbaker/complex": {
+        "version": "1.5.0"
+    },
+    "markbaker/matrix": {
+        "version": "1.2.1"
+    },
     "monolog/monolog": {
         "version": "2.0.2"
     },
@@ -303,6 +312,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.1.0"
+    },
+    "phpoffice/phpspreadsheet": {
+        "version": "1.14.1"
     },
     "phpspec/prophecy": {
         "version": "v1.10.3"

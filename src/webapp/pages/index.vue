@@ -42,7 +42,7 @@ export default {
   async asyncData(context) {
     try {
       const result = await context.app.$graphql.request(ProductsQuery, {
-        search: context.route.query.search || '',
+        search: context.route.query.search || null,
         limit: defaultItemsPerPage,
         offset: calculateOffset(
           context.route.query.page || 1,
@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       filters: {
-        search: this.$route.query.search || '',
+        search: this.$route.query.search || null,
       },
     }
   },

@@ -1,4 +1,4 @@
-query Companies {
+query companies {
   companies {
     items {
       id

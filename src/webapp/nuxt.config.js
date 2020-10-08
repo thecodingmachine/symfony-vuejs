@@ -45,6 +45,14 @@ export default {
     '@nuxtjs/stylelint-module',
   ],
 
+  publicRuntimeConfig: {
+    apiURL: process.env.API_URL,
+  },
+
+  privateRuntimeConfig: {
+    // Secrets.
+  },
+
   /*
    ** ROUTER
    */
@@ -80,6 +88,9 @@ export default {
       'FormGroupPlugin',
       'ImagePlugin',
       'SpinnerPlugin',
+      'TablePlugin',
+      'ButtonPlugin',
+      'BreadcrumbPlugin',
     ],
     directivePlugins: [],
   },
@@ -88,7 +99,7 @@ export default {
     /**
      * Your GraphQL endpoint (required)
      */
-    endpoint: process.env.NUXT_ENV_GRAPHQL_HTTP,
+    endpoint: process.env.GRAPHQL_URL,
 
     /**
      * Options

@@ -8,6 +8,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+use function strlen;
+
 final class LocaleSubscriber implements EventSubscriberInterface
 {
     private string $defaultLocale;
@@ -19,9 +21,9 @@ final class LocaleSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        $request  = $event->getRequest();
-        $locale   = $request->headers->get('Accept-Language');
-        $locale ??= $this->defaultLocale;
+        $request = $event->getRequest();
+        $locale  = $request->headers->get('Accept-Language');
+        $locale  =  $locale === null || strlen($locale) !== 2 ? $this->defaultLocale : $locale;
         $request->setLocale($locale);
     }
 

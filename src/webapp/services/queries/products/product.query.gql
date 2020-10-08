@@ -1,4 +1,4 @@
-query Product($id: String!) {
+query product($id: String!) {
   product(product: {id: $id}) {
     name
     price

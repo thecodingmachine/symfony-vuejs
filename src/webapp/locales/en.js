@@ -1,10 +1,16 @@
 export default {
+  common: {
+    first_name: 'First name',
+    last_name: 'Last name',
+    email: 'Email',
+    locale: 'Locale',
+    role: 'Role',
+  },
   components: {
     layouts: {
       header: {
         logout_link: 'Logout',
         login_link: 'Login',
-        create_account_link: 'Create an account',
       },
     },
     pages: {
@@ -20,6 +26,15 @@ export default {
       generic: 'An error occurred',
       not_found: 'Page not found',
       home_page_link: 'Home page',
+    },
+  },
+  mixins: {
+    roles: {
+      all: 'All',
+      select: 'Select a role',
+      administrator: 'Administrator',
+      merchant: 'Merchant',
+      client: 'Client',
     },
   },
   pages: {
@@ -73,6 +88,16 @@ export default {
       retry_link: 'Retry',
       success: 'Your password has been updated.',
       login_link: 'Login',
+    },
+    admin: {
+      users: {
+        title: 'Users list',
+        form: {
+          search: 'Search...',
+          role: 'Role',
+          export: 'Export',
+        },
+      },
     },
   },
 }

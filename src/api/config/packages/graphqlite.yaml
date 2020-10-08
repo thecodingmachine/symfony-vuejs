@@ -5,4 +5,4 @@ graphqlite:
     types:
       - App\Domain\Model\
       - App\Domain\Dao\
-      - App\Infrastructure\Security\
+      - App\Domain\Enum\

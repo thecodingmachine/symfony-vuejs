@@ -1,0 +1,13 @@
+query users($search: String, $role: Role, $sortBy: UsersSortBy, $sortOrder: SortOrder, $limit: Int!, $offset: Int!) {
+  users(search: $search, role: $role, sortBy: $sortBy, sortOrder: $sortOrder) {
+    items(limit: $limit, offset: $offset) {
+      id
+      firstName
+      lastName
+      email,
+      locale,
+      role
+    }
+    count
+  }
+}

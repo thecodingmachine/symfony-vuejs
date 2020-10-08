@@ -1,10 +1,16 @@
 export default {
+  common: {
+    first_name: 'Prénom',
+    last_name: 'Nom',
+    email: 'Email',
+    locale: 'Langue',
+    role: 'Rôle',
+  },
   components: {
     layouts: {
       header: {
         logout_link: 'Se déconnecter',
         login_link: 'Se connecter',
-        create_account_link: 'Créer un compte',
       },
     },
     pages: {
@@ -20,6 +26,15 @@ export default {
       generic: 'Une erreur est survenue',
       not_found: 'Page non trouvée',
       home_page_link: "Page d'accueil",
+    },
+  },
+  mixins: {
+    roles: {
+      all: 'Tous',
+      select: 'Sélectionner un rôle',
+      administrator: 'Administateur',
+      merchant: 'Marchand',
+      client: 'Client',
     },
   },
   pages: {
@@ -73,6 +88,16 @@ export default {
       retry_link: 'Réessayer',
       success: 'Votre mot de passe a été mise à jour.',
       login_link: 'Se connecter',
+    },
+    admin: {
+      users: {
+        title: 'Liste des utilisateurs',
+        form: {
+          search: 'Rechercher...',
+          role: 'Rôle',
+          export: 'Exporter',
+        },
+      },
     },
   },
 }

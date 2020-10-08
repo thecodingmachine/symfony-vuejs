@@ -1,4 +1,4 @@
-query Products($search: String, $limit: Int!, $offset: Int!) {
+query products($search: String, $limit: Int!, $offset: Int!) {
   products(search: $search) {
     items(limit: $limit, offset: $offset) {
       id
