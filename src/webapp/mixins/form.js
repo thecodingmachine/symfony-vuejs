@@ -1,6 +1,4 @@
-const appendError = (array = [], error) => {
-  return [...array, error]
-}
+const appendError = (array = [], error) => [...array, error]
 
 export default {
   data() {
