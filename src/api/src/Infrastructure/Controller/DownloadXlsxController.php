@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use function Safe\file_get_contents;
 use function Safe\unlink;
 
-class DownloadXlsxController extends DownloadController
+abstract class DownloadXlsxController extends DownloadController
 {
     protected function createResponseWithXlsxAttachment(string $filename, Xlsx $xlsx): Response
     {

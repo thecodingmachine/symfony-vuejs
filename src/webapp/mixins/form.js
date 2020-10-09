@@ -43,7 +43,7 @@ export default {
           this.allFormErrors = {
             ...this.allFormErrors,
             [error.extensions.category]: appendError(
-              this.allFormErrors[error.extensions.field],
+              this.allFormErrors[error.extensions.category],
               error.message
             ),
           }

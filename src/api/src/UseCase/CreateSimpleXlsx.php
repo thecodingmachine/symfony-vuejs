@@ -10,7 +10,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function chr;
 
-class CreateSimpleXlsx
+abstract class CreateSimpleXlsx
 {
     protected TranslatorInterface $translator;
 

@@ -12,7 +12,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function strval;
 
-class CreateEmail
+abstract class CreateEmail
 {
     private TranslatorInterface $translator;
     protected ParameterBagInterface $parameters;

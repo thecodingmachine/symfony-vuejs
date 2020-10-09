@@ -71,6 +71,8 @@ import Roles from '@/mixins/roles'
 import UsersQuery from '@/services/queries/users/users.query.gql'
 import { EMAIL, FIRST_NAME, LAST_NAME } from '@/enums/filters/users-sort-by'
 
+// TODO: i18n for role cell values
+
 export default {
   mixins: [List, Roles],
   // layout: 'backoffice',

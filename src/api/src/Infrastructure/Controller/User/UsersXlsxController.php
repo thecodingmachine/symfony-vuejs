@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Controller;
+namespace App\Infrastructure\Controller\User;
 
 use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Enum\Filter\UsersSortBy;
 use App\Domain\Enum\Role;
+use App\Infrastructure\Controller\DownloadXlsxController;
 use App\UseCase\User\CreateUsersXlsx;
 use App\UseCase\User\GetUsers;
 use Symfony\Component\HttpFoundation\Request;

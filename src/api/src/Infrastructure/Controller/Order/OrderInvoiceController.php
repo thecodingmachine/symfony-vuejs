@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Controller;
+namespace App\Infrastructure\Controller\Order;
 
 use App\Domain\Dao\OrderDao;
 use App\Domain\Storage\OrderInvoiceStorage;
+use App\Infrastructure\Controller\DownloadController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
