@@ -82,6 +82,9 @@ It may take some time as each container will also setup itself, for instance by
 installing dependencies (PHP, JavaScript etc.), compiling sources (JavaScript) 
 or run migrations for setting up the database structure.
 
+In some cases, the `api` service will try to run the migrations before the `mysql` service is ready. If so, restart
+the `api` service with `docker-compose up -d api`.
+
 Next time you run this command, the containers should be ready faster as most of the 
 setting up will already be done.
 
@@ -157,9 +160,14 @@ You may now edit it, according to your environment, with:
 
 Make sure you have read the following documentations:
 
-* [Webapp](src/webapp/README.md)
-* [API](src/api/README.md)
-* [Housekeeping - or how to keep everything up-to-date](HOUSEKEEPING.md)
+* [Development environment configuration](documentation/configuration.md)
+* [Internationalization (i18n)](documentation/i18n.md)
+* [Emails](documentation/emails.md)
+* [Forms validation](documentation/form_validation.md)
+* [Uploads storage](documentation/storage.md)
+* [Webapp guidelines](src/webapp/README.md)
+* [API guidelines](src/api/README.md)
+* [Housekeeping - or how to keep everything up-to-date](housekeeping.md)
 
 ### How to stop the stack?
 
