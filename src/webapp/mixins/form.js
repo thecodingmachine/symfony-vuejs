@@ -1,11 +1,5 @@
-function appendError(array, error) {
-  if (typeof array === 'undefined') {
-    array = []
-  }
-
-  array.push(error)
-
-  return array
+const appendError = (array = [], error) => {
+  return [...array, error]
 }
 
 export default {
