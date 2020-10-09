@@ -6,21 +6,13 @@ export function calculateOffset(currentPage, itemsPerPage) {
 
 export const defaultItemsPerPage = 10
 
-function buildFilters(component) {
-  const filters = Object.assign({}, component.filters)
-  filters.page = component.currentPage
-
-  // Both sortBy and sortOrder might not be
-  // available according to the type of list.
-  if (component.sortBy !== null) {
-    filters.sortBy = component.sortBy
+const buildFilters = ({ filters, currentPage: page, sortBy, sortOrder }) => {
+  return {
+    page,
+    ...filters,
+    ...(sortBy ? { sortBy } : {}),
+    ...(sortOrder ? { sortOrder } : {}),
   }
-
-  if (component.sortOrder !== null) {
-    filters.sortOrder = component.sortOrder
-  }
-
-  return filters
 }
 
 export default {
@@ -69,21 +61,13 @@ export default {
     // Returns the sortBy value used by your Bootstrap table
     // according to this.sortBy.
     boostrapTableSortBy() {
-      let sortBy = null
-
-      if (this.sortBy === null) {
-        return sortBy
+      if (!this.sortBy) {
+        return null
       }
 
-      Object.entries(this.sortByMap).forEach(
-        ([bootstrapTableSortBy, APISortBy]) => {
-          if (this.sortBy === APISortBy) {
-            sortBy = bootstrapTableSortBy
-          }
-        }
+      return Object.keys(this.sortByMap).find(
+        (key) => this.sortByMap[key] === this.sortBy
       )
-
-      return sortBy
     },
     // Returns a boolean value used by your Bootstrap table
     // "sort-desc" property according to this.sortOrder.
@@ -98,13 +82,7 @@ export default {
       if (sortBy === null) {
         this.sortBy = null
       } else {
-        Object.entries(this.sortByMap).forEach(
-          ([bootstrapTableSortBy, APISortBy]) => {
-            if (sortBy === bootstrapTableSortBy) {
-              this.sortBy = APISortBy
-            }
-          }
-        )
+        this.sortBy = this.sortByMap[sortBy]
       }
 
       this.sortOrder = sortDesc ? DESC : ASC
@@ -129,19 +107,9 @@ export default {
       // We add the locale here as we might not be able to set it
       // via headers.
       filters.locale = this.$i18n.locale
-
-      let parameters = '?'
-      let count = 0
-
-      Object.entries(filters).forEach(([filter, value]) => {
-        if (value) {
-          parameters += count === 0 ? filter : '&' + filter
-          parameters += '=' + value
-          count++
-        }
-      })
-
-      return parameters
+      return `?${Object.entries(filters)
+        .map((keyValue) => keyValue.join('='))
+        .join('&')}`
     },
     // Update the route with your filters and current page.
     // You should call it in your doSearch() implementation.
