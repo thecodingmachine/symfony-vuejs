@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace App\UseCase\User;
 
 use App\Domain\Model\User;
-use App\UseCase\CreateSimpleXlsx;
+use App\UseCase\CreateXLSXExport;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use TheCodingMachine\TDBM\ResultIterator;
 
 use function strtolower;
 
-final class CreateUsersXlsx extends CreateSimpleXlsx
+final class CreateUsersXLSXExport extends CreateXLSXExport
 {
     /**
      * @param User[]|ResultIterator $users
      */
-    public function createXlsx(string $locale, $users): Xlsx
+    public function createXLSX(string $locale, $users): Xlsx
     {
         $headerIds = [
             'users.headers.id',

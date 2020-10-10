@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use function Safe\file_get_contents;
 use function Safe\unlink;
 
-abstract class DownloadXlsxController extends DownloadController
+abstract class DownloadXLSXController extends DownloadController
 {
-    protected function createResponseWithXlsxAttachment(string $filename, Xlsx $xlsx): Response
+    protected function createResponseWithXLSXAttachment(string $filename, Xlsx $xlsx): Response
     {
         $tmpFilename = Uuid::uuid4()->toString() . '.xlsx';
         $xlsx->save($tmpFilename);

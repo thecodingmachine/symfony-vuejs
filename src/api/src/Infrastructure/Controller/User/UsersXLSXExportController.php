@@ -7,8 +7,8 @@ namespace App\Infrastructure\Controller\User;
 use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Enum\Filter\UsersSortBy;
 use App\Domain\Enum\Role;
-use App\Infrastructure\Controller\DownloadXlsxController;
-use App\UseCase\User\CreateUsersXlsx;
+use App\Infrastructure\Controller\DownloadXLSXController;
+use App\UseCase\User\CreateUsersXLSXExport;
 use App\UseCase\User\GetUsers;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,15 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
 use function assert;
 use function is_string;
 
-final class UsersXlsxController extends DownloadXlsxController
+final class UsersXLSXExportController extends DownloadXLSXController
 {
     private GetUsers $getUsers;
-    private CreateUsersXlsx $createUsersXlsx;
+    private CreateUsersXLSXExport $createUsersXLSXExport;
 
-    public function __construct(GetUsers $getUsers, CreateUsersXlsx $createUsersXlsx)
+    public function __construct(GetUsers $getUsers, CreateUsersXLSXExport $createUsersXLSXExport)
     {
-        $this->getUsers        = $getUsers;
-        $this->createUsersXlsx = $createUsersXlsx;
+        $this->getUsers              = $getUsers;
+        $this->createUsersXLSXExport = $createUsersXLSXExport;
     }
 
     /**
@@ -51,12 +51,12 @@ final class UsersXlsxController extends DownloadXlsxController
             $sortOrder ? SortOrder::$sortOrder() : null
         );
 
-        $xlsx = $this->createUsersXlsx->createXlsx(
+        $xlsx = $this->createUsersXLSXExport->createXLSX(
             $locale,
             $users
         );
 
-        return $this->createResponseWithXlsxAttachment(
+        return $this->createResponseWithXLSXAttachment(
             'users.xlsx',
             $xlsx
         );
