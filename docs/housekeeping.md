@@ -135,14 +135,6 @@ Anyway, read the patch note and the related documentation carefully. Update the 
 **Minor/major versions:** run `docker-compose pull`. As for minor versions, major versions should be painless to update. 
 Anyway, read the patch note and the related documentation carefully. Update the corresponding Docker Compose files accordingly.
 
-## Webapp
-
-From time to time, check for new releases of your main packages: 
-
-1. Update the corresponding versions in your `package.json` file.
-2. Remove the file `yarn.lock` and the folder `node_modules`.
-3. Recreate the `webapp` service with `docker-compose up -d --force webapp`.
-
 ## API
 
 ### Dependencies
@@ -165,6 +157,14 @@ Read carefully the patch note and the related documentation before updating your
 As a team (tech) leader, you should update to the latest minor/majors version whenever a new version is available*.
 
 *\* For major versions, make sure your Symfony bundles are ready before updating.*
+
+## Web application
+
+From time to time, check for new releases of your main packages: 
+
+1. Update the corresponding versions in your `package.json` file.
+2. Remove the file `yarn.lock` and the folder `node_modules`.
+3. Recreate the `webapp` service with `docker-compose up -d --force webapp`.
 
 ---
 
