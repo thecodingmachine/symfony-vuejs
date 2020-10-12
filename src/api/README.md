@@ -83,7 +83,11 @@ pest --group=user,company
 Before pushing your commits to the repository or even while coding, run the following commands:
 
 ```
-c
+composer csfix &&
+composer cscheck &&
+composer phpstan &&
+composer deptrac &&
+composer yaml-lint
 ```
 
 // TODO explain each command.
