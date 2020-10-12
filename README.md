@@ -166,6 +166,7 @@ Make sure you have read the following documentations:
 **In-depth explanations**
 
 * [Configuration - development environment, API, web application](docs/configuration.md)
+* [Security](docs/security.md)
 * [Internationalization (i18n)](docs/i18n.md)
 * [Emails](docs/emails.md)
 * [Forms validation](docs/forms_validation.md)
