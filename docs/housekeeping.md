@@ -1,22 +1,19 @@
 # Housekeeping
 
-* [Back to README](README.md)
-
-As the team (tech) leader, this documentation will help you to keep everything up-to-date. 
+This documentation will help you to keep everything up-to-date. 
 Please read it carefully, as those actions will ensure your project is still relevant year after year. 
-The sooner the better!
+The sooner, the better!
 
 ## Docker and Docker compose
 
 * [Docker and Docker Compose releases](https://docs.docker.com/release-notes/)
 
-Make sure you and your team always use the latest versions of Docker and Docker Compose.
+Make sure you always use the latest versions of Docker and Docker Compose.
 
 For non-Vagrant users, follow the [Docker official documentation](https://docs.docker.com/engine/install/#server).
 For Docker Compose, also follow the [official documentation](https://docs.docker.com/compose/install/#install-compose-on-linux-systems).
 
-For Vagrant users, as the team (tech) leader, you should update the variable `DOCKER_COMPOSE_VERSION` of the [Makefile](Makefile).
-Then, Vagrant users will have to run:
+For Vagrant users, you should update the variable `DOCKER_COMPOSE_VERSION` of the [Makefile](../Makefile) and run:
 
 ```
 # If the VM is running.
@@ -44,18 +41,16 @@ described before.
 Run `vagrant version` to see your current version and the latest one. 
 Follow the printed instructions for upgrading Vagrant if required.
 
-For VirtualBox, simply open the application, it should tell you to download the newer version, if any.
+For VirtualBox, open the application, it should tell you to download the newer version (if any).
 
 ## Docker Compose files
 
-As you know, Docker Compose files describe many services. Each service uses an image and a version.
+Docker Compose files describe many services. Each service uses a Docker image and a version number.
 
-By default, most of the versions have to use X.Y format (X for major updates, Y for minor ones).
+By default, most of the versions should use the `X.Y` format (`X` for major updates, `Y` for minor ones).
 
-The idea here is that running `docker-compose pull` will only update images with bugs fixes (for most images, see below).
-
-As the team (tech) leader, you should define a day of the week when all the team members have to run `docker-compose pull` 
-on their development environment. For remote environments, it should be done on each deployment (preferably automatically).
+The idea here is that running `docker-compose pull` will only update Docker images with bugs fixes 
+(for most Docker images, see below).
 
 > Update the following list according to your services.
 
@@ -65,11 +60,11 @@ on their development environment. For remote environments, it should be done on 
 
 **Bugs fixes:** run `docker-compose pull`.
 
-**Minor version:** you should be able to change the minor version of your image without any problem, as it should only
-contain new features and bugs fixes. Anyway, read carefully the patch note and the related documentation. Update the
-corresponding Docker Compose files accordingly.
+**Minor version:** you should be able to change the minor version of your image without any problem, as it should only 
+contain new features and bugs fixes. Anyway, read the patch note and the related documentation carefully. 
+Update the corresponding Docker Compose files accordingly.
 
-**Major version:** as a major version contains breaking changes, read carefully the patch note and the new documentation.
+**Major version:** as a major version contains breaking changes, read the patch note and the new documentation carefully. 
 Update the corresponding Docker Compose files accordingly.
 
 ### TheCodingMachine images (Node.js / PHP)
@@ -79,13 +74,11 @@ Update the corresponding Docker Compose files accordingly.
 
 **Bugs fixes:** run `docker-compose pull`.
 
-**Minor/major versions:** actually the version of the underlying technology (Node.js / PHP). As soon as
+**Minor/major versions:** the version of the underlying technology (Node.js / PHP). As soon as
 a new version is available (LTS for Node.js, anything for PHP), you should update the corresponding Docker Compose files 
 plus your source code if necessary. For PHP, some tools like [PHPStan](https://github.com/phpstan/phpstan),
 [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) or [Rector](https://github.com/rectorphp/rector) might 
 help you along the way.
-
-// TODO Node.js?
 
 ### MySQL
 
@@ -93,13 +86,14 @@ help you along the way.
 
 **Bugs fixes:** run `docker-compose pull`.
 
-**Minor version:** you should be able to change the minor version of your image without any problem, as it should only
-contain new features and bugs fixes. Anyway, read carefully the patch note and the related documentation. Update the
-corresponding Docker Compose files accordingly.
+**Minor version:** you should be able to change the minor version of your image without any problem, as it should only 
+contain new features and bugs fixes. Anyway, read the patch note and the related documentation carefully. 
+Update the corresponding Docker Compose files accordingly.
 
-**Major version:** as a major version contains breaking changes, read carefully the patch note and the new documentation.
-Update the corresponding Docker Compose files accordingly. You might have to wait for a [TDBM](https://github.com/thecodingmachine/tdbm)
-new release (do not hesitate to post an issue if you seek for information).
+**Major version:** as a major version contains breaking changes, read the patch note and the new documentation carefully.
+Update the corresponding Docker Compose files accordingly. 
+You might have to wait for a [TDBM](https://github.com/thecodingmachine/tdbm) new release 
+(do not hesitate to post an issue if you seek for information).
 
 ### phpMyAdmin
 
@@ -107,8 +101,8 @@ new release (do not hesitate to post an issue if you seek for information).
 
 **Bugs fixes:** run `docker-compose pull`.
 
-**Minor/major versions:** as for minor versions, major versions should be painless to update. Anyway, read carefully the 
-patch note and the related documentation. Update the corresponding Docker Compose files accordingly.
+**Minor/major versions:** as for minor versions, major versions should be painless to update. Anyway, read the 
+patch note and the related documentation carefully. Update the corresponding Docker Compose files accordingly.
 
 ### Redis
 
@@ -116,12 +110,12 @@ patch note and the related documentation. Update the corresponding Docker Compos
 
 **Bugs fixes:** run `docker-compose pull`.
 
-**Minor version:** you should be able to change the minor version of your image without any problem, as it should only
-contain new features and bugs fixes. Anyway, read carefully the patch note and the related documentation. Update the
-corresponding Docker Compose files accordingly.
+**Minor version:** you should be able to change the minor version of your image without any problem, as it should only 
+contain new features and bugs fixes. Anyway, read the patch note and the related documentation carefully. 
+Update the corresponding Docker Compose files accordingly.
 
-**Major version:** as a major version contains breaking changes, read carefully the patch note and the new documentation.
-Update the corresponding Docker Compose files accordingly. You might also have to update the Symfony messenger configuration.
+**Major version:** as a major version contains breaking changes, read the patch note and the new documentation carefully.
+Update the corresponding Docker Compose files accordingly.
 
 ### MailHog
 
@@ -130,7 +124,7 @@ Update the corresponding Docker Compose files accordingly. You might also have t
 **Bugs fixes:** run `docker-compose pull`.
 
 **Minor/major versions:** run `docker-compose pull`. As for minor versions, major versions should be painless to update. 
-Anyway, read carefully the patch note and the related documentation. Update the corresponding Docker Compose files accordingly.
+Anyway, read the patch note and the related documentation carefully. Update the corresponding Docker Compose files accordingly.
 
 ### MinIO
 
@@ -139,7 +133,7 @@ Anyway, read carefully the patch note and the related documentation. Update the 
 **Bugs fixes:** run `docker-compose pull`.
 
 **Minor/major versions:** run `docker-compose pull`. As for minor versions, major versions should be painless to update. 
-Anyway, read carefully the patch note and the related documentation. Update the corresponding Docker Compose files accordingly.
+Anyway, read the patch note and the related documentation carefully. Update the corresponding Docker Compose files accordingly.
 
 ## Webapp
 
@@ -171,6 +165,10 @@ Read carefully the patch note and the related documentation before updating your
 As a team (tech) leader, you should update to the latest minor/majors version whenever a new version is available*.
 
 *\* For major versions, make sure your Symfony bundles are ready before updating.*
+
+---
+
+[Back to top](#housekeeping) - [Home](../README.md)
 
 
 
