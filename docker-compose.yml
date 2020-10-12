@@ -1,5 +1,5 @@
 # This Docker Compose file should only be used for your development environment!
-version: '3'
+version: '3.4'
 
 services:
 

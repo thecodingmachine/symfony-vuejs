@@ -50,7 +50,7 @@ export default {
   },
 
   privateRuntimeConfig: {
-    // Secrets.
+    // Secrets, only available on the server.
   },
 
   /*

@@ -67,8 +67,9 @@ cp .env.dist .env
 Next, make sure there is no application running on port 80 (Vagrant users can skip this check).
 
 **Vagrant users: the first time you start the Docker Compose stack, you have to "comment" the following 
-environment variables from the `api` service in the `docker-compose.yml` file: `STARTUP_COMMANDS_2`, `STARTUP_COMMAND_3` 
-, and `STARTUP_COMMAND_4`. Indeed, `composer install` fails miserably, but there is a workaround. See below.**
+environment variables from the `api` service in the [docker-compose.yml](docker-compose.yml) file: 
+`STARTUP_COMMANDS_2`, `STARTUP_COMMAND_3`, and `STARTUP_COMMAND_4`. Indeed, `composer install` fails miserably, 
+but there is a workaround. See below.**
 
 Good? You may now start all the Docker containers with the following commands:
 
