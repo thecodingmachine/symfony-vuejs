@@ -45,6 +45,8 @@ This class has a method `create`, which takes the following arguments:
 * A template's path (more on that in the next chapter).
 * The template's context (i.e., the data of the template).
 
+**Note:** this class does only create an `Email` object (it does not send it.).
+
 You should extend this class to create your emails, for instance:
 
 ```php
