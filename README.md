@@ -160,18 +160,20 @@ Make sure you have read the following documentations:
 
 **Day-to-day guidelines**
 
-* [Configuration](documentation/configuration.md)
 * [Webapp guidelines](src/webapp/README.md)
 * [API guidelines](src/api/README.md)
-* [Housekeeping - or how to keep everything up-to-date](documentation/housekeeping.md)
 
 **In-depth explanations**
 
+* [Configuration - development environment, API, web application](documentation/configuration.md)
 * [Internationalization (i18n)](documentation/i18n.md)
 * [Emails](documentation/emails.md)
 * [Forms validation](documentation/forms_validation.md)
 * [Uploads storage](documentation/uploads_storage.md)
 * [Deployments](deployments/README.md)
+* [Housekeeping - or how to keep everything up-to-date](documentation/housekeeping.md)
+
+> Don't hesitate to update these documentations but also add your documentations.
 
 ### How to stop the stack?
 
