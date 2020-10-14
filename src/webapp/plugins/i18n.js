@@ -1,6 +1,6 @@
 import UpdateLocaleMutation from '@/services/mutations/auth/update_locale.mutation.gql'
 
-export default function ({ app, store, error }) {
+export default function ({ app, store }) {
   // Set the 'Accept-Language' header default value.
   app.$graphql.setHeader('Accept-Language', app.i18n.locale)
 
