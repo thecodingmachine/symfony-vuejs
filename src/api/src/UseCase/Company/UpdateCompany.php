@@ -8,6 +8,7 @@ use App\Domain\Dao\CompanyDao;
 use App\Domain\Model\Company;
 use App\Domain\Throwable\InvalidModel;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
+use TheCodingMachine\GraphQLite\Annotations\Security;
 
 final class UpdateCompany
 {
@@ -22,6 +23,7 @@ final class UpdateCompany
      * @throws InvalidModel
      *
      * @Mutation
+     * @Security("is_granted('UPDATE_COMPANY', company)")
      */
     public function updateCompany(
         Company $company,

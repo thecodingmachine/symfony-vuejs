@@ -28,4 +28,9 @@ final class Role extends Enum
             self::CLIENT,
         ];
     }
+
+    public static function getSymfonyRole(Role $role): string
+    {
+        return 'ROLE_' . $role;
+    }
 }

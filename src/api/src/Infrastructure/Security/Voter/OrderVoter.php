@@ -4,18 +4,28 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security\Voter;
 
-use App\Domain\Enum\Role;
+use App\Domain\Dao\OrderDao;
+use App\Domain\Model\Order;
 use App\Domain\Model\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use function assert;
 use function in_array;
+use function is_string;
 
-final class UserVoter extends AppVoter
+final class OrderVoter extends AppVoter
 {
-    public const UPDATE_USER = 'UPDATE_USER';
-    public const GET_USER    = 'GET_USER';
+    public const DOWNLOAD_ORDER_INVOICE = 'DOWNLOAD_ORDER_INVOICE';
+
+    private OrderDao $orderDao;
+
+    public function __construct(Security $security, OrderDao $orderDao)
+    {
+        parent::__construct($security);
+        $this->orderDao = $orderDao;
+    }
 
     /**
      * @param mixed $subject
@@ -26,15 +36,16 @@ final class UserVoter extends AppVoter
             ! in_array(
                 $attribute,
                 [
-                    self::UPDATE_USER,
-                    self::GET_USER,
+                    self::DOWNLOAD_ORDER_INVOICE,
                 ]
             )
         ) {
             return false;
         }
 
-        return $subject instanceof User;
+        // We use is_string if we gives an id instead of an Order.
+        // Mostly for classic Symfony routes.
+        return $subject instanceof Order || is_string($subject);
     }
 
     /**
@@ -49,18 +60,17 @@ final class UserVoter extends AppVoter
         }
 
         assert($user instanceof User);
-        assert($subject instanceof User);
+
+        if ($subject instanceof Order) {
+            $order = $subject;
+        } else {
+            $order = $this->orderDao->getById($subject);
+        }
 
         switch ($attribute) {
-            case self::UPDATE_USER:
-            case self::GET_USER:
-                // The administrator can update/get any user.
-                if ($this->security->isGranted(Role::getSymfonyRole(Role::ADMINISTRATOR()))) {
-                    return true;
-                }
-
-                // Other users may only update/get themselves.
-                return $user->getId() === $subject->getId();
+            case self::DOWNLOAD_ORDER_INVOICE:
+                // User should own the order.
+                return $order->getUser()->getId() === $user->getId();
 
             default:
                 return false;

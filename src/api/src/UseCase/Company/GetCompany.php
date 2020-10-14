@@ -6,11 +6,13 @@ namespace App\UseCase\Company;
 
 use App\Domain\Model\Company;
 use TheCodingMachine\GraphQLite\Annotations\Query;
+use TheCodingMachine\GraphQLite\Annotations\Security;
 
 final class GetCompany
 {
     /**
      * @Query
+     * @Security("is_granted('GET_COMPANY', company)")
      */
     public function company(Company $company): Company
     {

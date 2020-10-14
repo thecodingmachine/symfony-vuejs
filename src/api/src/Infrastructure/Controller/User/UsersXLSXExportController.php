@@ -10,6 +10,7 @@ use App\Domain\Enum\Role;
 use App\Infrastructure\Controller\DownloadXLSXController;
 use App\UseCase\User\CreateUsersXLSXExport;
 use App\UseCase\User\GetUsers;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,13 +31,10 @@ final class UsersXLSXExportController extends DownloadXLSXController
 
     /**
      * @Route("/users/xlsx", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMINISTRATOR')")
      */
     public function downloadUsersXlsx(Request $request): Response
     {
-        // check if authenticated user is admin.
-
-        // TODO enum and locale helper?
-
         $locale = $request->query->get('locale', $request->getLocale());
         assert(is_string($locale));
         $search    = $request->query->get('search', null);

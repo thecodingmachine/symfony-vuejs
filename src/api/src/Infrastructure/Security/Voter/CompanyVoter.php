@@ -4,29 +4,39 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security\Voter;
 
+use App\Domain\Enum\Role;
 use App\Domain\Model\Company;
 use App\Domain\Model\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use function assert;
+use function in_array;
 
-final class CompanyVoter extends Voter
+final class CompanyVoter extends AppVoter
 {
-    private Security $security;
-
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
+    public const CREATE_PRODUCT = 'CREATE_PRODUCT';
+    public const UPDATE_COMPANY = 'UPDATE_COMPANY';
+    public const GET_COMPANY    = 'GET_COMPANY';
 
     /**
      * @param mixed $subject
      */
     protected function supports(string $attribute, $subject): bool
     {
+        if (
+            ! in_array(
+                $attribute,
+                [
+                    self::CREATE_PRODUCT,
+                    self::UPDATE_COMPANY,
+                    self::GET_COMPANY,
+                ]
+            )
+        ) {
+            return false;
+        }
+
         return $subject instanceof Company;
     }
 
@@ -46,10 +56,19 @@ final class CompanyVoter extends Voter
 
         // Remember: thanks to role hierarchy, an administrator has
         // all roles.
-        if (! $this->security->isGranted('ROLE_MERCHANT')) {
+        if (! $this->security->isGranted(Role::getSymfonyRole(Role::MERCHANT()))) {
             return false;
         }
 
-        return $subject->getUser()->getId() === $user->getId();
+        switch ($attribute) {
+            case self::CREATE_PRODUCT:
+            case self::UPDATE_COMPANY:
+            case self::GET_COMPANY:
+                // User should own the company.
+                return $subject->getUser()->getId() === $user->getId();
+
+            default:
+                return false;
+        }
     }
 }

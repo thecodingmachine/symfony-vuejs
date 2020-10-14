@@ -10,6 +10,7 @@ use App\Domain\Enum\Filter\UsersSortBy;
 use App\Domain\Enum\Role;
 use App\Domain\Model\User;
 use TheCodingMachine\GraphQLite\Annotations\Query;
+use TheCodingMachine\GraphQLite\Annotations\Security;
 use TheCodingMachine\TDBM\ResultIterator;
 
 final class GetUsers
@@ -25,6 +26,7 @@ final class GetUsers
      * @return User[]|ResultIterator
      *
      * @Query
+     * @Security("is_granted('ROLE_ADMINISTRATOR')")
      */
     public function users(
         ?string $search = null,

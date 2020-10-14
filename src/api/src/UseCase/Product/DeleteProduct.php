@@ -9,6 +9,7 @@ use App\Domain\Model\Product;
 use App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTask;
 use Symfony\Component\Messenger\MessageBusInterface;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
+use TheCodingMachine\GraphQLite\Annotations\Security;
 
 final class DeleteProduct
 {
@@ -25,6 +26,7 @@ final class DeleteProduct
 
     /**
      * @Mutation
+     * @Security("is_granted('DELETE_PRODUCT', product)")
      */
     public function deleteProduct(Product $product): bool
     {

@@ -10,6 +10,7 @@ use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Model\Company;
 use App\Domain\ResultIterator\CompanyResultIterator;
 use TheCodingMachine\GraphQLite\Annotations\Query;
+use TheCodingMachine\GraphQLite\Annotations\Security;
 
 final class GetCompanies
 {
@@ -24,6 +25,7 @@ final class GetCompanies
      * @return Company[]|CompanyResultIterator
      *
      * @Query
+     * @Security("is_granted('ROLE_ADMINISTRATOR')")
      */
     public function companies(
         ?string $search = null,

@@ -11,6 +11,7 @@ use App\Domain\Model\User;
 use App\Domain\Throwable\InvalidModel;
 use App\UseCase\User\ResetPassword\ResetPassword;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
+use TheCodingMachine\GraphQLite\Annotations\Security;
 
 final class CreateUser
 {
@@ -29,6 +30,7 @@ final class CreateUser
      * @throws InvalidModel
      *
      * @Mutation
+     * @Security("is_granted('ROLE_ADMINISTRATOR')")
      */
     public function createUser(
         string $firstName,

@@ -13,6 +13,7 @@ use App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTask;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
+use TheCodingMachine\GraphQLite\Annotations\Security;
 
 use function array_diff;
 use function array_merge;
@@ -40,6 +41,7 @@ final class UpdateProduct
      * @throws InvalidModel
      *
      * @Mutation
+     * @Security("is_granted('UPDATE_PRODUCT', product)")
      */
     public function updateProduct(
         Product $product,
