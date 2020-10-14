@@ -70,16 +70,22 @@ import List, { calculateOffset, defaultItemsPerPage } from '@/mixins/list'
 import Roles from '@/mixins/roles'
 import UsersQuery from '@/services/queries/users/users.query.gql'
 import { EMAIL, FIRST_NAME, LAST_NAME } from '@/enums/filters/users-sort-by'
+import { ADMINISTRATOR } from '@/enums/roles'
 
 // TODO: i18n for role cell values
 
 export default {
   mixins: [List, Roles],
   // layout: 'backoffice',
+  meta: {
+    auth: {
+      authorizationLevel: ADMINISTRATOR,
+    },
+  },
   async asyncData(context) {
     try {
       const result = await context.app.$graphql.request(UsersQuery, {
-        search: context.route.query.search || null,
+        search: context.route.query.search || '',
         role: context.route.query.role || null,
         sortBy: context.route.query.sortBy || null,
         sortOrder: context.route.query.sortOrder || null,
@@ -101,7 +107,7 @@ export default {
   data() {
     return {
       filters: {
-        search: this.$route.query.search || null,
+        search: this.$route.query.search || '',
         role: this.$route.query.role || null,
       },
       fields: [

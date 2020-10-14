@@ -7,6 +7,16 @@
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
+      <b-navbar-nav>
+        <b-nav-item
+          v-if="hasRole(ADMINISTRATOR)"
+          :to="localePath({ name: 'admin-users' })"
+          :active="$route.path === localePath({ name: 'admin-users' })"
+        >
+          {{ $t('components.layouts.header.administration_link') }}
+        </b-nav-item>
+      </b-navbar-nav>
+
       <b-navbar-nav class="ml-auto">
         <b-nav-item-dropdown v-if="isAuthenticated" right>
           <template #button-content>
@@ -42,13 +52,15 @@
 </template>
 
 <script>
+import Roles from '@/mixins/roles'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import LogoutMutation from '@/services/mutations/auth/logout.mutation.gql'
 
 export default {
+  mixins: [Roles],
   computed: {
     ...mapState('auth', ['user']),
-    ...mapGetters('auth', ['isAuthenticated']),
+    ...mapGetters('auth', ['isAuthenticated', 'hasRole']),
     availableLocales() {
       return this.$i18n.locales.filter((i) => i.code !== this.$i18n.locale)
     },

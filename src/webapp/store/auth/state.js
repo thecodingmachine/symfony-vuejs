@@ -4,7 +4,7 @@ export const defaultUserData = {
   lastName: '',
   email: '',
   locale: '',
-  roles: [],
+  role: '',
 }
 
 export default () => ({

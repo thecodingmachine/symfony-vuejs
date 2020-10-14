@@ -57,7 +57,7 @@ export default {
    ** ROUTER
    */
   router: {
-    middleware: ['is-authenticated'],
+    middleware: ['auth'],
   },
 
   /*

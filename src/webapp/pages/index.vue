@@ -39,10 +39,15 @@ import ProductCardGroup from '@/components/pages/products/ProductCardGroup'
 export default {
   components: { ProductCardGroup },
   mixins: [List],
+  meta: {
+    auth: {
+      allowGuest: true,
+    },
+  },
   async asyncData(context) {
     try {
       const result = await context.app.$graphql.request(ProductsQuery, {
-        search: context.route.query.search || null,
+        search: context.route.query.search || '',
         limit: defaultItemsPerPage,
         offset: calculateOffset(
           context.route.query.page || 1,
@@ -61,7 +66,7 @@ export default {
   data() {
     return {
       filters: {
-        search: this.$route.query.search || null,
+        search: this.$route.query.search || '',
       },
     }
   },

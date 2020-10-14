@@ -9,6 +9,7 @@ export default {
   components: {
     layouts: {
       header: {
+        administration_link: 'Administration',
         logout_link: 'Se déconnecter',
         login_link: 'Se connecter',
       },
@@ -25,6 +26,7 @@ export default {
     error: {
       generic: 'Une erreur est survenue',
       not_found: 'Page non trouvée',
+      access_forbidden: 'Accès refusé',
       home_page_link: "Page d'accueil",
     },
   },

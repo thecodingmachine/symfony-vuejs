@@ -66,7 +66,12 @@ export default {
   layout: 'box',
   components: { ErrorsList },
   mixins: [Form],
-  middleware: ['redirect-if-authenticated'],
+  meta: {
+    auth: {
+      allowGuest: true,
+      allowAuthenticated: false,
+    },
+  },
   data() {
     return {
       form: {

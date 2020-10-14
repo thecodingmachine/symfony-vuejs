@@ -1,0 +1,1 @@
+IF default TEXT filters === null, it will refresh the page the first time!!

@@ -1,43 +1,10 @@
-**Caution:** this is still work in progress.
-
----
-
 # API
 
 A PHP application based on Symfony and with GraphQL endpoints.
 
 **All commands have to be run in the `api` service (`make api`).**
 
-## Configuration
-
-### Environment variables
-
-**In development, do not put them in the `.env` file from the `src/api` folder, but instead put them in your `docker-compose.yml` file.**
-
-If you need the value of an environment variable in your code, use the Symfony parameters (see `config/services.yaml`).
-
-For instance:
-
-```yaml
-# config/services.yaml.
-parameters:
-    app.foo: : '%env(FOO)%'
-```
-
-```php
-# A class.
-private string $foo;
-
-public function __construct(
-    ParameterBagInterface $parameters
-) {
-    $this->foo = $parameters->get('app.foo');
-}
-```
-
 ## Code
-
-### Conventions
 
 #### Comments
 

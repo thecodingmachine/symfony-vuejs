@@ -89,7 +89,12 @@ export default {
   components: { ErrorsList },
   layout: 'box',
   mixins: [Form],
-  middleware: ['redirect-if-authenticated'],
+  meta: {
+    auth: {
+      allowGuest: true,
+      allowAuthenticated: false,
+    },
+  },
   async asyncData(context) {
     try {
       await context.app.$graphql.request(VerifyResetPasswordTokenMutation, {

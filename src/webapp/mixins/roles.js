@@ -1,6 +1,13 @@
 import { ADMINISTRATOR, CLIENT, MERCHANT } from '@/enums/roles'
 
 export default {
+  data() {
+    return {
+      ADMINISTRATOR,
+      MERCHANT,
+      CLIENT,
+    }
+  },
   methods: {
     rolesAsSelectOptions(isForSearch = true) {
       return [

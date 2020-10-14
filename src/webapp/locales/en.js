@@ -9,6 +9,7 @@ export default {
   components: {
     layouts: {
       header: {
+        administration_link: 'Administration',
         logout_link: 'Logout',
         login_link: 'Login',
       },
@@ -25,6 +26,7 @@ export default {
     error: {
       generic: 'An error occurred',
       not_found: 'Page not found',
+      access_forbidden: 'Access forbidden',
       home_page_link: 'Home page',
     },
   },
