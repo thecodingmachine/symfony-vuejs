@@ -10,6 +10,7 @@ use App\Domain\Enum\Role;
 use App\Domain\Model\User;
 use App\Domain\Throwable\InvalidModel;
 use App\UseCase\User\ResetPassword\ResetPassword;
+use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Security;
 
@@ -30,6 +31,7 @@ final class CreateUser
      * @throws InvalidModel
      *
      * @Mutation
+     * @Logged
      * @Security("is_granted('ROLE_ADMINISTRATOR')")
      */
     public function createUser(

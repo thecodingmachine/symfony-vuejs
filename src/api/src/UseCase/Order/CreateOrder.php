@@ -12,6 +12,7 @@ use App\Domain\Model\User;
 use App\Domain\Storage\OrderInvoiceStorage;
 use App\Domain\Throwable\InvalidModel;
 use TheCodingMachine\GraphQLite\Annotations\InjectUser;
+use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Security;
 
@@ -32,8 +33,9 @@ final class CreateOrder
      * @throws InvalidModel
      *
      * @Mutation
-     * @Security("is_granted('CREATE_ORDER', product)")
+     * @Logged
      * @InjectUser(for="$user")
+     * @Security("is_granted('CREATE_ORDER', product)")
      */
     public function createOrder(
         User $user,

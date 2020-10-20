@@ -2,7 +2,7 @@
 
 ---
 
-# WebApp
+# Web application
 
 A Nuxt.js frontend which is rendered from server-side and acts as an SPA (Single Page Application) once loaded.
 

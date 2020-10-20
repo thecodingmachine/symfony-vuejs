@@ -39,11 +39,6 @@ import ProductCardGroup from '@/components/pages/products/ProductCardGroup'
 export default {
   components: { ProductCardGroup },
   mixins: [List],
-  meta: {
-    auth: {
-      allowGuest: true,
-    },
-  },
   async asyncData(context) {
     try {
       const result = await context.app.$graphql.request(ProductsQuery, {
@@ -75,15 +70,19 @@ export default {
       this.isLoading = true
       this.updateRouter()
 
-      const result = await this.$graphql.request(ProductsQuery, {
-        search: this.filters.search,
-        limit: this.itemsPerPage,
-        offset: this.offset,
-      })
+      try {
+        const result = await this.$graphql.request(ProductsQuery, {
+          search: this.filters.search,
+          limit: this.itemsPerPage,
+          offset: this.offset,
+        })
 
-      this.items = result.products.items
-      this.count = result.products.count
-      this.isLoading = false
+        this.items = result.products.items
+        this.count = result.products.count
+        this.isLoading = false
+      } catch (e) {
+        this.$nuxt.error(e)
+      }
     },
   },
 }

@@ -1,0 +1,1 @@
+explain stateless (sessions, storage, don't care of cache).

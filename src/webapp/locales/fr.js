@@ -26,7 +26,7 @@ export default {
     error: {
       generic: 'Une erreur est survenue',
       not_found: 'Page non trouvée',
-      access_forbidden: 'Accès refusé',
+      access_forbidden: 'Accès interdit',
       home_page_link: "Page d'accueil",
     },
   },

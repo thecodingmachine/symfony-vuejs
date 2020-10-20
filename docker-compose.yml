@@ -73,7 +73,7 @@ services:
       # the value of APP_SECRET between deployments. Otherwise, password
       # verification will not work anymore.
       APP_SECRET: "$APP_SECRET"
-      COOKIE_DOMAIN: ".$DOMAIN"
+      COOKIE_DOMAIN: ".$DOMAIN" # The "." is important here; it tells that the cookie is available for $DOMAIN and its subdomains.
       # CORS.
       CORS_ALLOW_ORIGIN: "http://$DOMAIN" # Never use "*": https://stackoverflow.com/questions/52060784/graphql-and-csrf-protection.
       # Logging.
@@ -106,7 +106,7 @@ services:
     networks:
       default:
         aliases:
-          # Required so that the webapp service is able to call the same endpoint
+          # Required so that the web application is able to call the same endpoint
           # from both the browser and the server.
           - "$API_SUBDOMAIN.$DOMAIN"
 

@@ -9,7 +9,7 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item
-          v-if="hasRole(ADMINISTRATOR)"
+          v-if="isGranted(ADMINISTRATOR)"
           :to="localePath({ name: 'admin-users' })"
           :active="$route.path === localePath({ name: 'admin-users' })"
         >
@@ -60,7 +60,7 @@ export default {
   mixins: [Roles],
   computed: {
     ...mapState('auth', ['user']),
-    ...mapGetters('auth', ['isAuthenticated', 'hasRole']),
+    ...mapGetters('auth', ['isAuthenticated', 'isGranted']),
     availableLocales() {
       return this.$i18n.locales.filter((i) => i.code !== this.$i18n.locale)
     },

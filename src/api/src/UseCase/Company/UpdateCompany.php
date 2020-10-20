@@ -7,6 +7,7 @@ namespace App\UseCase\Company;
 use App\Domain\Dao\CompanyDao;
 use App\Domain\Model\Company;
 use App\Domain\Throwable\InvalidModel;
+use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Security;
 
@@ -23,6 +24,7 @@ final class UpdateCompany
      * @throws InvalidModel
      *
      * @Mutation
+     * @Logged
      * @Security("is_granted('UPDATE_COMPANY', company)")
      */
     public function updateCompany(

@@ -7,6 +7,7 @@ namespace App\UseCase\User;
 use App\Domain\Dao\UserDao;
 use App\Domain\Model\User;
 use App\UseCase\Company\DeleteCompany;
+use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Security;
 
@@ -25,6 +26,7 @@ final class DeleteUser
 
     /**
      * @Mutation
+     * @Logged
      * @Security("is_granted('ROLE_ADMINISTRATOR')")
      */
     public function deleteUser(User $user): bool

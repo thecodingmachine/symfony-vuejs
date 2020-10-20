@@ -17,8 +17,9 @@ export default {
         typeof e.response === 'undefined' ||
         typeof e.response.errors === 'undefined'
       ) {
-        // The error must be thrown to be handled by our
-        // "error" layout.
+        // The error must be handled by our "error" layout.
+        // We do not call this.$nuxt.error(e) here
+        // because for some reasons it does not works.
         throw e
       }
 

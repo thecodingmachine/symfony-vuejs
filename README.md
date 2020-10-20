@@ -170,9 +170,9 @@ Make sure you have read the following documentations:
 * [Internationalization (i18n)](docs/i18n.md)
 * [Emails](docs/emails.md)
 * [Forms validation](docs/forms_validation.md)
-* [Lists](docs/lists)
+* [Lists](docs/lists.md)
 * [Uploads storage](docs/uploads_storage.md)
-* [Deployments](deployments/README.md)
+* [Deployments](docs/deployments.md)
 * [Housekeeping - or how to keep everything up-to-date](docs/housekeeping.md)
 
 > Don't hesitate to update these documentations but also add your documentations.

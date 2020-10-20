@@ -70,18 +70,12 @@ import List, { calculateOffset, defaultItemsPerPage } from '@/mixins/list'
 import Roles from '@/mixins/roles'
 import UsersQuery from '@/services/queries/users/users.query.gql'
 import { EMAIL, FIRST_NAME, LAST_NAME } from '@/enums/filters/users-sort-by'
-import { ADMINISTRATOR } from '@/enums/roles'
 
 // TODO: i18n for role cell values
 
 export default {
   mixins: [List, Roles],
   // layout: 'backoffice',
-  meta: {
-    auth: {
-      authorizationLevel: ADMINISTRATOR,
-    },
-  },
   async asyncData(context) {
     try {
       const result = await context.app.$graphql.request(UsersQuery, {
@@ -134,18 +128,22 @@ export default {
       this.isLoading = true
       this.updateRouter()
 
-      const result = await this.$graphql.request(UsersQuery, {
-        search: this.filters.search,
-        role: this.filters.role,
-        sortBy: this.sortBy,
-        sortOrder: this.sortOrder,
-        limit: this.itemsPerPage,
-        offset: this.offset,
-      })
+      try {
+        const result = await this.$graphql.request(UsersQuery, {
+          search: this.filters.search,
+          role: this.filters.role,
+          sortBy: this.sortBy,
+          sortOrder: this.sortOrder,
+          limit: this.itemsPerPage,
+          offset: this.offset,
+        })
 
-      this.items = result.users.items
-      this.count = result.users.count
-      this.isLoading = false
+        this.items = result.users.items
+        this.count = result.users.count
+        this.isLoading = false
+      } catch (e) {
+        this.$nuxt.error(e)
+      }
     },
   },
 }

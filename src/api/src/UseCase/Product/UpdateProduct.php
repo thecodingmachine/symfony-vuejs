@@ -12,6 +12,7 @@ use App\Domain\Throwable\InvalidModel;
 use App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTask;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Security;
 
@@ -41,6 +42,7 @@ final class UpdateProduct
      * @throws InvalidModel
      *
      * @Mutation
+     * @Logged
      * @Security("is_granted('UPDATE_PRODUCT', product)")
      */
     public function updateProduct(

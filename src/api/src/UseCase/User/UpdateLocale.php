@@ -9,6 +9,7 @@ use App\Domain\Enum\Locale;
 use App\Domain\Model\User;
 use App\Domain\Throwable\InvalidModel;
 use TheCodingMachine\GraphQLite\Annotations\InjectUser;
+use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 
 use function strval;
@@ -26,6 +27,7 @@ final class UpdateLocale
      * @throws InvalidModel
      *
      * @Mutation
+     * @Logged
      * @InjectUser(for="$user")
      */
     public function updateLocale(

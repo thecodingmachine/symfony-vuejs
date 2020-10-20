@@ -9,6 +9,7 @@ use App\Domain\Enum\Filter\SortOrder;
 use App\Domain\Enum\Filter\UsersSortBy;
 use App\Domain\Enum\Role;
 use App\Domain\Model\User;
+use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Security;
 use TheCodingMachine\TDBM\ResultIterator;
@@ -26,6 +27,7 @@ final class GetUsers
      * @return User[]|ResultIterator
      *
      * @Query
+     * @Logged
      * @Security("is_granted('ROLE_ADMINISTRATOR')")
      */
     public function users(

@@ -11,6 +11,7 @@ use App\Domain\Model\Storable\ProductPicture;
 use App\Domain\Storage\ProductPictureStorage;
 use App\Domain\Throwable\InvalidModel;
 use Psr\Http\Message\UploadedFileInterface;
+use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Security;
 
@@ -33,6 +34,7 @@ final class CreateProduct
      * @throws InvalidModel
      *
      * @Mutation
+     * @Logged
      * @Security("is_granted('CREATE_PRODUCT', company)")
      */
     public function createProduct(

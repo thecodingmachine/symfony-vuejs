@@ -11,6 +11,7 @@ use App\Domain\Model\Order;
 use App\Domain\Model\User;
 use App\Domain\ResultIterator\OrderResultIterator;
 use TheCodingMachine\GraphQLite\Annotations\InjectUser;
+use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 
 final class MyOrders
@@ -26,6 +27,7 @@ final class MyOrders
      * @return Order[]|OrderResultIterator
      *
      * @Query
+     * @Logged
      * @InjectUser(for="$user")
      */
     public function myOrders(

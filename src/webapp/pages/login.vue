@@ -54,16 +54,12 @@
 import Form from '@/mixins/form'
 import LoginMutation from '@/services/mutations/auth/login.mutation.js'
 import { mapMutations } from 'vuex'
+import UpdateLocaleMutation from '@/services/mutations/auth/update_locale.mutation.gql'
 
 export default {
   layout: 'box',
   mixins: [Form],
-  meta: {
-    auth: {
-      allowGuest: true,
-      allowAuthenticated: false,
-    },
-  },
+  middleware: ['redirect-if-authenticated'],
   data() {
     return {
       form: {
@@ -84,6 +80,16 @@ export default {
           userName: this.form.email,
           password: this.form.password,
         })
+
+        // Update user's locale if different from the
+        // web application locale.
+        if (result.login.locale !== this.$i18n.locale) {
+          await this.$graphql.request(UpdateLocaleMutation, {
+            locale: this.$i18n.locale.toUpperCase(),
+          })
+
+          result.login.locale = this.$i18n.locale
+        }
 
         this.setUser(result.login)
 
