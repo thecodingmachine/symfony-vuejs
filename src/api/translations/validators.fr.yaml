@@ -18,3 +18,7 @@ company:
 
 product:
   name_not_unique: "Ce nom n'est pas disponible."
+  pictures_extensions: "Certaines extensions de fichiers ne sont pas \".png\" ou \".jpg\"."
+
+order:
+  order_invoice_extension: "L'extension du fichier n'est pas \".pdf\"."

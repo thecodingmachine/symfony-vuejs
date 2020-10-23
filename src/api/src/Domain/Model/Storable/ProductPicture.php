@@ -10,7 +10,7 @@ use function strtolower;
 
 final class ProductPicture extends Storable
 {
-    /** @Assert\Choice({"png", "jpg"}) */
+    /** @Assert\Choice({"png", "jpg"}, message="product.pictures_extensions") */
     public function getExtension(): string
     {
         return strtolower($this->fileInfo->getExtension());

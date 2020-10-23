@@ -11,11 +11,13 @@ export default {
     resetFormErrors() {
       this.allFormErrors = {}
     },
-    hydrateFormErrors(e) {
+    hydrateFormErrors(e, isLogin = false) {
       if (
         typeof e === 'undefined' ||
         typeof e.response === 'undefined' ||
-        typeof e.response.errors === 'undefined'
+        typeof e.response.errors === 'undefined' ||
+        (isLogin && e.response.status !== 401) ||
+        (!isLogin && e.response.status !== 400)
       ) {
         // The error must be handled by our "error" layout.
         // We do not call this.$nuxt.error(e) here

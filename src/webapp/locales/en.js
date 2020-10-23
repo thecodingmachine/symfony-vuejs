@@ -5,6 +5,13 @@ export default {
     email: 'Email',
     locale: 'Locale',
     role: 'Role',
+    multiple_files: {
+      placeholder: 'Choose files or drop them here...',
+      drop_placeholder: 'Drop files here...',
+    },
+    browse_files_text: 'Browse',
+    reset_files_button: 'Reset files',
+    delete_button: 'Delete',
   },
   components: {
     layouts: {
@@ -90,6 +97,28 @@ export default {
       retry_link: 'Retry',
       success: 'Your password has been updated.',
       login_link: 'Login',
+    },
+    products: {
+      form: {
+        name: {
+          label: 'Name',
+          placeholder: 'Enter a name',
+        },
+        price: {
+          label: 'Price',
+          placeholder: 'Enter a price',
+        },
+        pictures: {
+          label: 'Pictures',
+        },
+        new_pictures: {
+          label: 'New pictures',
+        },
+        create_submit: 'Create product',
+        create_submitting: 'Creating...',
+        update_submit: 'Update product',
+        update_submitting: 'Updating...',
+      },
     },
     admin: {
       users: {

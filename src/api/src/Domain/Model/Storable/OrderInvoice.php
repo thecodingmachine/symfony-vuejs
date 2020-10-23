@@ -10,7 +10,7 @@ use function strtolower;
 
 final class OrderInvoice extends Storable
 {
-    /** @Assert\EqualTo("pdf") */
+    /** @Assert\EqualTo("pdf", message="order.order_invoice_extension") */
     public function getExtension(): string
     {
         return strtolower($this->fileInfo->getExtension());

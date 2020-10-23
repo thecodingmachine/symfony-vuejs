@@ -351,7 +351,8 @@ in your component's methods (except mixins, where you have to throw it).
 In the [error.vue](../src/webapp/layouts/error.vue) layout, we check if:
 
 * `401` status code: the user has no session in the API. Therefore, we call the `resetUser` mutation and redirect the
-user to the login page.
+user to the login page. On success, the web application redirects the user to the current page thanks to the `redirect`
+query parameter. 
 * `404` or `403`, or anything else: we display an error page.
 
 Some pages are also not available for the authenticated user 

@@ -9,6 +9,7 @@ parameters:
     app.storage_private_source: '%env(STORAGE_PRIVATE_SOURCE)%'
     app.storage_public_bucket: '%env(STORAGE_PUBLIC_BUCKET)%'
     app.storage_private_bucket: '%env(STORAGE_PRIVATE_BUCKET)%'
+    app.public_storage_product_picture: '%env(PUBLIC_STORAGE_PRODUCT_PICTURE)%'
     app.mail_from_address: '%env(MAIL_FROM_ADDRESS)%'
     app.mail_from_name: '%env(MAIL_FROM_NAME)%'
     app.mail_webapp_url: '%env(MAIL_WEBAPP_URL)%'

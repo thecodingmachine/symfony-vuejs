@@ -5,6 +5,13 @@ export default {
     email: 'Email',
     locale: 'Langue',
     role: 'Rôle',
+    multiple_files: {
+      placeholder: 'Choisir des fichiers ou glisser/déposer les ici...',
+      drop_placeholder: 'Déposer les fichiers ici...',
+    },
+    browse_files_text: 'Parcourir',
+    reset_files_button: 'Réinitialiser les fichiers',
+    delete_button: 'Supprimer',
   },
   components: {
     layouts: {
@@ -90,6 +97,28 @@ export default {
       retry_link: 'Réessayer',
       success: 'Votre mot de passe a été mise à jour.',
       login_link: 'Se connecter',
+    },
+    products: {
+      form: {
+        name: {
+          label: 'Nom',
+          placeholder: 'Entrer un nom',
+        },
+        price: {
+          label: 'Prix',
+          placeholder: 'Entrer un prix',
+        },
+        pictures: {
+          label: 'Photos',
+        },
+        new_pictures: {
+          label: 'Nouvelles photos',
+        },
+        create_submit: 'Créer le produit',
+        create_submitting: 'Création...',
+        update_submit: 'Mettre à jour le produit',
+        update_submitting: 'Mise à jour...',
+      },
     },
     admin: {
       users: {

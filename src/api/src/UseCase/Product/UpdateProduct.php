@@ -9,6 +9,7 @@ use App\Domain\Model\Product;
 use App\Domain\Model\Storable\ProductPicture;
 use App\Domain\Storage\ProductPictureStorage;
 use App\Domain\Throwable\InvalidModel;
+use App\Domain\Throwable\InvalidStorable;
 use App\UseCase\Product\DeleteProductsPictures\DeleteProductsPicturesTask;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -40,6 +41,7 @@ final class UpdateProduct
      * @param string[]|null                $picturesToDelete
      *
      * @throws InvalidModel
+     * @throws InvalidStorable
      *
      * @Mutation
      * @Logged
@@ -73,6 +75,7 @@ final class UpdateProduct
      * @param string[]|null         $picturesToDelete
      *
      * @throws InvalidModel
+     * @throws InvalidStorable
      */
     public function update(
         Product $product,

@@ -45,6 +45,11 @@ services:
       API_URL: "http://$API_SUBDOMAIN.$DOMAIN/"
       # GraphQL.
       GRAPHQL_URL: "http://$API_SUBDOMAIN.$DOMAIN/graphql"
+      # Public storage.
+      # Access to these files is done via URLs created using:
+      # "$PUBLIC_STORAGE_URL" + "$PUBLIC_STORAGE_PRODUCT_PICTURE" + "/" + filename.
+      PUBLIC_STORAGE_URL: "http://$STORAGE_SUBDOMAIN.$DOMAIN/public/"
+      PUBLIC_STORAGE_PRODUCT_PICTURE: "$PUBLIC_STORAGE_PRODUCT_PICTURE"
       # i18n.
       DEFAULT_LOCALE: "$DEFAULT_LOCALE"
     volumes:
@@ -86,13 +91,15 @@ services:
       # Storage.
       # Note: in other environments, the following values might differ according
       # to your storage sources (see src/api/config/packages/flysystem.yaml).
-      STORAGE_PUBLIC_SOURCE: 'public.storage.minio'
-      STORAGE_PRIVATE_SOURCE: 'private.storage.minio'
-      STORAGE_ENDPOINT: 'http://minio:9000'
-      STORAGE_PUBLIC_BUCKET: '$STORAGE_PUBLIC_BUCKET'
-      STORAGE_PRIVATE_BUCKET: '$STORAGE_PRIVATE_BUCKET'
-      STORAGE_ACCESS_KEY: '$STORAGE_ACCESS_KEY'
-      STORAGE_SECRET_KEY: '$STORAGE_SECRET_KEY'
+      STORAGE_PUBLIC_SOURCE: "public.storage.minio"
+      STORAGE_PRIVATE_SOURCE: "private.storage.minio"
+      STORAGE_ENDPOINT: "http://minio:9000"
+      STORAGE_PUBLIC_BUCKET: "$STORAGE_PUBLIC_BUCKET"
+      STORAGE_PRIVATE_BUCKET: "$STORAGE_PRIVATE_BUCKET"
+      STORAGE_ACCESS_KEY: "$STORAGE_ACCESS_KEY"
+      STORAGE_SECRET_KEY: "$STORAGE_SECRET_KEY"
+      # Public storage folders.
+      PUBLIC_STORAGE_PRODUCT_PICTURE: "$PUBLIC_STORAGE_PRODUCT_PICTURE"
       # i18n.
       DEFAULT_LOCALE: "$DEFAULT_LOCALE"
       # Mailer.
@@ -167,7 +174,7 @@ services:
     command: server /data
     labels:
       - traefik.enable=true
-      - traefik.http.routers.minio_router.rule=Host(`minio.$DOMAIN`)
+      - traefik.http.routers.minio_router.rule=Host(`$STORAGE_SUBDOMAIN.$DOMAIN`)
       - traefik.http.routers.minio_router.service=minio_service
       - traefik.http.services.minio_service.loadbalancer.server.port=9000
     environment:

@@ -10,6 +10,7 @@ use App\Domain\Enum\Role;
 use App\Domain\Model\Storable\ProductPicture;
 use App\Domain\Model\User;
 use App\Domain\Throwable\InvalidModel;
+use App\Domain\Throwable\InvalidStorable;
 use App\UseCase\Company\CreateCompany;
 use App\UseCase\Product\CreateProduct;
 use App\UseCase\User\DeleteUser;
@@ -50,6 +51,7 @@ final class AppFixtures extends Fixtures
 
     /**
      * @throws InvalidModel
+     * @throws InvalidStorable
      */
     public function load(): void
     {

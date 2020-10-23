@@ -5,21 +5,27 @@ declare(strict_types=1);
 namespace App\Domain\Storage;
 
 use App\Domain\Model\Storable\Storable;
-use App\Domain\Throwable\InvalidModel;
+use App\Domain\Throwable\InvalidStorable;
 use League\Flysystem\FilesystemInterface;
 use RuntimeException;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
 abstract class Storage
 {
+    protected ParameterBagInterface $parameters;
     protected ValidatorInterface $validator;
     protected FilesystemInterface $storage;
 
-    public function __construct(ValidatorInterface $validator, FilesystemInterface $storage)
-    {
-        $this->validator = $validator;
-        $this->storage   = $storage;
+    public function __construct(
+        ParameterBagInterface $parameters,
+        ValidatorInterface $validator,
+        FilesystemInterface $storage
+    ) {
+        $this->parameters = $parameters;
+        $this->validator  = $validator;
+        $this->storage    = $storage;
     }
 
     abstract protected function getDirectoryName(): string;
@@ -32,7 +38,7 @@ abstract class Storage
     /**
      * @param Storable[] $storables
      *
-     * @throws InvalidModel
+     * @throws InvalidStorable
      */
     protected function validateAll(array $storables): void
     {
@@ -42,12 +48,12 @@ abstract class Storage
     }
 
     /**
-     * @throws InvalidModel
+     * @throws InvalidStorable
      */
     protected function validate(Storable $storable): void
     {
         $violations = $this->validator->validate($storable);
-        InvalidModel::throwException($violations);
+        InvalidStorable::throwExceptionWithKey($this->getDirectoryName(), $violations);
     }
 
     /**
@@ -55,7 +61,7 @@ abstract class Storage
      *
      * @return string[]
      *
-     * @throws InvalidModel
+     * @throws InvalidStorable
      */
     public function writeAll(array $storables): array
     {
@@ -65,7 +71,7 @@ abstract class Storage
         foreach ($storables as $storable) {
             try {
                 $filenames[] = $this->write($storable);
-            } catch (InvalidModel $e) {
+            } catch (InvalidStorable $e) {
                 // pepakriz/phpstan-exception-rules limitation: "Catch statement does not know about runtime subtypes".
                 // See https://github.com/pepakriz/phpstan-exception-rules#catch-statement-does-not-know-about-runtime-subtypes.
                 $this->deleteAll($filenames);
@@ -84,7 +90,7 @@ abstract class Storage
     }
 
     /**
-     * @throws InvalidModel
+     * @throws InvalidStorable
      */
     public function write(Storable $storable): string
     {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Command;
 
 use App\Domain\Throwable\InvalidModel;
+use App\Domain\Throwable\InvalidStorable;
 use App\Infrastructure\Fixtures\AppFixtures;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,6 +29,7 @@ final class DevFixturesCommand extends Command
 
     /**
      * @throws InvalidModel
+     * @throws InvalidStorable
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

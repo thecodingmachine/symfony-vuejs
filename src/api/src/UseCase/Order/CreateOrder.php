@@ -11,6 +11,7 @@ use App\Domain\Model\Storable\OrderInvoice;
 use App\Domain\Model\User;
 use App\Domain\Storage\OrderInvoiceStorage;
 use App\Domain\Throwable\InvalidModel;
+use App\Domain\Throwable\InvalidStorable;
 use TheCodingMachine\GraphQLite\Annotations\InjectUser;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
@@ -31,6 +32,7 @@ final class CreateOrder
 
     /**
      * @throws InvalidModel
+     * @throws InvalidStorable
      *
      * @Mutation
      * @Logged

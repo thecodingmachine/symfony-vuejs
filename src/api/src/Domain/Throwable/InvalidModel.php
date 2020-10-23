@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domain\Throwable;
 
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use TheCodingMachine\Graphqlite\Validator\ValidationFailedException;
 
 final class InvalidModel extends ValidationFailedException implements BusinessRule
 {
     /**
-     * @param ConstraintViolationListInterface<mixed> $constraintViolationList
+     * @param ConstraintViolationListInterface<ConstraintViolationInterface> $constraintViolationList
      *
      * @throws InvalidModel
      */

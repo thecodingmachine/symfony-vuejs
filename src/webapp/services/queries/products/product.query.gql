@@ -3,7 +3,8 @@ query product($id: String!) {
     name
     price
     company {
-      name
+      id
     }
+    pictures
   }
 }

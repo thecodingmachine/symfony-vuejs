@@ -8,6 +8,6 @@ final class ProductPictureStorage extends PublicStorage
 {
     protected function getDirectoryName(): string
     {
-        return 'product_picture';
+        return $this->parameters->get('app.public_storage_product_picture');
     }
 }

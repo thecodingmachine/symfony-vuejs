@@ -99,7 +99,7 @@ export default {
           this.$router.push(this.localePath({ name: 'index' }))
         }
       } catch (e) {
-        this.hydrateFormErrors(e)
+        this.hydrateFormErrors(e, true)
         this.isFormReadOnly = false
       }
     },

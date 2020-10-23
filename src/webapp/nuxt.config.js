@@ -47,6 +47,10 @@ export default {
 
   publicRuntimeConfig: {
     apiURL: process.env.API_URL,
+    productPictureURL:
+      process.env.PUBLIC_STORAGE_URL +
+      process.env.PUBLIC_STORAGE_PRODUCT_PICTURE +
+      '/',
   },
 
   privateRuntimeConfig: {
@@ -91,6 +95,8 @@ export default {
       'TablePlugin',
       'ButtonPlugin',
       'BreadcrumbPlugin',
+      'FormFilePlugin',
+      'BadgePlugin',
     ],
     directivePlugins: [],
   },

@@ -13,6 +13,7 @@ use App\Domain\Model\Storable\ProductPicture;
 use App\Domain\Model\User;
 use App\Domain\Storage\ProductPictureStorage;
 use App\Domain\Throwable\InvalidModel;
+use App\Domain\Throwable\InvalidStorable;
 use App\Tests\UseCase\DummyValues;
 use App\UseCase\Product\CreateProduct;
 
@@ -145,7 +146,7 @@ it(
         }
     }
 )
-    ->throws(InvalidModel::class)
+    ->throws(InvalidStorable::class)
     ->group('product');
 
 it(

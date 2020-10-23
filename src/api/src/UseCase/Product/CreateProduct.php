@@ -10,6 +10,7 @@ use App\Domain\Model\Product;
 use App\Domain\Model\Storable\ProductPicture;
 use App\Domain\Storage\ProductPictureStorage;
 use App\Domain\Throwable\InvalidModel;
+use App\Domain\Throwable\InvalidStorable;
 use Psr\Http\Message\UploadedFileInterface;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
@@ -32,6 +33,7 @@ final class CreateProduct
      * @param UploadedFileInterface[]|null $pictures
      *
      * @throws InvalidModel
+     * @throws InvalidStorable
      *
      * @Mutation
      * @Logged
@@ -62,6 +64,7 @@ final class CreateProduct
      * @param ProductPicture[]|null $pictures
      *
      * @throws InvalidModel
+     * @throws InvalidStorable
      */
     public function create(
         string $name,

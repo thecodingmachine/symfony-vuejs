@@ -1,8 +1,9 @@
 <template>
   <b-card
+    style="max-width: 200px"
     :title="product.name"
     :sub-title="`${product.price} €`"
-    img-src="https://picsum.photos/300/200/?random"
+    :img-src="pictureURL"
     :img-alt="product.name"
     :img-top="true"
     img-width="200"
@@ -21,6 +22,8 @@
 </template>
 
 <script>
+import defaultProductImage from '@/assets/images/no-product.png'
+
 export default {
   name: 'ProductCard',
   props: {
@@ -28,6 +31,17 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    if (!this.product.pictures) {
+      return {
+        pictureURL: defaultProductImage,
+      }
+    }
+
+    return {
+      pictureURL: this.$config.productPictureURL + this.product.pictures[0],
+    }
   },
 }
 </script>

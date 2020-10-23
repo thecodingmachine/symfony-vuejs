@@ -1,0 +1,5 @@
+mutation updateProduct($productId: String!, $name: String!, $price: Float!, $newPictures: [Upload!], $picturesToDelete: [String!]) {
+  updateProduct(product: { id: $productId }, name: $name, price: $price, newPictures: $newPictures, picturesToDelete: $picturesToDelete) {
+    id
+  }
+}
