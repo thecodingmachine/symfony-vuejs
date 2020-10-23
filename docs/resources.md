@@ -169,6 +169,9 @@ $filenames = $product->getPictures();
 $this->productPictureStorage->deleteAll($filenames);
 ```
 
+**Note:** if you have a lot of files to delete, it might be better to do that action asynchronously.
+See [src/api/src/UseCase/Product/DeleteProduct](../src/api/src/UseCase/Product/DeleteProduct.php).
+
 #### Serve a private file
 
 Public files are accessible from the storage service URL directly, but that's not the case for private files.
