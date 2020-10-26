@@ -19,6 +19,7 @@ api_tests:
     # Docker PHP image.
     # ---------------------
     APACHE_DOCUMENT_ROOT: "public/"
+    PHP_EXTENSION_XDEBUG: "1"
     PHP_EXTENSION_REDIS: "1"
     PHP_EXTENSION_INTL: "1"
     PHP_EXTENSION_GD: "1"

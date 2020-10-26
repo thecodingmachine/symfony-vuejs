@@ -1,3 +1,7 @@
+# Deployments
+
+
+
 ## `.env` contents
 
 `.env` contents for the GitLab CI/CD jobs.
@@ -23,6 +27,7 @@ STORAGE_PUBLIC_BUCKET=foo
 STORAGE_PRIVATE_BUCKET=foo
 STORAGE_ACCESS_KEY=foo
 STORAGE_SECRET_KEY=foo
+PUBLIC_STORAGE_PRODUCT_PICTURE=product_picture
 DEFAULT_LOCALE=en
 MAILER_DSN=smtp://null:null@null:1025
 MAIL_FROM_ADDRESS=no-reply@foo.bar
