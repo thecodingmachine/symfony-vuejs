@@ -38,8 +38,8 @@ api_tests:
     - cd src/api
     - echo "$SYMFONY_ENV_CONTENT" > .env
   script:
-    - composer dump-env test
     - composer install
+    - composer dump-env test
     # Static analysis.
     - composer cscheck
     - composer phpstan
