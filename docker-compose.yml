@@ -76,7 +76,7 @@ services:
       STARTUP_COMMAND_1: "touch .env" # Create a fake .env file so that Symfony does not complain on startup.
       STARTUP_COMMAND_2: "composer install"
       STARTUP_COMMAND_3: "php bin/console doctrine:migrations:migrate -n --allow-no-migration" #FIXME: if no flag --allow-no-migration, the command fails. Why?
-      STARTUP_COMMAND_4: "php bin/console app:init-storage:minio"
+      STARTUP_COMMAND_4: "php bin/console app:init-storage:s3"
       # Symfony.
       # ---------------------
       APP_ENV: "dev"
@@ -98,8 +98,8 @@ services:
       # Storage.
       # Note: in other environments, the following values/variables might differ according
       # to your storage sources (see src/api/config/packages/flysystem.yaml).
-      STORAGE_PUBLIC_SOURCE: "public.storage.minio"
-      STORAGE_PRIVATE_SOURCE: "private.storage.minio"
+      STORAGE_PUBLIC_SOURCE: "public.storage.s3"
+      STORAGE_PRIVATE_SOURCE: "private.storage.s3"
       STORAGE_ENDPOINT: "http://minio:9000"
       STORAGE_PUBLIC_BUCKET: "$STORAGE_PUBLIC_BUCKET"
       STORAGE_PRIVATE_BUCKET: "$STORAGE_PRIVATE_BUCKET"

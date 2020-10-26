@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use function Safe\sprintf;
 
-final class InitializeMinIOStorageCommand extends Command
+final class InitializeS3StorageCommand extends Command
 {
     private S3MultiRegionClient $client;
     private string $publicBucket;
@@ -23,16 +23,16 @@ final class InitializeMinIOStorageCommand extends Command
     private string $privateSource;
 
     public function __construct(
-        S3MultiRegionClient $minioClient,
+        S3MultiRegionClient $s3Client,
         ParameterBagInterface $parameters
     ) {
-        $this->client        = $minioClient;
+        $this->client        = $s3Client;
         $this->publicBucket  = $parameters->get('app.storage_public_bucket');
         $this->privateBucket = $parameters->get('app.storage_private_bucket');
         $this->publicSource  = $parameters->get('app.storage_public_source');
         $this->privateSource = $parameters->get('app.storage_private_source');
 
-        parent::__construct('app:init-storage:minio');
+        parent::__construct('app:init-storage:s3');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -77,11 +77,11 @@ final class InitializeMinIOStorageCommand extends Command
     private function areStorageSourcesValid(OutputInterface $output): bool
     {
         $template = '%s storage source is not "%s" but "%s"';
-        if ($this->publicSource !== 'public.storage.minio') {
+        if ($this->publicSource !== 'public.storage.s3') {
             $message = sprintf(
                 $template,
                 'Public',
-                'public.storage.minio',
+                'public.storage.s3',
                 $this->publicSource
             );
 
@@ -90,11 +90,11 @@ final class InitializeMinIOStorageCommand extends Command
             return false;
         }
 
-        if ($this->privateSource !== 'private.storage.minio') {
+        if ($this->privateSource !== 'private.storage.s3') {
             $message = sprintf(
                 $template,
                 'Private',
-                'private.storage.minio',
+                'private.storage.s3',
                 $this->privateSource
             );
 

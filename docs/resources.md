@@ -198,11 +198,11 @@ There are two kinds of storage:
 In our implementation with [MinIO](https://min.io/), we use two buckets (sort of disks with access policies).
 
 We create the two buckets thanks to the 
-[src/api/src/Infrastructure/Command/InitializeMinIOStorageCommand.php](../src/api/src/Infrastructure/Command/InitializeMinIOStorageCommand.php)
+[src/api/src/Infrastructure/Command/InitializeS3StorageCommand.php](../src/api/src/Infrastructure/Command/InitializeS3StorageCommand.php)
 command:
 
 ```bash
-php bin/console app:init-storage:minio
+php bin/console app:init-storage:s3
 ```
 
 **Note:** in your development environment, the service `api` runs this command automatically on startup.
@@ -210,10 +210,10 @@ php bin/console app:init-storage:minio
 Let's go back to the configuration:
 
 ```yaml
-public.storage.minio:
+public.storage.s3:
     adapter: 'aws'
     options:
-        client: 'minio.client'
+        client: 's3.client'
         bucket: '%env(STORAGE_PUBLIC_BUCKET)%'
 
 public.storage.memory:
@@ -227,7 +227,7 @@ public.storage:
 
 The service `public.storage` is the generic Symfony service used in our source code. 
 Thanks to its `source` option, we tell the [Flysystem](https://github.com/thephpleague/flysystem) package to use either
-the `public.storage.minio` service (development) or `public.storage.memory` service (testing).
+the `public.storage.s3` service (development, maybe other environments) or `public.storage.memory` service (tests).
 
 It works the same for private storage.
 

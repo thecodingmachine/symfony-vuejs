@@ -1,6 +1,6 @@
 # Read the documentation at https://github.com/thephpleague/flysystem-bundle/blob/master/docs/1-getting-started.md
 services:
-    minio.client:
+    s3.client:
         class: 'Aws\S3\S3MultiRegionClient'
         arguments:
             - version: 'latest'
@@ -15,10 +15,10 @@ flysystem:
 #            adapter: 'local'
 #            options:
 #                directory: '%kernel.project_dir%/var/storage/default'
-        public.storage.minio:
+        public.storage.s3:
             adapter: 'aws'
             options:
-                client: 'minio.client'
+                client: 's3.client'
                 bucket: '%env(STORAGE_PUBLIC_BUCKET)%'
 
         public.storage.memory:
@@ -29,10 +29,10 @@ flysystem:
             options:
                 source: '%env(STORAGE_PUBLIC_SOURCE)%'
 
-        private.storage.minio:
+        private.storage.s3:
             adapter: 'aws'
             options:
-                client: 'minio.client'
+                client: 's3.client'
                 bucket: '%env(STORAGE_PRIVATE_BUCKET)%'
 
         private.storage.memory:

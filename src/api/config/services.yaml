@@ -42,9 +42,9 @@ services:
         arguments:
             - '%env(DATABASE_URL)%'
 
-    App\Infrastructure\Command\InitializeMinIOStorageCommand:
+    App\Infrastructure\Command\InitializeS3StorageCommand:
         arguments:
-            - '@minio.client'
+            - '@s3.client'
 
     App\Infrastructure\EventListener\FileNotFoundExceptionListener:
         tags:
