@@ -32,8 +32,10 @@ services:
     command: yarn dev
     environment:
       # Docker image.
+      # ---------------------
       STARTUP_COMMAND_1: "yarn"
-      # Nuxt.js
+      # Nuxt.js dev.
+      # ---------------------
       # Either Vagrant or Docker requires the usage of polling, otherwise Nuxt.js does not recompile our code
       # as fast as we would like.
       CHOKIDAR_USEPOLLING: "1"
@@ -41,6 +43,8 @@ services:
       # Host 0.0.0.0 is designated to tell Nuxt.js to resolve a host address, which is accessible to connections outside
       # of the host machine.
       HOST: "0.0.0.0"
+      # Nuxt.js
+      # ---------------------
       # API.
       API_URL: "http://$API_SUBDOMAIN.$DOMAIN/"
       # GraphQL.
@@ -62,6 +66,7 @@ services:
       - traefik.http.routers.api_router.rule=Host(`$API_SUBDOMAIN.$DOMAIN`)
     environment:
       # Docker image.
+      # ---------------------
       APACHE_DOCUMENT_ROOT: "public/"
       PHP_EXTENSION_XDEBUG: "1"
       PHP_EXTENSION_REDIS: "1"
@@ -73,7 +78,9 @@ services:
       STARTUP_COMMAND_3: "php bin/console doctrine:migrations:migrate -n --allow-no-migration" #FIXME: if no flag --allow-no-migration, the command fails. Why?
       STARTUP_COMMAND_4: "php bin/console app:init-storage:minio"
       # Symfony.
+      # ---------------------
       APP_ENV: "dev"
+      APP_DEBUG: "1"
       # Note: in your remote environments, make sure you do not change
       # the value of APP_SECRET between deployments. Otherwise, password
       # verification will not work anymore.
@@ -89,7 +96,7 @@ services:
       # Messenger.
       MESSENGER_TRANSPORT_DSN: "redis://$REDIS_PASSWORD@redis:6379/messages"
       # Storage.
-      # Note: in other environments, the following values might differ according
+      # Note: in other environments, the following values/variables might differ according
       # to your storage sources (see src/api/config/packages/flysystem.yaml).
       STORAGE_PUBLIC_SOURCE: "public.storage.minio"
       STORAGE_PRIVATE_SOURCE: "private.storage.minio"
