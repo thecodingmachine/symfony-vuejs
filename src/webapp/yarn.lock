@@ -5858,6 +5858,16 @@ log-symbols@^4.0.0:
   dependencies:
     chalk "^4.0.0"
 
+logrocket-vuex@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/logrocket-vuex/-/logrocket-vuex-0.0.3.tgz#e11d65d384f0c9fdac72f984436cc038adf3db90"
+  integrity sha1-4R1l04Twyf2scvmEQ2zAOK3z25A=
+
+logrocket@^1.0.7:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/logrocket/-/logrocket-1.0.14.tgz#afe61a6b993691a706154e83fe2c05e8174a650d"
+  integrity sha512-notwwiIiXOmWSKQDsW8UrFJPu81u9rd6YaIFBmx6uF0XtXXwNQ+Mvteh5WHdABWcQ2nN4I7QkQrCAocYDx7OVg==
+
 longest-streak@^2.0.1:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/longest-streak/-/longest-streak-2.0.4.tgz#b8599957da5b5dab64dee3fe316fa774597d90e4"
@@ -6567,6 +6577,14 @@ nuxt-i18n@^6.15.1:
     is-https "^2.0.0"
     js-cookie "^2.2.1"
     vue-i18n "^8.18.1"
+
+nuxt-logrocket@^1.2.10:
+  version "1.2.10"
+  resolved "https://registry.yarnpkg.com/nuxt-logrocket/-/nuxt-logrocket-1.2.10.tgz#cc63cc4dbe2f82750868ade7ddea1080b0b26335"
+  integrity sha512-2IBDLbeUtyZKRX3TvlaMgHI2eetR1/V6+dMAtB9l2ow7wAOzUjwYEQGLswouKJunvZonfNeDNi7UpOx09+kVDg==
+  dependencies:
+    logrocket "^1.0.7"
+    logrocket-vuex "^0.0.3"
 
 nuxt@^2.14.0:
   version "2.14.6"

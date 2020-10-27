@@ -10,7 +10,7 @@ services:
       - --entrypoints.websecure.address=:443
       - --certificatesresolvers.ssl_resolver.acme.tlschallenge=true
       #- --certificatesresolvers.ssl_resolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-      - --certificatesresolvers.ssl_resolver.acme.email=YOUR_OPS_EMAIl
+      - --certificatesresolvers.ssl_resolver.acme.email=$OPS_EMAIL
       - --certificatesresolvers.ssl_resolver.acme.storage=/letsencrypt/acme.json
     ports:
       - "80:80"
@@ -20,10 +20,10 @@ services:
       - ./acme.json:/letsencrypt/acme.json:rw
 
   webapp:
-    image: your_built_webapp_docker_image
+    image: $WEBAPP_IMAGE:$TAG
     labels:
       - traefik.enable=true
-      - traefik.http.routers.webapp_router.rule=Host(`YOUR_WEBAPP_URL`)
+      - traefik.http.routers.webapp_router.rule=Host(`$WEBAPP_URL`)
       - traefik.http.routers.webapp_router.service=webapp_service
       - traefik.http.services.webapp_service.loadbalancer.server.port=3000
       - traefik.http.routers.webapp_router.entrypoints=websecure
@@ -32,16 +32,16 @@ services:
       - "3000"
 
   api:
-    image: your_built_api_docker_image
+    image: $API_IMAGE:$TAG
     labels:
       - traefik.enable=true
-      - traefik.http.routers.api_router.rule=Host(`YOUR_API_URL`)
+      - traefik.http.routers.api_router.rule=Host(`$API_URL`)
       - traefik.http.routers.api_router.entrypoints=websecure
       - traefik.http.routers.api_router.tls.certresolver=ssl_resolver
 
   # Consumer for asynchronous tasks and emails.
   api_consumer:
-    image: your_built_api_docker_image
+    image: $API_IMAGE:$TAG
     command: php bin/console messenger:consume async
 
   # For business data and user sessions.
@@ -61,7 +61,7 @@ services:
     image: phpmyadmin/phpmyadmin:5.0
     labels:
       - traefik.enable=true
-      - traefik.http.routers.phpmyadmin_router.rule=Host(`YOUR_PHPMYADMIN_URL`)
+      - traefik.http.routers.phpmyadmin_router.rule=Host(`$PHPMYADMIN_URL`)
       - traefik.http.routers.phpmyadmin_router.entrypoints=websecure
       - traefik.http.routers.phpmyadmin_router.tls.certresolver=ssl_resolver
     environment:
@@ -80,7 +80,7 @@ services:
     image: mailhog/mailhog:latest
     labels:
       - traefik.enable=true
-      - traefik.http.routers.mailhog_router.rule=Host(`YOUR_MAILHOG_URL`)
+      - traefik.http.routers.mailhog_router.rule=Host(`$MAILHOG_URL`)
       - traefik.http.routers.mailhog_router.service=mailhog_service
       - traefik.http.services.mailhog_service.loadbalancer.server.port=8025
       - traefik.http.routers.mailhog_router.entrypoints=websecure
@@ -92,7 +92,7 @@ services:
     command: server /data
     labels:
       - traefik.enable=true
-      - traefik.http.routers.minio_router.rule=Host(`YOUR_STORAGE_URL`)
+      - traefik.http.routers.minio_router.rule=Host(`$MAILHOG_URL`)
       - traefik.http.routers.minio_router.service=minio_service
       - traefik.http.services.minio_service.loadbalancer.server.port=9000
       - traefik.http.routers.minio_router.entrypoints=websecure

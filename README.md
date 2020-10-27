@@ -172,7 +172,6 @@ Make sure you have read the following documentations:
 * [Forms validation](docs/forms_validation.md)
 * [Lists](docs/lists.md)
 * [Resources - assets, temporary files, uploaded files](docs/resources.md)
-* [Deployments](docs/deployments.md)
 * [Housekeeping - or how to keep everything up-to-date](docs/housekeeping.md)
 
 > Don't hesitate to update these documentations but also add your documentations.

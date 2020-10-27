@@ -72,6 +72,7 @@ export default {
     'nuxt-graphql-request',
     'nuxt-i18n',
     'cookie-universal-nuxt',
+    'nuxt-logrocket',
   ],
   bootstrapVue: {
     icons: true,
@@ -147,6 +148,10 @@ export default {
       moduleName: 'i18n',
       syncLocale: true,
     },
+  },
+  logRocket: {
+    logRocketId: process.env.LOGROCKET_ID || '',
+    devModeAllowed: process.env.LOGROCKET_DEV_MODE_ALLOWED || false,
   },
   /*
    ** Build configuration

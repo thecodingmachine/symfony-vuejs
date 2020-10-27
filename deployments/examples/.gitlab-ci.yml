@@ -2,8 +2,8 @@ stages:
   - tests
   - build_push_docker_images
   - deploy_testing
-  - deploy_staging
-  - deploy_prod
+#  - deploy_staging
+#  - deploy_prod
 
 # ------------------------------------------
 # TESTS
@@ -19,6 +19,7 @@ api_tests:
     # Docker PHP image.
     # ---------------------
     APACHE_DOCUMENT_ROOT: "public/"
+    PHP_EXTENSION_XDEBUG: "1"
     PHP_EXTENSION_REDIS: "1"
     PHP_EXTENSION_INTL: "1"
     PHP_EXTENSION_GD: "1"
@@ -38,8 +39,8 @@ api_tests:
     - cd src/api
     - echo "$SYMFONY_ENV_CONTENT" > .env
   script:
-    - composer dump-env test
     - composer install
+    - composer dump-env test
     # Static analysis.
     - composer cscheck
     - composer phpstan
@@ -70,11 +71,14 @@ webapp_tests:
   variables:
     DOCKER_DRIVER: "overlay2"
     SYMFONY_ENV_CONTENT: "foo"
+    ENV_NAME: "foo"
   before_script:
     - cd src/api
   script:
     - echo "$SYMFONY_ENV_CONTENT" > .env
-    # TODO: build and push according to registry provider.
+    - docker login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" registry.example.com
+    - docker build -t "registry.example.com/group/project/api-$ENV_NAME:$CI_COMMIT_REF_SLUG" .
+    - docker push "registry.example.com/group/project/api-$ENV_NAME:$CI_COMMIT_REF_SLUG"
   only:
     - tags
 
@@ -82,16 +86,19 @@ api_build_push_docker_image_testing:
   extends: .api_build_push_docker_image
   variables:
     SYMFONY_ENV_CONTENT: "$SYMFONY_ENV_CONTENT_TESTING" # .env file content for testing (from GitLab CI/CD variables).
+    ENV_NAME: "testing"
 
-api_build_push_docker_image_staging:
-  extends: .api_build_push_docker_image
-  variables:
-    SYMFONY_ENV_CONTENT: "$SYMFONY_ENV_CONTENT_STAGING" # .env file content for staging (from GitLab CI/CD variables).
-
-api_build_push_docker_image_prod:
-  extends: .api_build_push_docker_image
-  variables:
-    SYMFONY_ENV_CONTENT: "$SYMFONY_ENV_CONTENT_PROD" # .env file content for prod (from GitLab CI/CD variables).
+#api_build_push_docker_image_staging:
+#  extends: .api_build_push_docker_image
+#  variables:
+#    SYMFONY_ENV_CONTENT: "$SYMFONY_ENV_CONTENT_STAGING" # .env file content for staging (from GitLab CI/CD variables).
+#    ENV_NAME: "staging"
+#
+#api_build_push_docker_image_prod:
+#  extends: .api_build_push_docker_image
+#  variables:
+#    SYMFONY_ENV_CONTENT: "$SYMFONY_ENV_CONTENT_PROD" # .env file content for prod (from GitLab CI/CD variables).
+#    ENV_NAME: "prod"
 
 .webapp_build_push_docker_image:
   stage: build_push_docker_images
@@ -101,11 +108,14 @@ api_build_push_docker_image_prod:
   variables:
     DOCKER_DRIVER: "overlay2"
     NUXTJS_ENV_CONTENT: "foo"
+    ENV_NAME: "foo"
   before_script:
     - cd src/webapp
   script:
     - echo "$NUXTJS_ENV_CONTENT" > .env
-    # TODO: build and push according to registry provider.
+    - docker login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" registry.example.com
+    - docker build -t "registry.example.com/group/project/webapp-$ENV_NAME:$CI_COMMIT_REF_SLUG" .
+    - docker push "registry.example.com/group/project/webapp-$ENV_NAME:$CI_COMMIT_REF_SLUG"
   only:
     - tags
 
@@ -113,26 +123,70 @@ webapp_build_push_docker_image_testing:
   extends: .webapp_build_push_docker_image
   variables:
     NUXTJS_ENV_CONTENT: "$NUXTJS_ENV_CONTENT_TESTING" # .env file content for testing (from GitLab CI/CD variables).
+    ENV_NAME: "testing"
 
-webapp_build_push_docker_image_staging:
-  extends: .webapp_build_push_docker_image
-  variables:
-    NUXTJS_ENV_CONTENT: "$NUXTJS_ENV_CONTENT_STAGING" # .env file content for staging (from GitLab CI/CD variables).
-
-webapp_build_push_docker_image_prod:
-  extends: .webapp_build_push_docker_image
-  variables:
-    NUXTJS_ENV_CONTENT: "$NUXTJS_ENV_CONTENT_PROD" # .env file content for prod (from GitLab CI/CD variables).
+#webapp_build_push_docker_image_staging:
+#  extends: .webapp_build_push_docker_image
+#  variables:
+#    NUXTJS_ENV_CONTENT: "$NUXTJS_ENV_CONTENT_STAGING" # .env file content for staging (from GitLab CI/CD variables).
+#    ENV_NAME: "staging"
+#
+#webapp_build_push_docker_image_prod:
+#  extends: .webapp_build_push_docker_image
+#  variables:
+#    NUXTJS_ENV_CONTENT: "$NUXTJS_ENV_CONTENT_PROD" # .env file content for prod (from GitLab CI/CD variables).
+#    ENV_NAME: "prod"
 
 # ------------------------------------------
 # DEPLOY
 # ------------------------------------------
 
-# TODO
+.deploy:
+  image: kroniak/ssh-client:3.6
+  variables:
+    SSH_KNOWN_HOSTS: "foo"
+    SSH_PRIVATE_KEY: "foo"
+    SERVER_USER: "foo"
+    SERVER_IP: "foo"
+    DOCKER_COMPOSE_FILE_PATH: "foo"
+    DOCKER_COMPOSE_ENV_CONTENT: "foo"
+    ENV_NAME: "foo"
+  before_script:
+    - mkdir ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+  script:
+    # Stop the stack on the server.
+    - ssh "$SERVER_USER@$SERVER_IP" "docker-compose down"
+    # Update the .env and docker-compose.yml files on the server.
+    - echo "$DOCKER_COMPOSE_ENV_CONTENT" > .env
+    - echo "TAG=$CI_COMMIT_REF_SLUG" >> .env
+    - scp .env "$SERVER_USER@$SERVER_IP":~/
+    - scp "$DOCKER_COMPOSE_FILE_PATH" "$SERVER_USER@$SERVER_IP":~/
+    # Login to Docker registry.
+    - ssh "$SERVER_USER@$SERVER_IP" "docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.example.com/group/project"
+    # Restart.
+    - ssh "$SERVER_USER@$SERVER_IP" "docker-compose up -d"
+    # Remove old Docker images.
+    - ssh "$SERVER_USER@$SERVER_IP" "docker image prune -a -f"
+  when: manual
+  only:
+    - tags
 
-#deploy_testing:
-#  stage: deploy_testing
-#
+deploy_testing:
+  stage: deploy_testing
+  extends: .deploy
+  variables:
+    SSH_KNOWN_HOSTS: "$SSH_KNOWN_HOSTS_TESTING"
+    SSH_PRIVATE_KEY: "$SSH_PRIVATE_KEY_TESTING"
+    SERVER_USER: "$SERVER_USER_TESTING"
+    SERVER_IP: "$SERVER_IP_TESTING"
+    DOCKER_COMPOSE_FILE_PATH: "./deployments/examples/testing/docker-compose.yml"
+    DOCKER_COMPOSE_ENV_CONTENT: "DOCKER_COMPOSE_ENV_CONTENT_TESTING"
+    ENV_NAME: "testing"
+
 #deploy_staging:
 #  stage: deploy_staging
 #

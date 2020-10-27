@@ -20,7 +20,8 @@
     "graphql-tag": "^2.11.0",
     "nuxt": "^2.14.0",
     "nuxt-graphql-request": "^3.1.2",
-    "nuxt-i18n": "^6.15.1"
+    "nuxt-i18n": "^6.15.1",
+    "nuxt-logrocket": "^1.2.10"
   },
   "devDependencies": {
     "@babel/runtime-corejs3": "^7.10.3",
