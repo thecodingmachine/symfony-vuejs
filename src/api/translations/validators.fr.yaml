@@ -1,15 +1,15 @@
 not_blank: "Cette valeur ne doit pas être vide."
 max_length_255: "Cette valeur est trop longue. Elle doit avoir 255 caractères ou moins."
 min_length_8: "Cette valeur est trop courte. Elle doit avoir 8 caractères ou plus."
-invalid_email: "Cette valeur n'est pas une adresse email valide."
+invalid_email: "Cette valeur n'est pas une adresse e-mail valide."
 invalid_url: "Cette valeur n'est pas une URL valide."
 positive: "Cette valeur doit être positive."
 
 user:
-  email_not_unique: "Cet email n'est pas disponible."
+  email_not_unique: "Cet e-mail n'est pas disponible."
   invalid_locale: "Cette valeur n'est pas une langue valide."
   invalid_role: "Cette valeur n'est pas un rôle valide."
-  not_compromised_password: "Ce mot de passe a été découvert lors d'un vole de données, il ne doit pas être utilisé. Merci d'utiliser un autre mot de passe."
+  not_compromised_password: "Ce mot de passe a été découvert lors d'un vol de données, il ne doit pas être utilisé. Merci d'utiliser un autre mot de passe."
   wrong_password_confirmation: "Cette valeur n'est pas égale à la précédente."
 
 company:
