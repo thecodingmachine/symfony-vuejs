@@ -2,11 +2,11 @@ export default {
   common: {
     first_name: 'Prénom',
     last_name: 'Nom',
-    email: 'Email',
+    email: 'E-mail',
     locale: 'Langue',
     role: 'Rôle',
     multiple_files: {
-      placeholder: 'Choisir des fichiers ou glisser/déposer les ici...',
+      placeholder: 'Sélectionnez des fichiers ou glissez/déposez-les ici...',
       drop_placeholder: 'Déposer les fichiers ici...',
     },
     browse_files_text: 'Parcourir',
@@ -53,14 +53,14 @@ export default {
     login: {
       form: {
         email: {
-          label: 'Email',
-          placeholder: 'Entrer votre email',
+          label: 'E-mail',
+          placeholder: 'Entrez votre e-mail',
         },
         password: {
           label: 'Mot de passe',
-          placeholder: 'Entrer votre mot de passe',
+          placeholder: 'Entrez votre mot de passe',
         },
-        error: "L'email ou le mot de passe fourni est incorrect.",
+        error: "L'e-mail ou le mot de passe fourni est incorrect.",
         submit: 'Se connecter',
         submitting: 'Connexion...',
         forgot_password_link: "J'ai oublié mon mot de passe",
@@ -71,42 +71,42 @@ export default {
       retry_link: 'Réessayer',
       form: {
         email: {
-          label: 'Email',
-          placeholder: 'Entrer votre e-mail',
+          label: 'E-mail',
+          placeholder: 'Entrez votre e-mail',
         },
-        submit: "Envoyer l'email",
+        submit: "Envoyer l'e-mail",
         submitting: 'Envoie...',
       },
       success:
-        "Si l'adresse {email} existe dans notre système, un email a été envoyé avec des instructions pour vous aider à changer votre mot de passe",
+        "Si l'adresse {email} existe dans notre système, un e-mail a été envoyé avec des instructions pour vous aider à changer votre mot de passe",
     },
     update_password: {
       form: {
         new_password: {
           label: 'Nouveau mot de passe',
-          placeholder: 'Entrer votre nouveau mot de passe',
+          placeholder: 'Entrez votre nouveau mot de passe',
         },
         password_confirmation: {
           label: 'Confirmation du nouveau mot de passe',
-          placeholder: 'Entrer une nouvelle fois votre nouveau mot de passe',
+          placeholder: 'Entrez une nouvelle fois votre nouveau mot de passe',
         },
         submit: 'Mettre à jour',
         submitting: 'Mise à jour...',
       },
       invalid_token: 'Votre jeton a expiré ou il est invalide.',
       retry_link: 'Réessayer',
-      success: 'Votre mot de passe a été mise à jour.',
+      success: 'Votre mot de passe a été mis à jour.',
       login_link: 'Se connecter',
     },
     products: {
       form: {
         name: {
           label: 'Nom',
-          placeholder: 'Entrer un nom',
+          placeholder: 'Entrez un nom',
         },
         price: {
           label: 'Prix',
-          placeholder: 'Entrer un prix',
+          placeholder: 'Entrez un prix',
         },
         pictures: {
           label: 'Photos',
