@@ -75,7 +75,7 @@ export default {
           placeholder: 'Entrez votre e-mail',
         },
         submit: "Envoyer l'e-mail",
-        submitting: 'Envoie...',
+        submitting: 'Envoi...',
       },
       success:
         "Si l'adresse {email} existe dans notre système, un e-mail a été envoyé avec des instructions pour vous aider à changer votre mot de passe",
