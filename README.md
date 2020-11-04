@@ -1,4 +1,4 @@
-**A new version with Symfony + GraphQL + Nuxt.js is available here:** https://github.com/thecodingmachine/symfony-nuxtjs
+**A new version with Symfony + GraphQL + Nuxt.js is available here:** https://github.com/thecodingmachine/symfony-boilerplate
 
 ---
 
