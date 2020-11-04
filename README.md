@@ -1,3 +1,7 @@
+**A new version with Symfony + GraphQL + Nuxt.js is available here:** https://github.com/thecodingmachine/symfony-nuxtjs
+
+---
+
 Source code of the tutorial [thecodingmachine.io/building-a-single-page-application-with-symfony-4-and-vuejs](https://thecodingmachine.io/building-a-single-page-application-with-symfony-4-and-vuejs).
 
 # Quick start
